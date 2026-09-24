@@ -8,7 +8,7 @@ import MobileNav from './MobileNavbar';
 export const Navbar = () => {
   return (
     <header className="bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-2xl">
-      <div className="container mx-auto grid grid-cols-12 items-center gap-2 px-0 py-3 md:gap-4">
+      <div className="container mx-auto grid grid-cols-12 items-center gap-2 md:gap-4">
         <div className="col-span-8 flex max-h-20 max-w-44 items-center lg:col-span-2">
           <Link href="/">
             <SafeImage
