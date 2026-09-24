@@ -1,0 +1,57 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# next.js build output
+.next
+out
+
+# production build
+build
+dist
+
+# misc
+.DS_Store
+*.pem
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env files
+.env
+.env*.local
+.env.development
+.env.production
+
+# vercel
+.vercel
+
+# typescript (harmless even in a JS project, e.g. next-env.d.ts)
+*.tsbuildinfo
+next-env.d.ts
+
+# lockfiles (avoid huge diffs from reformatting)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# generated/static assets
+public/sitemap*.xml
+public/robots.txt
+coverage
+
+# editor/IDE
+.vscode
+.idea
+
+# cache
+.cache
+.turbo
+.eslintcache
+
+# markdown (optional — some teams don't want prettier touching docs/changelogs)
+# *.md
