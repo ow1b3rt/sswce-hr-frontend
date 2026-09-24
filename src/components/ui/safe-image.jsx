@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+
 export default function SafeImage({
   src,
   alt,
@@ -12,8 +13,8 @@ export default function SafeImage({
   sizes,
   priority = false,
   quality = 75,
-  objectFit = 'cover', // "cover" | "contain" | "fill" | "none" | "scale-down"
-  rounded = false, // true | "sm" | "md" | "lg" | "full" | custom className handled below
+  objectFit = 'cover',
+  rounded = false,
   className = '',
   containerClassName = '',
   showSkeleton = true,
@@ -28,12 +29,22 @@ export default function SafeImage({
   const [currentSrc, setCurrentSrc] = useState(isValidSrc ? src : fallbackSrc);
   const [isLoading, setIsLoading] = useState(true);
   const [hasErrored, setHasErrored] = useState(false);
+  const imgRef = useRef(null);
+
   useEffect(() => {
     const nextIsValid = typeof src === 'string' && src.trim().length > 0;
     setCurrentSrc(nextIsValid ? src : fallbackSrc);
     setHasErrored(false);
     setIsLoading(true);
   }, [src, fallbackSrc]);
+
+  // Catches the case where the image was already cached and
+  // the native load event fired before React attached onLoad
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      setIsLoading(false);
+    }
+  }, [currentSrc]);
 
   const handleError = (event) => {
     if (!hasErrored) {
@@ -44,10 +55,13 @@ export default function SafeImage({
     onError?.(event);
   };
 
-  const handleLoadingComplete = (result) => {
-    setIsLoading(false);
-    onLoadComplete?.(result);
-  };
+  const handleLoad = useCallback(
+    (event) => {
+      setIsLoading(false);
+      onLoadComplete?.(event);
+    },
+    [onLoadComplete],
+  );
 
   const roundedClass =
     rounded === true
@@ -79,6 +93,7 @@ export default function SafeImage({
       )}
 
       <Image
+        ref={imgRef}
         src={currentSrc}
         alt={alt || ''}
         {...(fill
@@ -89,7 +104,7 @@ export default function SafeImage({
         quality={quality}
         unoptimized={unoptimized || hasErrored}
         onError={handleError}
-        onLoadingComplete={handleLoadingComplete}
+        onLoad={handleLoad}
         className={`${objectFitClass} ${roundedClass} ${className} ${
           isLoading ? 'opacity-0' : 'opacity-100'
         } transition-opacity duration-300`}
