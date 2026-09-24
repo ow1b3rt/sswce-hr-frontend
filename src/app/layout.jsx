@@ -8,9 +8,8 @@ const outfit = Outfit({
 
 export const metadata = {
   title: {
-    default:
-      'SSW Training Centre Nepal | Career Counselling, Visa & Japanese Language Training',
-    template: '%s | SSW Training Centre Nepal',
+    default: 'SSWCE Human Resources',
+    template: '%s | SSWCE Human Resources',
   },
   description:
     'SSW Training Centre Nepal helps you build a career in Japan through expert career counselling, visa guidance, Japanese language preparation, and SSW training.',
