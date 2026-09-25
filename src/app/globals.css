@@ -47,6 +47,22 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-red-shade: var(--red-shade);
   --color-primary-blue: var(--primary-blue);
+  --color-overlay: var(--overlay);
+  --color-dark-green: var(--dark-green);
+  --color-faint-green: var(--faint-green);
+  --background-image-hero: url('/images/landing/hero-image.jpg');
+  --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
+  @keyframes orbit {
+    0% {
+      transform: rotate(calc(var(--angle) * 1deg))
+        translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+    }
+    100% {
+      transform: rotate(calc(var(--angle) * 1deg + 360deg))
+        translateY(calc(var(--radius) * 1px))
+        rotate(calc((var(--angle) * -1deg) - 360deg));
+    }
+  }
 }
 
 :root {
@@ -84,6 +100,10 @@
   --foreground: oklch(0.145 0 0);
   --red-shade: #6e0d11;
   --primary-blue: #001f6b;
+  --dark-green: #044b00;
+  --overlay: #02310080;
+  --faint-green: #f9fff9;
+  --green-gradient: linear-gradient(180deg, #044b00 15.38%, #4cab47 100%);
 }
 
 .dark {
@@ -130,4 +150,51 @@
   html {
     @apply font-sans;
   }
+}
+/* animations */
+.marquee-track {
+  animation-name: var(--marquee-name);
+  animation-duration: var(--marquee-duration);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.marquee-pause-hover:hover {
+  animation-play-state: paused;
+}
+
+@keyframes loop-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes loop-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* globals.css */
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: var(--word-offset);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+.animate-word-in {
+  opacity: 0;
+  animation-name: word-in;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
 }

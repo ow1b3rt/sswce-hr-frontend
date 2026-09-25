@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 export default function SafeImage({
   src,
   alt,
-  fallbackSrc = '/images/main-logo.png',
+  fallbackSrc = '/images/logo.svg',
   width,
   height,
   fill = false,
