@@ -1,5 +1,5 @@
 import AboutSection from '@/components/organisms/landing/AboutSection';
-import BlogPage from '@/components/organisms/landing/BlogListSection';
+import Highlight from '@/components/organisms/landing/BlogListSection';
 import HeroSection from '@/components/organisms/landing/HeroSection';
 import ServicesSection from '@/components/organisms/landing/ServicesSection';
 
@@ -9,7 +9,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
-      <BlogPage />
+      <Highlight />
     </section>
   );
 }
