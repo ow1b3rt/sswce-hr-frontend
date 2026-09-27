@@ -45,9 +45,12 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-baseRadius: 14px;
   --color-red-shade: var(--red-shade);
   --color-primary-blue: var(--primary-blue);
   --color-overlay: var(--overlay);
+  --shadow-overlay: 0 4px 24px 0 #02310080;
+  --shadow-card-hover: 0 4px 32px 0 #4cab4755;
   --color-dark-green: var(--dark-green);
   --color-faint-green: var(--faint-green);
   --background-image-hero: url('/images/landing/hero-image.jpg');
