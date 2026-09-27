@@ -1,7 +1,9 @@
+import { Button } from '@base-ui/react';
 import { BlogList } from './BlogList';
 import { AnimatedWords } from '@/components/ui/animated-words';
+import { CirclePlay } from 'lucide-react';
 
-export default function BlogPage() {
+export default function Highlight() {
   const blogPosts = [
     {
       id: 1,
@@ -42,7 +44,7 @@ export default function BlogPage() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col space-y-12 bg-white py-16">
+    <main className="flex min-h-screen flex-col items-center space-y-12 bg-white py-16">
       <h1 className="text-destructive text-center text-4xl font-bold md:text-5xl lg:text-7xl">
         <AnimatedWords
           text="Highlights"
@@ -54,6 +56,10 @@ export default function BlogPage() {
         />
       </h1>
       <BlogList posts={blogPosts} />
+      <Button className="bg-primary-blue hover:bg-foreground text-card flex max-w-44 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-b px-5 py-4 transition duration-300 ease-in-out">
+        <CirclePlay />
+        <span className="text-lg font-semibold">See More</span>
+      </Button>
     </main>
   );
 }
