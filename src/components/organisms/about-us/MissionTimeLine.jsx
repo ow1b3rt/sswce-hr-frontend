@@ -4,7 +4,7 @@ import { timelineEntries } from '@/resources/data/timeline-data';
 export function MissionTimeline() {
   return (
     <section className="bg-background">
-      <div className="mx-auto py-12 sm:py-16 lg:px-0 lg:py-20">
+      <div className="mx-auto">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14 xl:gap-20">
           <div className="lg:pt-2">
             <h2 className="text-destructive text-3xl leading-[1.05] font-black sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-6xl">
