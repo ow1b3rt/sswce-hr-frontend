@@ -12,7 +12,7 @@ export default function TitleDescCard({
 }) {
   return (
     <section
-      className={`order-1 flex h-full flex-1 flex-col gap-2 rounded-lg md:order-2 lg:p-6 xl:gap-6 ${className}`}
+      className={`order-1 flex h-full flex-1 flex-col gap-2 rounded-lg md:order-2 lg:p-4 xl:gap-2 ${className}`}
     >
       <AnimatedCard direction="up" distance={12} triggerOnView>
         <h2 className="text-destructive mb-1 text-3xl leading-none font-black tracking-[1px] md:text-4xl xl:text-5xl">
@@ -26,7 +26,7 @@ export default function TitleDescCard({
 
       {batch && (
         <AnimatedCard direction="up" distance={12} triggerOnView>
-          <h3 className={`text-text-color text-[18px] font-bold ${batchClass}`}>
+          <h3 className={`text-text-color text-lg font-bold ${batchClass}`}>
             {batch}
           </h3>
         </AnimatedCard>

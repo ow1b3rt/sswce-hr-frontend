@@ -49,6 +49,7 @@
   --radius-baseRadius: 14px;
   --color-red-shade: var(--red-shade);
   --color-primary-blue: var(--primary-blue);
+  --color-secondary-blue: var(--secondary-blue);
   --color-overlay: var(--overlay);
   --shadow-overlay: 0 4px 24px 0 #02310080;
   --shadow-card-hover: 0 4px 32px 0 #4cab4755;
@@ -106,6 +107,7 @@
   --red-shade: #6e0d11;
   --primary-blue: #001f6b;
   --primary-red: #d41920;
+  --secondary-blue: #003cd1;
   --dark-green: #044b00;
   --secondary-green: #4cab47;
   --overlay: #02310080;
