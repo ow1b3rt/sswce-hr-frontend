@@ -1,7 +1,7 @@
 export const countryLinks = [
-  { title: 'Nepal', href: '/country/nepal' },
-  { title: 'India', href: '/country/india' },
-  { title: 'UAE', href: '/country/uae' },
+  { title: 'Nepal', href: '/countries/nepal' },
+  { title: 'India', href: '/countries/india' },
+  { title: 'UAE', href: '/countries/uae' },
 ];
 
 export const servicesLinks = [
