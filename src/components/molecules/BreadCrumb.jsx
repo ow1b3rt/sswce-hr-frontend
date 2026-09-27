@@ -54,7 +54,7 @@ export default function Breadcrumb() {
           <div key={crumb.path} className="flex items-center gap-2">
             <ChevronRight size={18} className="text-foreground" />
             {i === crumbs.length - 1 ? (
-              <span className="breadcrumb__current text-primary-red text-sm font-semibold sm:text-base">
+              <span className="breadcrumb__current text-destructive text-sm font-semibold sm:text-base">
                 {crumb.label}
               </span>
             ) : (
