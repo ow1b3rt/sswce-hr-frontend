@@ -32,6 +32,7 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-red: var(--primary-red);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -52,6 +53,7 @@
   --shadow-overlay: 0 4px 24px 0 #02310080;
   --shadow-card-hover: 0 4px 32px 0 #4cab4755;
   --color-dark-green: var(--dark-green);
+  --color-secondary-green: var(--secondary-green);
   --color-faint-green: var(--faint-green);
   --background-image-hero: url('/images/landing/hero-image.jpg');
   --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
@@ -103,7 +105,9 @@
   --foreground: oklch(0.145 0 0);
   --red-shade: #6e0d11;
   --primary-blue: #001f6b;
+  --primary-red: #d41920;
   --dark-green: #044b00;
+  --secondary-green: #4cab47;
   --overlay: #02310080;
   --faint-green: #f9fff9;
   --green-gradient: linear-gradient(180deg, #044b00 15.38%, #4cab47 100%);

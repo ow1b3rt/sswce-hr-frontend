@@ -30,7 +30,7 @@ export default function EventsPage() {
     cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
 
   return (
-    <section className="flex flex-col items-center gap-8">
+    <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Events</h1>
       <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
         {events.map((event) => (
