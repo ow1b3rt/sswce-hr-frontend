@@ -11,13 +11,17 @@ export default function ApplicationPage() {
     e.preventDefault();
     setLoading(true);
 
-    console.log("Form submitted");
+    console.log('Form submitted');
     setLoading(false);
   };
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
-      <ApplicationForm key={formKey} loading={loading} onSubmit={handleSubmit} />
+      <ApplicationForm
+        key={formKey}
+        loading={loading}
+        onSubmit={handleSubmit}
+      />
     </section>
   );
 }

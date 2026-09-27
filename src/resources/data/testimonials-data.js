@@ -50,7 +50,7 @@ export const floatingAvatars = [
     id: 'a5',
     src: '/images/landing/hero-image.jpg',
     alt: '',
-    position: 'left-1/2 -translate-x-1/2 bottom-[-2%]',
+    position: 'left-1/2 -translate-x-1/2 bottom-[1%]',
     size: 'h-16 w-16 lg:h-24 lg:w-24',
   },
 ];

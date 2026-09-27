@@ -76,15 +76,17 @@ export function MobileNav() {
   return (
     <div className="lg:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Toggle navigation menu"
-          >
-            <Menu className="text-destructive size-8" />
-          </Button>
-        </SheetTrigger>
+        <SheetTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle navigation menu"
+            >
+              <Menu className="text-destructive size-8" />
+            </Button>
+          }
+        />
 
         <SheetContent side="right" className="w-[85%] max-w-sm p-0">
           <SheetHeader className="border-b px-5 py-2 text-left">

@@ -31,12 +31,18 @@ export default function BlogsPage() {
   const mdCols = Math.min(blogs.length, 2);
   const mdColClass = mdCols === 1 ? 'md:grid-cols-1' : 'md:grid-cols-2';
   const lgColClass =
-    cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
+    cols === 1
+      ? 'lg:grid-cols-1'
+      : cols === 2
+        ? 'lg:grid-cols-2'
+        : 'lg:grid-cols-3';
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Blogs</h1>
-      <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
+      <div
+        className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
+      >
         {blogs.map((blog) => (
           <InfoCard
             key={blog.id}

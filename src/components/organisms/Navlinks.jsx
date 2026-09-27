@@ -6,7 +6,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
@@ -46,17 +45,15 @@ function NavDropdown({ label, items }) {
             const isSubActive = pathname === item.href;
             return (
               <li key={item.href}>
-                <NavigationMenuLink asChild>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'hover:bg-muted block rounded-md px-3 py-2 text-base font-medium transition-colors',
-                      isSubActive && 'bg-muted text-primary font-semibold',
-                    )}
-                  >
-                    {item.title}
-                  </Link>
-                </NavigationMenuLink>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    'hover:bg-muted block rounded-md px-3 py-2 text-base font-medium transition-colors',
+                    isSubActive && 'bg-muted text-primary font-semibold',
+                  )}
+                >
+                  {item.title}
+                </Link>
               </li>
             );
           })}

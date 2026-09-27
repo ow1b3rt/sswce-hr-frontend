@@ -135,7 +135,9 @@ export default async function BlogDetailPage({ params }) {
     return (
       <section className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
         <h1 className="text-primary-blue text-3xl font-bold">Blog Not Found</h1>
-        <p className="text-muted-foreground">The blog post you are looking for does not exist.</p>
+        <p className="text-muted-foreground">
+          The blog post you are looking for does not exist.
+        </p>
       </section>
     );
   }

@@ -44,7 +44,7 @@ export default function Highlight() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col items-center space-y-12 bg-white py-16">
+    <main className="mb-16 flex min-h-screen flex-col items-center space-y-12 bg-white">
       <h1 className="text-destructive text-center text-4xl font-bold md:text-5xl lg:text-7xl">
         <AnimatedWords
           text="Highlights"

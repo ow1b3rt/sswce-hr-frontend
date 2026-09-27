@@ -10,7 +10,7 @@ import { AutoCarousel } from '@/components/molecules/AutoCarousel';
 
 export function TestimonialsSection() {
   return (
-    <section className="bg-faint-green relative isolate overflow-hidden py-16 sm:py-20 lg:py-24">
+    <section className="bg-faint-green relative isolate mb-16 overflow-hidden py-16 sm:py-20 lg:py-24">
       <HexGridBackground />
       <div
         aria-hidden="true"
