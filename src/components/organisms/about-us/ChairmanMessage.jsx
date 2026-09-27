@@ -1,8 +1,5 @@
 import { CutoutStatCard } from '@/components/molecules/CutoutStatCard';
 import TitleDescCard from '@/components/molecules/TitleDescCard';
-import JobOpportunitiesCard from '@/components/organisms/about-us/JobOpportunitiesCard';
-import { MissionTimeline } from '@/components/organisms/about-us/MissionTimeLine';
-import SafeImage from '@/components/ui/safe-image';
 
 const chairmanMessage = {
   whyChooseUs: {

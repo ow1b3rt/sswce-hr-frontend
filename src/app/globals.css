@@ -56,6 +56,7 @@
   --color-dark-green: var(--dark-green);
   --color-secondary-green: var(--secondary-green);
   --color-faint-green: var(--faint-green);
+  --background-image-green-gradient: var(--green-gradient);
   --background-image-hero: url('/images/landing/hero-image.jpg');
   --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
   @keyframes orbit {
