@@ -25,16 +25,17 @@ export const Navbar = () => {
         <Navlinks />
 
         <div className="col-span-2 hidden max-h-20 items-center justify-end lg:flex">
-          <Link href={ROUTES.APPLICATION}>
-            <Button className="from-red-shade to-destructive hover:from-foreground hover:to-foreground flex max-w-44 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-b px-5 py-6 transition duration-300 ease-in-out">
-              <Image
-                src="/icons/application.svg"
-                width={20}
-                height={20}
-                alt="application"
-              />
-              <span className="text-lg font-semibold">Application</span>
-            </Button>
+          <Link
+            href={ROUTES.APPLICATION}
+            className="from-red-shade to-destructive hover:from-foreground hover:to-foreground text-card flex max-h-12 max-w-44 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-b px-5 py-6 transition duration-300 ease-in-out"
+          >
+            <Image
+              src="/icons/application.svg"
+              width={20}
+              height={20}
+              alt="application"
+            />
+            <span className="text-lg font-semibold">Application</span>
           </Link>
         </div>
 

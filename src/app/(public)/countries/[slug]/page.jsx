@@ -60,7 +60,9 @@ export default async function CountryDetailPage({ params }) {
   if (!data) {
     return (
       <section className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
-        <h1 className="text-primary-blue text-3xl font-bold">Country Not Found</h1>
+        <h1 className="text-primary-blue text-3xl font-bold">
+          Country Not Found
+        </h1>
         <p className="text-muted-foreground">
           The country page you are looking for does not exist.
         </p>

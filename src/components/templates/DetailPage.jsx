@@ -6,7 +6,7 @@ export default function DetailPage({ data }) {
   if (!data) return null;
 
   return (
-    <main className="container mx-auto px-4 py-10 text-foreground">
+    <main className="text-foreground container mx-auto px-4 py-10">
       {data.title && (
         <h1 className="mb-8 text-center text-3xl font-black tracking-tight md:text-5xl lg:text-[54px]">
           <AnimatedWords
@@ -53,16 +53,24 @@ function ContentBlock({ block }) {
 
   switch (block.type) {
     case 'paragraph':
-      return <p className="text-muted-foreground whitespace-pre-line">{block.text}</p>;
+      return (
+        <p className="text-muted-foreground whitespace-pre-line">
+          {block.text}
+        </p>
+      );
 
     case 'heading':
       return (
-        <h2 className="text-foreground pt-4 text-[28px] font-bold">{block.text}</h2>
+        <h2 className="text-foreground pt-4 text-[28px] font-bold">
+          {block.text}
+        </h2>
       );
 
     case 'subheading':
       return (
-        <h3 className="text-foreground pt-2 text-[22px] font-semibold">{block.text}</h3>
+        <h3 className="text-foreground pt-2 text-[22px] font-semibold">
+          {block.text}
+        </h3>
       );
 
     case 'list':

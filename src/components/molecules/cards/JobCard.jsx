@@ -1,7 +1,7 @@
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, className }) => {
   const {
     title = 'Job Title',
     locationType = 'Onsite',
@@ -13,7 +13,7 @@ const JobCard = ({ job }) => {
   } = job;
 
   return (
-    <BaseCard>
+    <BaseCard className={className}>
       <div className="flex flex-col px-6 pt-6 pb-6">
         <h2 className="text-foreground pb-4 text-center text-xl font-bold md:text-2xl">
           {title}

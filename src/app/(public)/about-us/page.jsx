@@ -15,7 +15,7 @@ const aboutUsData = {
 
 const AboutUs = () => {
   return (
-    <div className="flex flex-col space-y-8 bg-white px-4 lg:space-y-16 lg:px-0">
+    <div className="flex flex-col space-y-8 bg-white px-4 lg:space-y-20 lg:px-0">
       <div className="grid grid-cols-1 items-center gap-y-4 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">
         <div className="relative h-72 w-full overflow-hidden rounded-xl border sm:h-125 lg:h-full">
           <SafeImage

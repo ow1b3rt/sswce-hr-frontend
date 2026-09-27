@@ -3,7 +3,7 @@ import { timelineEntries } from '@/resources/data/timeline-data';
 
 export function MissionTimeline() {
   return (
-    <section className="bg-background">
+    <section className="bg-background pt-8">
       <div className="mx-auto">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14 xl:gap-20">
           <div className="lg:pt-2">

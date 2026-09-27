@@ -83,10 +83,10 @@ export function OrbitingCirclesDemo() {
         triggerOnView
         className="flex flex-col items-center justify-center gap-4"
       >
-        <p className="text-dark-green flex items-center gap-2 sm:text-lg">
+        <div className="text-dark-green flex items-center gap-2 sm:text-lg">
           <div className="bg-destructive h-2 w-2 rounded-full" />
           INDUSTRIES WE CONNECT
-        </p>
+        </div>
         <h3 className="text-dark-green text-center text-xl font-bold whitespace-pre-wrap sm:text-2xl md:text-5xl">
           Connecting Talent <br />
           Across <span className="text-destructive">Global Industries</span>
