@@ -1,4 +1,6 @@
 import InfoCard from '@/components/molecules/cards/InfoCard';
+import { ROUTES } from '@/constants/routes/routes';
+import { slugify } from '@/lib/utils';
 
 // TODO: Blogs will need a slightly different card layout (to be updated later).
 // Using InfoCard as a placeholder for now to match the overall page structure.
@@ -32,11 +34,15 @@ export default function BlogsPage() {
     cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
 
   return (
-    <section className="flex flex-col items-center gap-8">
+    <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Blogs</h1>
       <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
         {blogs.map((blog) => (
-          <InfoCard key={blog.id} item={blog} />
+          <InfoCard
+            key={blog.id}
+            item={blog}
+            href={ROUTES.BLOGS.SINGLE(slugify(blog.name))}
+          />
         ))}
       </div>
     </section>

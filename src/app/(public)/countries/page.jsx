@@ -1,4 +1,5 @@
 import InfoCard from '@/components/molecules/cards/InfoCard';
+import { ROUTES } from '@/constants/routes/routes';
 import { slugify } from '@/lib/utils';
 
 const countries = [
@@ -24,7 +25,7 @@ export default function CountriesPage() {
     cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
 
   return (
-    <section className="flex flex-col items-center gap-8">
+    <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Countries</h1>
       <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
         {countries.map((country) => (
@@ -35,6 +36,7 @@ export default function CountriesPage() {
               imageSrc: `/flags/${slugify(country.name)}.webp`,
             }}
             imageAlt={`${country.name} flag`}
+            href={ROUTES.COUNTRIES.SINGLE(slugify(country.name))}
           />
         ))}
       </div>

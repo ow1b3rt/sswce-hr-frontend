@@ -1,4 +1,6 @@
 import InfoCard from '@/components/molecules/cards/InfoCard';
+import { ROUTES } from '@/constants/routes/routes';
+import { slugify } from '@/lib/utils';
 import { Settings } from 'lucide-react';
 
 const services = [
@@ -30,11 +32,16 @@ export default function ServicesPage() {
     cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
 
   return (
-    <section className="flex flex-col items-center gap-8">
+    <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Services</h1>
       <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
         {services.map((service) => (
-          <InfoCard key={service.id} item={service} icon={Settings} />
+          <InfoCard
+            key={service.id}
+            item={service}
+            icon={Settings}
+            href={ROUTES.SERVICES.SINGLE(slugify(service.name))}
+          />
         ))}
       </div>
     </section>

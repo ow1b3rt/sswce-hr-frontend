@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import SafeImage from '@/components/ui/safe-image';
 import Navlinks from './Navlinks';
 import MobileNav from './MobileNavbar';
+import { ROUTES } from '@/constants/routes/routes';
 
 export const Navbar = () => {
   return (
@@ -24,15 +25,17 @@ export const Navbar = () => {
         <Navlinks />
 
         <div className="col-span-2 hidden max-h-20 items-center justify-end lg:flex">
-          <Button className="from-red-shade to-destructive hover:from-foreground hover:to-foreground flex max-w-44 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-b px-5 py-6 transition duration-300 ease-in-out">
-            <Image
-              src="/icons/application.svg"
-              width={20}
-              height={20}
-              alt="application"
-            />
-            <span className="text-lg font-semibold">Application</span>
-          </Button>
+          <Link href={ROUTES.APPLICATION}>
+            <Button className="from-red-shade to-destructive hover:from-foreground hover:to-foreground flex max-w-44 cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-b px-5 py-6 transition duration-300 ease-in-out">
+              <Image
+                src="/icons/application.svg"
+                width={20}
+                height={20}
+                alt="application"
+              />
+              <span className="text-lg font-semibold">Application</span>
+            </Button>
+          </Link>
         </div>
 
         <div className="col-span-4 flex justify-end pr-4 lg:hidden">

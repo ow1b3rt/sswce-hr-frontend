@@ -1,9 +1,24 @@
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const InfoCard = ({ item = {}, imageAlt, onAction, icon: Icon }) => {
+const InfoCard = ({ item = {}, imageAlt, onAction, href, icon: Icon }) => {
   const { name = '', description = '', imageSrc } = item;
+
+  const ActionWrapper = ({ children }) =>
+    href ? (
+      <Link href={href} className="bg-primary-blue hover:bg-dark-green rounded-baseRadius cursor-pointer px-8 py-2 text-white transition-colors duration-200 inline-flex items-center justify-center">
+        {children}
+      </Link>
+    ) : (
+      <button
+        onClick={onAction}
+        className="bg-primary-blue hover:bg-dark-green rounded-baseRadius cursor-pointer px-8 py-2 text-white transition-colors duration-200"
+      >
+        {children}
+      </button>
+    );
 
   return (
     <BaseCard>
@@ -31,12 +46,9 @@ const InfoCard = ({ item = {}, imageAlt, onAction, icon: Icon }) => {
           {description}
         </p>
         <div className="flex flex-wrap items-center justify-end gap-3">
-          <button
-            onClick={onAction}
-            className="bg-primary-blue hover:bg-dark-green rounded-baseRadius cursor-pointer px-8 py-2 text-white transition-colors duration-200"
-          >
+          <ActionWrapper>
             <ArrowRight size={20} strokeWidth={4} />
-          </button>
+          </ActionWrapper>
         </div>
       </div>
     </BaseCard>
