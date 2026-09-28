@@ -13,7 +13,7 @@ export function Pagenav({ page, totalPages, nonext = false }) {
 
   return (
     <div className="flex w-full flex-wrap items-center justify-between gap-4 px-2 sm:px-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <Link
           href={'?page=' + (prevDisabled ? 1 : page - 1)}
           aria-disabled={prevDisabled}
@@ -57,7 +57,7 @@ export function BackToTop({ className }) {
         window.top.scrollTo({ top: 0, behavior: 'smooth' });
       }}
       className={cn(
-        'text-primary-green-dark flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-gray-900',
+        'flex cursor-pointer items-center gap-1.5 text-sm font-medium transition-colors hover:text-gray-900',
         className,
       )}
     >

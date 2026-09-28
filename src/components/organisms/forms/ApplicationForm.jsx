@@ -11,15 +11,6 @@ import { toast } from '@/components/ui/toast';
 /*  Static option sets                                                         */
 /* -------------------------------------------------------------------------- */
 
-const POSITIONS = [
-  { value: 'caregiver', label: 'Caregiver' },
-  { value: 'construction-worker', label: 'Construction Worker' },
-  { value: 'agriculture-worker', label: 'Agriculture Worker' },
-  { value: 'food-service', label: 'Food Service' },
-  { value: 'manufacturing', label: 'Manufacturing' },
-  { value: 'hospitality', label: 'Hospitality' },
-];
-
 const COUNTRIES = [
   { value: 'Japan', label: 'Japan' },
   { value: 'South Korea', label: 'South Korea' },
@@ -88,7 +79,7 @@ const INITIAL = {
   declarationAccepted: false,
 };
 
-export default function ApplicationForm() {
+export default function ApplicationForm({ positions = [] }) {
   const [form, setForm] = useState(INITIAL);
   const [cvFile, setCvFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -228,10 +219,8 @@ export default function ApplicationForm() {
                     className={selectCls}
                   >
                     <option value="">Select a vacancy</option>
-                    {POSITIONS.map((p) => (
-                      <option key={p.value} value={p.value}>
-                        {p.label}
-                      </option>
+                    {positions.map((p) => (
+                      <option key={p.value} value={p.value}>{p.label}</option>
                     ))}
                   </select>
                   <ChevronDown />

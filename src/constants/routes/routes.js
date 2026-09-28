@@ -1,7 +1,10 @@
 export const ROUTES = {
   HOME: '/',
   ABOUT_US: '/about-us',
-  JOBS: '/jobs',
+  JOBS: {
+    HOME: '/jobs',
+    SINGLE: (slug) => `/jobs/${slug}`,
+  },
   APPLICATION: '/application',
   EVENTS: {
     HOME: '/events',
@@ -38,6 +41,16 @@ export const ROUTES = {
     BLOGS: {
       HOME: (page = 1, limit = 9) =>
         `${process.env.NEXT_PUBLIC_API}/blogs?page=${page}&limit=${limit}`,
+      SINGLE_VIA_SLUG: (slug) =>
+        `${process.env.NEXT_PUBLIC_API}/blogs/slug/${slug}`,
+    },
+    JOBS: {
+      HOME: (page = 1, limit = 9) =>
+        `${process.env.NEXT_PUBLIC_API}/jobs?page=${page}&limit=${limit}`,
+      OPEN: (limit = 100) =>
+        `${process.env.NEXT_PUBLIC_API}/jobs?status=open&page=1&limit=${limit}`,
+      SINGLE_VIA_SLUG: (slug) =>
+        `${process.env.NEXT_PUBLIC_API}/jobs/slug/${slug}`,
     },
     COUNTRY: `${process.env.NEXT_PUBLIC_API}/layouts/countries`,
     APPOINTMENTS: `${process.env.NEXT_PUBLIC_API}/appointments`,

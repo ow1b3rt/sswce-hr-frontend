@@ -2,8 +2,9 @@ import Image from 'next/image';
 import { AnimatedWords } from '@/components/ui/animated-words';
 import SafeImage from '../ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
+import ArticleBody from '@/packages/admin/components/templates/ArticleBody';
 
-export default function DetailPage({ data }) {
+export default function DetailPage({ data, isBlog = false }) {
   if (!data) return null;
 
   return (
@@ -48,10 +49,14 @@ export default function DetailPage({ data }) {
       )}
 
       {data.content?.length > 0 && (
-        <AnimatedCard className="mt-8 w-full space-y-6 text-base leading-relaxed md:text-lg">
-          {data.content.map((block, index) => (
-            <ContentBlock key={index} block={block} />
-          ))}
+        <AnimatedCard className="mx-auto w-full space-y-6 text-lg leading-relaxed md:w-3/4">
+          {isBlog ? (
+            <ArticleBody html={data.content} />
+          ) : (
+            data.content.map((block, index) => (
+              <ContentBlock key={index} block={block} />
+            ))
+          )}
         </AnimatedCard>
       )}
     </main>

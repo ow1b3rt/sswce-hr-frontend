@@ -186,6 +186,12 @@
     object-fit: cover;
   }
 }
+/* blog article content (rendered by ArticleBody) */
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 /* animations */
 .marquee-track {
   animation-name: var(--marquee-name);

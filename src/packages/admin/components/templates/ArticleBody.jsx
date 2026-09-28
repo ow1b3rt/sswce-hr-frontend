@@ -58,7 +58,7 @@ export default function ArticleBody({ html }) {
   if (!html) return null;
 
   return (
-    <div className={`text-(--text-nm) ${proseClasses}`}>
+    <div className={`text-foreground ${proseClasses}`}>
       {parse(html, options)}
     </div>
   );

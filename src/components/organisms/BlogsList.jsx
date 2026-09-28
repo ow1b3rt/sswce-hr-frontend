@@ -1,8 +1,7 @@
 'use client';
 
-import { AutoCarousel } from '@/components/molecules/AutoCarousel';
-import { HomeBlogCard } from '@/components/molecules/cards/HomeBlogCard';
-import { TestimonialCard } from '@/components/molecules/cards/TestimonialCard';
+import { AutoCarousel } from "@/components/molecules/AutoCarousel";
+import { HomeBlogCard } from "@/components/molecules/cards/HomeBlogCard";
 
 const BlogsList = ({ title = ' Latest News & Blogs', blogs }) => {
   return (
