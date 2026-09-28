@@ -32,17 +32,20 @@ export const ROUTES = {
     CONTACT: `${process.env.NEXT_PUBLIC_API}/contact`,
     SERVICES: {
       LAYOUT: `${process.env.NEXT_PUBLIC_API}/layouts/services`,
-      HOME: (page = 1, limit = 9) => `${process.env.NEXT_PUBLIC_API}/services?page=${page}&limit=${limit}`,
+      HOME: (page = 1, limit = 9) =>
+        `${process.env.NEXT_PUBLIC_API}/services?page=${page}&limit=${limit}`,
     },
     BLOGS: {
-      HOME: (page = 1, limit = 9) => `${process.env.NEXT_PUBLIC_API}/blogs?page=${page}&limit=${limit}`,
+      HOME: (page = 1, limit = 9) =>
+        `${process.env.NEXT_PUBLIC_API}/blogs?page=${page}&limit=${limit}`,
     },
-    COUNTRY: `${process.env.NEXT_PUBLIC_API}/layouts/country`,
+    COUNTRY: `${process.env.NEXT_PUBLIC_API}/layouts/countries`,
     APPOINTMENTS: `${process.env.NEXT_PUBLIC_API}/appointments`,
     EVENTS: {
-      HOME: (page = 1, limit = 9) => `${process.env.NEXT_PUBLIC_API}/events?page=${page}&limit=${limit}`,
-      SINGLE_VIA_SLUG: (slug) => `${process.env.NEXT_PUBLIC_API}/events/slug/${slug}`,
-    }
+      HOME: (page = 1, limit = 9) =>
+        `${process.env.NEXT_PUBLIC_API}/events?page=${page}&limit=${limit}`,
+      SINGLE_VIA_SLUG: (slug) =>
+        `${process.env.NEXT_PUBLIC_API}/events/slug/${slug}`,
+    },
   },
 };
-

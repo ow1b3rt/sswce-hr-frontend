@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useId, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { useId, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
 /**
  * TagInput — free-entry tag editor for article forms.
@@ -23,15 +23,15 @@ export function TagInput({
   onChange,
   name,
   suggestions = [],
-  placeholder = "Add a tag and press enter",
+  placeholder = 'Add a tag and press enter',
   maxTags,
 }) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef(null);
   const listId = useId();
 
-  const atLimit = typeof maxTags === "number" && value.length >= maxTags;
+  const atLimit = typeof maxTags === 'number' && value.length >= maxTags;
 
   const filteredSuggestions = inputValue.trim()
     ? suggestions.filter(
@@ -45,11 +45,11 @@ export function TagInput({
     const tag = raw.trim();
     if (!tag || atLimit) return;
     if (value.some((t) => t.toLowerCase() === tag.toLowerCase())) {
-      setInputValue("");
+      setInputValue('');
       return;
     }
     onChange?.([...value, tag]);
-    setInputValue("");
+    setInputValue('');
     setActiveIndex(-1);
   }
 
@@ -59,7 +59,7 @@ export function TagInput({
   }
 
   function handleKeyDown(e) {
-    if (e.key === "Enter" || e.key === ",") {
+    if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
       if (activeIndex >= 0 && filteredSuggestions[activeIndex]) {
         commitTag(filteredSuggestions[activeIndex]);
@@ -68,30 +68,35 @@ export function TagInput({
       }
       return;
     }
-    if (e.key === "Backspace" && inputValue === "" && value.length > 0) {
+    if (e.key === 'Backspace' && inputValue === '' && value.length > 0) {
       removeTag(value.length - 1);
       return;
     }
-    if (e.key === "ArrowDown" && filteredSuggestions.length > 0) {
+    if (e.key === 'ArrowDown' && filteredSuggestions.length > 0) {
       e.preventDefault();
       setActiveIndex((i) => (i + 1) % filteredSuggestions.length);
       return;
     }
-    if (e.key === "ArrowUp" && filteredSuggestions.length > 0) {
+    if (e.key === 'ArrowUp' && filteredSuggestions.length > 0) {
       e.preventDefault();
       setActiveIndex((i) => (i <= 0 ? filteredSuggestions.length - 1 : i - 1));
       return;
     }
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       setActiveIndex(-1);
     }
   }
 
   return (
     <div className="tag-input gap-xs flex-1 flex-col">
-      {name && <input type="hidden" name={name} value={value.join(",")} readOnly />}
+      {name && (
+        <input type="hidden" name={name} value={value.join(',')} readOnly />
+      )}
 
-      <div className="tag-input__field" onClick={() => inputRef.current?.focus()}>
+      <div
+        className="tag-input__field"
+        onClick={() => inputRef.current?.focus()}
+      >
         {value.map((tag, i) => (
           <span className="tag-input__tag" key={`${tag}-${i}`}>
             {tag}
@@ -120,7 +125,7 @@ export function TagInput({
           }}
           onKeyDown={handleKeyDown}
           onBlur={() => commitTag(inputValue)}
-          placeholder={atLimit ? "" : placeholder}
+          placeholder={atLimit ? '' : placeholder}
           disabled={atLimit}
           role="combobox"
           aria-expanded={filteredSuggestions.length > 0}
@@ -137,8 +142,8 @@ export function TagInput({
               role="option"
               aria-selected={i === activeIndex}
               className={
-                "tag-input__suggestion" +
-                (i === activeIndex ? " tag-input__suggestion--active" : "")
+                'tag-input__suggestion' +
+                (i === activeIndex ? ' tag-input__suggestion--active' : '')
               }
               onMouseDown={(e) => {
                 e.preventDefault();
@@ -152,7 +157,7 @@ export function TagInput({
         </ul>
       )}
 
-      {typeof maxTags === "number" && (
+      {typeof maxTags === 'number' && (
         <span className="tag-input__count">
           {value.length}/{maxTags}
         </span>

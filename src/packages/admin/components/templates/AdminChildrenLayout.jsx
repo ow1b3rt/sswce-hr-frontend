@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import Link from "next/link";
-import { Plus, Search, X } from "lucide-react";
+import { createContext, useContext, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Plus, Search, X } from 'lucide-react';
 
-import { useFetchEntity } from "../../hooks/useFetchEntity.js";
-import { getEntities } from "../../lib/runtime.config.js";
-import { capitalise } from "../../utils/utils.js";
-import DataTable from "./DataTable.jsx";
+import { useFetchEntity } from '../../hooks/useFetchEntity.js';
+import { getEntities } from '../../lib/runtime.config.js';
+import { capitalise } from '../../utils/utils.js';
+import DataTable from './DataTable.jsx';
 
 const EntityContext = createContext({});
 export const useEntity = () => useContext(EntityContext);
@@ -28,8 +28,8 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
   const [limit, setLimit] = useState(10);
 
   // Search state
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   // Filters state (an object like: { role: "admin" })
   const [activeFilters, setActiveFilters] = useState({});
@@ -45,13 +45,13 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
 
   // Build query params
   const params = new URLSearchParams();
-  params.set("page", page);
-  params.set("limit", limit);
+  params.set('page', page);
+  params.set('limit', limit);
 
   if (debouncedSearch) {
     // Note: If you want to search a field other than 'name' dynamically,
     // you could read entityConfig.titleField here.
-    params.set("search", debouncedSearch);
+    params.set('search', debouncedSearch);
   }
 
   // Apply active filters to the query params
@@ -93,9 +93,13 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
       <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
           <div>
-            <h2 className="text-xl font-semibold text-black">{capitalise(name)}</h2>
-            {typeof entity?.data?.totalDocs === "number" && (
-              <p className="text-sm text-gray-500">{entity.data.totalDocs} total</p>
+            <h2 className="text-xl font-semibold text-black">
+              {capitalise(name)}
+            </h2>
+            {typeof entity?.data?.totalDocs === 'number' && (
+              <p className="text-sm text-gray-500">
+                {entity.data.totalDocs} total
+              </p>
             )}
           </div>
           {canCreate && (
@@ -130,14 +134,16 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
             {filterConfig.map((filter) => (
               <select
                 key={filter.field}
-                value={activeFilters[filter.field] || ""}
-                onChange={(e) => handleFilterChange(filter.field, e.target.value)}
+                value={activeFilters[filter.field] || ''}
+                onChange={(e) =>
+                  handleFilterChange(filter.field, e.target.value)
+                }
                 className="rounded-md border border-gray-300 bg-white py-1.5 pr-8 pl-3 text-base font-medium text-gray-700 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 focus:outline-none"
               >
                 <option value="">All {filter.label}</option>
                 {filter.options.map((opt) => {
-                  const val = typeof opt === "string" ? opt : opt.value;
-                  const label = typeof opt === "string" ? opt : opt.label;
+                  const val = typeof opt === 'string' ? opt : opt.value;
+                  const label = typeof opt === 'string' ? opt : opt.label;
                   return (
                     <option key={val} value={val}>
                       {label}
@@ -161,7 +167,10 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
 
           {/* Right side: Limit Selector */}
           <div className="ml-auto flex items-center gap-2">
-            <label htmlFor="limit-select" className="text-sm whitespace-nowrap text-gray-600">
+            <label
+              htmlFor="limit-select"
+              className="text-sm whitespace-nowrap text-gray-600"
+            >
               Items per page:
             </label>
             <select

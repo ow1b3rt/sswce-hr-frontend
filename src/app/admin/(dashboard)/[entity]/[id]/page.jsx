@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { notFound, useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from 'next/navigation';
 import {
   AdminLayout,
   Badge,
@@ -10,31 +10,34 @@ import {
   useApi,
   useGet,
   useToast,
-} from "@/packages/admin";
-import { Loader2 } from "lucide-react";
+} from '@/packages/admin';
+import { Loader2 } from 'lucide-react';
 
-import { entities } from "@/app/admin/entities";
+import { entities } from '@/app/admin/entities';
 
 const STATUS_VARIANT = {
-  pending: "warning",
-  confirmed: "success",
-  cancelled: "danger",
-  completed: "primary",
-  published: "success",
-  draft: "default",
+  pending: 'warning',
+  confirmed: 'success',
+  cancelled: 'danger',
+  completed: 'primary',
+  published: 'success',
+  draft: 'default',
 };
 
 function coerceRelationshipIds(values, fields) {
-  const relationshipFields = fields.filter((f) => f.type === "relationship");
+  const relationshipFields = fields.filter((f) => f.type === 'relationship');
   if (relationshipFields.length === 0) return values;
 
   const coerced = { ...values };
   for (const field of relationshipFields) {
     const raw = coerced[field.name];
-    if (raw == null || raw === "") continue;
+    if (raw == null || raw === '') continue;
 
-    const toNumberOrKeep = (v) => (v !== "" && !isNaN(Number(v)) ? Number(v) : v);
-    coerced[field.name] = Array.isArray(raw) ? raw.map(toNumberOrKeep) : toNumberOrKeep(raw);
+    const toNumberOrKeep = (v) =>
+      v !== '' && !isNaN(Number(v)) ? Number(v) : v;
+    coerced[field.name] = Array.isArray(raw)
+      ? raw.map(toNumberOrKeep)
+      : toNumberOrKeep(raw);
   }
   return coerced;
 }
@@ -43,17 +46,17 @@ function firstAvailable(item, keys) {
   for (const key of keys) {
     if (item[key]) return item[key];
   }
-  return "";
+  return '';
 }
 
 function DetailHero({ entity, item, isNew, saveButton }) {
   const Icon = entity.icon;
   const title = isNew
-    ? "New record"
-    : firstAvailable(item, [entity.titleField, "name", "email", "subject"]);
+    ? 'New record'
+    : firstAvailable(item, [entity.titleField, 'name', 'email', 'subject']);
   const subtitle = isNew
-    ? "Fill in the fields below and save."
-    : firstAvailable(item, ["email", "name", "title"]);
+    ? 'Fill in the fields below and save.'
+    : firstAvailable(item, ['email', 'name', 'title']);
   const accentValue = item.status;
 
   return (
@@ -68,7 +71,9 @@ function DetailHero({ entity, item, isNew, saveButton }) {
         <p className="text-xs font-medium tracking-widest text-gray-400 uppercase">
           {entity.label}
         </p>
-        <h2 className="truncate text-lg font-semibold text-gray-900">{title}</h2>
+        <h2 className="truncate text-lg font-semibold text-gray-900">
+          {title}
+        </h2>
         {subtitle && subtitle !== title && (
           <p className="truncate text-sm text-gray-500">{subtitle}</p>
         )}
@@ -78,7 +83,7 @@ function DetailHero({ entity, item, isNew, saveButton }) {
         {accentValue && !isNew && (
           <Badge
             value={accentValue}
-            variant={STATUS_VARIANT[accentValue] ?? "default"}
+            variant={STATUS_VARIANT[accentValue] ?? 'default'}
             size="lg"
             className="shrink-0 capitalize"
           />
@@ -96,12 +101,14 @@ export default function EntityEditPage() {
   const { post, patch } = useApi();
   const router = useRouter();
   if (!entity) notFound();
-  const isNew = id === "new";
+  const isNew = id === 'new';
   const canCreate = entity.canCreate !== false;
   if (isNew && !canCreate) notFound();
 
   const editableFields = entity.fields.filter((f) => f.editable !== false);
-  const editableNames = new Set(editableFields.map((f) => f.name.split(":")[0]));
+  const editableNames = new Set(
+    editableFields.map((f) => f.name.split(':')[0]),
+  );
   if (!isNew && editableFields.length === 0) notFound();
 
   const apiPath = `/${entity.slug}`;
@@ -123,7 +130,9 @@ export default function EntityEditPage() {
   }
 
   const item = data?.item ?? {};
-  const hasStatus = entity.fields.some((f) => f.name.split(":")[0] === "status");
+  const hasStatus = entity.fields.some(
+    (f) => f.name.split(':')[0] === 'status',
+  );
   const visibleFields = entity.fields.filter((f) => f.invisible !== true);
 
   async function handleSubmit(values) {
@@ -135,7 +144,9 @@ export default function EntityEditPage() {
     const payload = coerceRelationshipIds(editableValues, editableFields);
     const res = isNew ? await post(url, payload) : await patch(url, payload);
     if (res?.ok) {
-      toast.success(`${entity.label} ${isNew ? "created" : "updated"} successfully`);
+      toast.success(
+        `${entity.label} ${isNew ? 'created' : 'updated'} successfully`,
+      );
       router.replace(`/admin/${entitySlug}`);
     }
     return res;
@@ -173,7 +184,7 @@ export default function EntityEditPage() {
             hideHeader
             fields={visibleFields}
             data={item}
-            accentField={hasStatus ? "status" : null}
+            accentField={hasStatus ? 'status' : null}
           />
         )}
       </div>

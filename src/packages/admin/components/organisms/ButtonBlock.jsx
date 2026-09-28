@@ -1,19 +1,19 @@
 // blocks/ButtonBlock.jsx
-"use no memo";
-"use client";
+'use no memo';
+'use client';
 
-import { useRef, useState } from "react";
-import { createReactBlockSpec } from "@blocknote/react";
+import { useRef, useState } from 'react';
+import { createReactBlockSpec } from '@blocknote/react';
 
 export const ButtonBlock = createReactBlockSpec(
   {
-    type: "button",
+    type: 'button',
     propSchema: {
-      text: { default: "Click me" },
-      url: { default: "" },
-      variant: { default: "primary" }, // primary | secondary | outline
+      text: { default: 'Click me' },
+      url: { default: '' },
+      variant: { default: 'primary' }, // primary | secondary | outline
     },
-    content: "none",
+    content: 'none',
   },
   {
     // How it looks INSIDE the editor while editing
@@ -37,7 +37,7 @@ export const ButtonBlock = createReactBlockSpec(
         <div
           ref={containerRef}
           className="cta-editor-block"
-          style={{ position: "relative", display: "inline-block" }}
+          style={{ position: 'relative', display: 'inline-block' }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           contentEditable={false}
@@ -57,17 +57,17 @@ export const ButtonBlock = createReactBlockSpec(
             <div
               className="cta-editor-overlay"
               style={{
-                position: "absolute",
-                top: "100%",
+                position: 'absolute',
+                top: '100%',
                 left: 0,
-                marginTop: "6px",
-                display: "flex",
-                gap: "8px",
-                background: "white",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                padding: "8px",
+                marginTop: '6px',
+                display: 'flex',
+                gap: '8px',
+                background: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                padding: '8px',
                 zIndex: 1000,
               }}
             >

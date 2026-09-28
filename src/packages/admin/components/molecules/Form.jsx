@@ -1,10 +1,16 @@
-"use client";
+'use client';
 
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 export const DefaultsContext = createContext(null); // null = "no Form ancestor"
 
-export function Form({ children, onSubmit, className, defaults = {}, ...rest }) {
+export function Form({
+  children,
+  onSubmit,
+  className,
+  defaults = {},
+  ...rest
+}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target, e.nativeEvent.submitter);

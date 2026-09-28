@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
-import { useGet } from "../../contexts/ApiContext.jsx"; // adjust path to your actual hook location
+import { useGet } from '../../contexts/ApiContext.jsx'; // adjust path to your actual hook location
 
-import { DefaultsContext } from "../molecules/Form.jsx";
-import { Select } from "./Input.jsx";
+import { DefaultsContext } from '../molecules/Form.jsx';
+import { Select } from './Input.jsx';
 
 function docLabel(doc) {
   return doc?.name ?? doc?.title ?? doc?.id;
@@ -17,7 +17,7 @@ function docLabel(doc) {
 // resolveRelationValue handles. Normalize to a plain id.
 function toId(value) {
   if (value == null) return null;
-  return typeof value === "object" ? value.id : value;
+  return typeof value === 'object' ? value.id : value;
 }
 
 // Normalizes a stored relation default (single id/object, or array of
@@ -27,7 +27,11 @@ function normalizeDefaultDocs(value) {
   if (value == null) return [];
   const arr = Array.isArray(value) ? value : [value];
   return arr
-    .map((v) => (typeof v === "object" ? { id: v.id, label: docLabel(v) } : { id: v, label: null }))
+    .map((v) =>
+      typeof v === 'object'
+        ? { id: v.id, label: docLabel(v) }
+        : { id: v, label: null },
+    )
     .filter((v) => v.id != null);
 }
 
@@ -50,7 +54,9 @@ export function RelationshipField({ field }) {
     );
   }
 
-  const [selected, setSelected] = useState(() => toId(contextDefaults?.[name]) ?? "");
+  const [selected, setSelected] = useState(
+    () => toId(contextDefaults?.[name]) ?? '',
+  );
 
   return (
     <Select
@@ -75,10 +81,22 @@ export function RelationshipField({ field }) {
 // chip, click the chip's × to remove it. Replaces the native <select multiple>
 // pattern, which requires ctrl/cmd-click to pick more than one option — an
 // interaction most people never discover on their own.
-function RelationshipMultiSelect({ name, label, required, loading, options, defaultValue }) {
-  const defaultDocs = useMemo(() => normalizeDefaultDocs(defaultValue), [defaultValue]);
-  const [selectedIds, setSelectedIds] = useState(() => defaultDocs.map((d) => d.id));
-  const [query, setQuery] = useState("");
+function RelationshipMultiSelect({
+  name,
+  label,
+  required,
+  loading,
+  options,
+  defaultValue,
+}) {
+  const defaultDocs = useMemo(
+    () => normalizeDefaultDocs(defaultValue),
+    [defaultValue],
+  );
+  const [selectedIds, setSelectedIds] = useState(() =>
+    defaultDocs.map((d) => d.id),
+  );
+  const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef(null);
@@ -116,13 +134,13 @@ function RelationshipMultiSelect({ name, label, required, loading, options, defa
         setIsOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const addId = (id) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
-    setQuery("");
+    setQuery('');
     inputRef.current?.focus();
   };
 
@@ -131,20 +149,24 @@ function RelationshipMultiSelect({ name, label, required, loading, options, defa
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "ArrowDown") {
+    if (e.key === 'ArrowDown') {
       e.preventDefault();
       setIsOpen(true);
       setHighlightedIndex((i) => Math.min(i + 1, filteredOptions.length - 1));
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setHighlightedIndex((i) => Math.max(i - 1, 0));
-    } else if (e.key === "Enter") {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
       const doc = filteredOptions[highlightedIndex];
       if (doc) addId(doc.id);
-    } else if (e.key === "Backspace" && query === "" && selectedIds.length > 0) {
+    } else if (
+      e.key === 'Backspace' &&
+      query === '' &&
+      selectedIds.length > 0
+    ) {
       removeId(selectedIds[selectedIds.length - 1]);
-    } else if (e.key === "Escape") {
+    } else if (e.key === 'Escape') {
       setIsOpen(false);
     }
   };
@@ -183,7 +205,9 @@ function RelationshipMultiSelect({ name, label, required, loading, options, defa
             type="text"
             value={query}
             disabled={loading}
-            placeholder={loading ? "Loading…" : selectedIds.length ? "" : "Search…"}
+            placeholder={
+              loading ? 'Loading…' : selectedIds.length ? '' : 'Search…'
+            }
             onChange={(e) => {
               setQuery(e.target.value);
               setIsOpen(true);
@@ -198,7 +222,7 @@ function RelationshipMultiSelect({ name, label, required, loading, options, defa
           <div className="absolute top-full right-0 left-0 z-20 mt-2 max-h-56 overflow-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
             {filteredOptions.length === 0 ? (
               <div className="px-3 py-2 text-sm text-gray-400">
-                {options.length === 0 ? "No options available" : "No matches"}
+                {options.length === 0 ? 'No options available' : 'No matches'}
               </div>
             ) : (
               filteredOptions.map((doc, i) => (
@@ -209,7 +233,9 @@ function RelationshipMultiSelect({ name, label, required, loading, options, defa
                   onClick={() => addId(doc.id)}
                   onMouseEnter={() => setHighlightedIndex(i)}
                   className={`block w-full px-3 py-2 text-left text-sm transition-colors ${
-                    i === highlightedIndex ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                    i === highlightedIndex
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'text-gray-700'
                   }`}
                 >
                   {docLabel(doc)}
@@ -230,7 +256,7 @@ function RelationshipMultiSelect({ name, label, required, loading, options, defa
         <input
           type="text"
           required
-          value={selectedIds.length ? "valid" : ""}
+          value={selectedIds.length ? 'valid' : ''}
           onChange={() => {}}
           className="sr-only"
           tabIndex={-1}

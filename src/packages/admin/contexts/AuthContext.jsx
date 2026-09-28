@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { useApi, useGet } from "./ApiContext.jsx";
-import { isBackendDown } from "../lib/errors.js";
+import { useApi, useGet } from './ApiContext.jsx';
+import { isBackendDown } from '../lib/errors.js';
 
 const AuthContext = createContext();
 
@@ -12,11 +12,10 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isServiceDown, setIsServiceDown] = useState(false);
 
-  const { data, error, isLoading, mutate } = useGet("/auth/me");
+  const { data, error, isLoading, mutate } = useGet('/auth/me');
 
   const { post } = useApi();
   const router = useRouter();
-
 
   useEffect(() => {
     if (isLoading) return;
@@ -28,7 +27,7 @@ export function AuthProvider({ children }) {
         setIsServiceDown(true);
       } else {
         setIsServiceDown(false);
-        router.replace("/admin/login");
+        router.replace('/admin/login');
       }
       return;
     }
@@ -39,13 +38,12 @@ export function AuthProvider({ children }) {
 
     if (!data.success) {
       setUser(null);
-      router.replace("/admin/login");
+      router.replace('/admin/login');
       return;
     }
 
     setUser(data.user);
   }, [data, error, isLoading, router]);
-
 
   const checkAuth = async () => {
     const result = await mutate();
@@ -61,7 +59,7 @@ export function AuthProvider({ children }) {
 
     if (!result.success) {
       setUser(null);
-      router.replace("/admin/login");
+      router.replace('/admin/login');
 
       return true;
     }
@@ -72,11 +70,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    const res = await post("/auth/logout");
+    const res = await post('/auth/logout');
 
     if (res?.success) {
       setUser(null);
-      router.push("/login");
+      router.push('/login');
     }
   };
 

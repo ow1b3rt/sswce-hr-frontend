@@ -5,10 +5,10 @@ const nextConfig = {
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "5000",
-        pathname: "/**",
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+        pathname: '/**',
       },
       {
         protocol: 'http',
@@ -23,4 +23,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-

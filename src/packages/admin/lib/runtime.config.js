@@ -1,5 +1,10 @@
 // packages/admin-panel/src/lib/runtimeConfig.js
-let _config = { apiBaseUrl: null, host: null, mediaRoute: "/media", entities: {} };
+let _config = {
+  apiBaseUrl: null,
+  host: null,
+  mediaRoute: '/media',
+  entities: {},
+};
 
 export function setRuntimeConfig(config) {
   _config = { ..._config, ...config };

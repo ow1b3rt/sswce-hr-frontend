@@ -1,14 +1,15 @@
-import { defineEntities } from "@/packages/admin/index.jsx";
+import { defineEntities } from '@/packages/admin/index.jsx';
 
-import { appointments } from "./appointment.js";
-import { authors } from "./authors.js";
-import { blogs } from "./blogs.js";
-import { contact } from "./contacts.js";
-import { events } from "./events.js";
-import { faqs } from "./faqs.js";
-import { gallery } from "./gallery.js";
-import { services } from "./services.js";
-import { users } from "./users.js";
+import { appointments } from './appointment.js';
+import { authors } from './authors.js';
+import { blogs } from './blogs.js';
+import { contact } from './contacts.js';
+import { events } from './events.js';
+import { faqs } from './faqs.js';
+import { gallery } from './gallery.js';
+import { services } from './services.js';
+import { users } from './users.js';
+import { countries } from './countries.js';
 import { jobs } from "./jobs.js";
 
 
@@ -22,5 +23,6 @@ export const entities = defineEntities({
   contact,
   appointments,
   jobs,
-  "sections/services": services,
+  'sections/countries': countries,
+  'sections/services': services,
 });

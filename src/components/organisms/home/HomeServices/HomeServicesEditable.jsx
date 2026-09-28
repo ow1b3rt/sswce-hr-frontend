@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { MediaLibraryModal, resolveUrl, setPath } from "@/packages/admin";
-import { slugify } from "@/packages/admin/utils/utils";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { useState } from 'react';
+import { MediaLibraryModal, resolveUrl, setPath } from '@/packages/admin';
+import { slugify } from '@/packages/admin/utils/utils';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
-import { ConfirmationDialog } from "@/components/molecules/ConfirmationModal";
-import { ImageContainer } from "@/components/molecules/ImageContainer";
+import { ConfirmationDialog } from '@/components/molecules/ConfirmationModal';
+import { ImageContainer } from '@/components/molecules/ImageContainer';
 
 function ServiceCardEditable({ item, path, onChange, onImageClick, onRemove }) {
   return (
@@ -23,7 +23,7 @@ function ServiceCardEditable({ item, path, onChange, onImageClick, onRemove }) {
         <ImageContainer
           className="aspect-video w-full cursor-pointer rounded-xl"
           src={item.image.src}
-          alt={item.image.alt ?? item.title ?? ""}
+          alt={item.image.alt ?? item.title ?? ''}
           onClick={onImageClick}
         />
       ) : (
@@ -39,7 +39,7 @@ function ServiceCardEditable({ item, path, onChange, onImageClick, onRemove }) {
         type="text"
         className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base font-bold"
         placeholder="Title"
-        value={item.title ?? ""}
+        value={item.title ?? ''}
         onChange={onChange(`${path}.title`)}
       />
 
@@ -47,7 +47,7 @@ function ServiceCardEditable({ item, path, onChange, onImageClick, onRemove }) {
         rows={20}
         className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm"
         placeholder="Description"
-        value={item.description ?? ""}
+        value={item.description ?? ''}
         onChange={onChange(`${path}.description`)}
       />
     </div>
@@ -58,7 +58,7 @@ export const HomeServicesEditable = ({
   section: initialSection,
   onChange,
   onSave,
-  sectionName = "services",
+  sectionName = 'services',
 }) => {
   const [section, setSection] = useState(initialSection);
   const [mediaPath, setMediaPath] = useState(null);
@@ -75,8 +75,8 @@ export const HomeServicesEditable = ({
   const handleChange = (path) => (e) => {
     const value = e.target.value;
 
-    if (path.endsWith(".title")) {
-      const basePath = path.slice(0, -".title".length);
+    if (path.endsWith('.title')) {
+      const basePath = path.slice(0, -'.title'.length);
 
       let next = setPath(section, path, value);
 
@@ -93,7 +93,7 @@ export const HomeServicesEditable = ({
     update(
       setPath(section, mediaPath, {
         src: resolveUrl(item),
-        alt: item.alt ?? "",
+        alt: item.alt ?? '',
       }),
     );
 
@@ -107,11 +107,11 @@ export const HomeServicesEditable = ({
         ...(section.items ?? []),
         {
           image: {
-            src: "",
-            alt: "",
+            src: '',
+            alt: '',
           },
-          title: "",
-          description: "",
+          title: '',
+          description: '',
         },
       ],
     });
@@ -172,7 +172,7 @@ export const HomeServicesEditable = ({
           disabled={saving}
           className="bg-primary-green-dark rounded-full px-6 py-2 text-sm font-semibold text-white disabled:opacity-60"
         >
-          {saving ? "Saving…" : `Save ${sectionName}`}
+          {saving ? 'Saving…' : `Save ${sectionName}`}
         </button>
       </div>
 
@@ -189,7 +189,7 @@ export const HomeServicesEditable = ({
         onOpenChange={(open) => {
           if (!open) setRemoveIndex(null);
         }}
-        title={`Remove this ${sectionName.replace(/s$/, "")}?`}
+        title={`Remove this ${sectionName.replace(/s$/, '')}?`}
         description="This item will be permanently removed. This action can't be undone."
         confirmLabel="Remove"
         variant="destructive"

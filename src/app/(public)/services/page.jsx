@@ -8,7 +8,9 @@ import { Pagenav } from '@/components/Reusables';
 
 async function getServices(page = 1) {
   try {
-    const res = await fetch(ROUTES.API.SERVICES.HOME(page, 9), { cache: 'no-store' });
+    const res = await fetch(ROUTES.API.SERVICES.HOME(page, 9), {
+      cache: 'no-store',
+    });
     if (!res.ok) return { items: [], totalPages: 1 };
     const data = await res.json();
     return data || { items: [], totalPages: 1 };
@@ -38,23 +40,29 @@ export default async function ServicesPage(props) {
       <AnimatedHeading text="Services" />
       
       {!services || services.length === 0 ? (
-        <p className="mt-10 text-center text-gray-500">No services available at the moment.</p>
+        <p className="mt-10 text-center text-gray-500">
+          No services available at the moment.
+        </p>
       ) : (
-        <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
+        <div
+          className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
+        >
           {services.map((service, index) => (
             <InfoCard
               key={service.slug || index.toString()}
               item={{
                 name: service.title || service.name,
-                description: service.description
+                description: service.description,
               }}
               icon={Settings}
-              href={ROUTES.SERVICES.SINGLE(service.slug || slugify(service.title || service.name))}
+              href={ROUTES.SERVICES.SINGLE(
+                service.slug || slugify(service.title || service.name),
+              )}
             />
           ))}
         </div>
       )}
-      
+
       {totalPages > 1 && (
         <div className="mt-8 w-full max-w-4xl">
           <Pagenav page={page} totalPages={totalPages} />

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
-import { useAuth } from "../../contexts/AuthContext.jsx";
-import { getEntities } from "../../lib/runtime.config.js";
-import { ServerDownScreen } from "../organisms/ServerDownScreen.jsx";
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { getEntities } from '../../lib/runtime.config.js';
+import { ServerDownScreen } from '../organisms/ServerDownScreen.jsx';
 
 export function AdminGate({ children }) {
   const { user, isLoading, isServiceDown, checkAuth } = useAuth();
@@ -13,9 +13,9 @@ export function AdminGate({ children }) {
   const entities = getEntities();
   const router = useRouter();
 
-  const segments = pathname.split("/").filter(Boolean); // ['admin', 'users', '123', 'edit']
+  const segments = pathname.split('/').filter(Boolean); // ['admin', 'users', '123', 'edit']
   const section = segments[1]; // 'users', 'posts', undefined for bare /admin
-  const currentPath = section ? `/admin/${section}` : "/admin/dashboard";
+  const currentPath = section ? `/admin/${section}` : '/admin/dashboard';
 
   const matched = section
     ? Object.values(entities).find((entity) => entity.route === currentPath)
@@ -23,12 +23,12 @@ export function AdminGate({ children }) {
 
   const allowed = matched?.roles ? matched.roles.includes(user?.role) : true;
 
-  console.log("isServiceDown", isServiceDown);
+  console.log('isServiceDown', isServiceDown);
 
   useEffect(() => {
     if (isLoading || !user) return;
     if (!allowed) {
-      router.replace("/admin/dashboard");
+      router.replace('/admin/dashboard');
     }
   }, [isLoading, user, allowed, router]);
 

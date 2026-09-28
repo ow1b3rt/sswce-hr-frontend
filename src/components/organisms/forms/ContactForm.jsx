@@ -20,11 +20,11 @@ const contactInfo = {
 
 export default function ContactForm() {
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -42,15 +42,15 @@ export default function ContactForm() {
 
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       toast.add({
-        type: "error",
-        description: "Please fill in all fields.",
+        type: 'error',
+        description: 'Please fill in all fields.',
       });
       return;
     }
 
     if (!/^(\d{10}|\+\d{1,13}|\+\d{1,3} \d{10})$/.test(form.phone)) {
       toast.add({
-        type: "error",
+        type: 'error',
         description:
           "Mobile number must be exactly 10 digits, or a '+' followed by country code (e.g. +9771234567890 or +977 1234567890).",
       });
@@ -64,24 +64,26 @@ export default function ContactForm() {
       data: form,
       onSuccess: () => {
         toast.add({
-          type: "success",
-          description: "Message sent successfully! We will get back to you soon.",
+          type: 'success',
+          description:
+            'Message sent successfully! We will get back to you soon.',
         });
-        
+
         setForm({
-          name: "",
-          email: "",
-          subject: "",
-          phone: "",
-          message: "",
+          name: '',
+          email: '',
+          subject: '',
+          phone: '',
+          message: '',
         });
       },
       onError: (error) => {
         toast.add({
-          type: "error",
-          description: error?.message || "Unable to send your message. Please try again.",
+          type: 'error',
+          description:
+            error?.message || 'Unable to send your message. Please try again.',
         });
-      }
+      },
     });
 
     setLoading(false);
@@ -201,7 +203,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-primary-red inline-flex h-12 items-center justify-center gap-2 rounded-full px-10 text-base font-bold text-white transition-colors hover:bg-red-700 disabled:opacity-70 disabled:cursor-not-allowed"
+          className="bg-primary-red inline-flex h-12 items-center justify-center gap-2 rounded-full px-10 text-base font-bold text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -209,11 +211,10 @@ export default function ContactForm() {
               Sending...
             </span>
           ) : (
-            "Submit"
+            'Submit'
           )}
         </button>
       </div>
     </form>
   );
 }
-
