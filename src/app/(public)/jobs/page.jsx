@@ -11,6 +11,7 @@ const jobs = [
       'Lorem ipsum dolor sit amet consectetur. Eget morbi at varius in sagittis tellus commodo diam scelerisque. Orci quis enim tristique nam neque mauris tellus consectetur.',
     experienceYears: 2,
     postedDaysAgo: 3,
+    slug: 'frontend-engineer',
   },
   {
     id: 2,

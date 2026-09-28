@@ -1,7 +1,10 @@
+'use client';
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const JobCard = ({ job, className }) => {
+  const router = useRouter();
   const {
     title = 'Job Title',
     locationType = 'Onsite',
@@ -10,6 +13,7 @@ const JobCard = ({ job, className }) => {
     description = 'Lorem ipsum dolor sit amet consectetur. Eget morbi at varius in sagittis tellus commodo diam scelerisque. Orci quis enim tristique nam neque mauris tellus consectetur.',
     experienceYears = 2,
     postedDaysAgo = 3,
+    slug = 'frontend-engineer',
   } = job;
 
   return (
@@ -57,7 +61,10 @@ const JobCard = ({ job, className }) => {
             <Clock size={20} />
             {postedDaysAgo} Days ago
           </span>
-          <button className="bg-primary-blue hover:bg-dark-green cursor-pointer rounded-full px-6 py-2.5 text-base font-semibold text-white transition-colors duration-200">
+          <button
+            onClick={() => router.push(`/jobs/${slug}`)}
+            className="bg-primary-blue hover:bg-dark-green cursor-pointer rounded-full px-6 py-2.5 text-base font-semibold text-white transition-colors duration-200"
+          >
             Apply Now
           </button>
         </div>
