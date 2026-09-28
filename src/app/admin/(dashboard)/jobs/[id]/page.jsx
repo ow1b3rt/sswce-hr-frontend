@@ -1,7 +1,7 @@
 // src/app/admin/jobs/[id]/page.js
-"use client";
+'use client';
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from 'next/navigation';
 import {
   AdminLayout,
   Form,
@@ -13,24 +13,24 @@ import {
   useApi,
   useGet,
   useToast,
-} from "@/packages/admin";
-import { Loader2 } from "lucide-react";
-import { JobDetailsField } from "@/components/organisms/admin/JobDetailsField.jsx";
+} from '@/packages/admin';
+import { Loader2 } from 'lucide-react';
+import { JobDetailsField } from '@/components/organisms/admin/JobDetailsField.jsx';
 
 const STATUS_OPTIONS = [
-  { value: "open", label: "Open" },
-  { value: "close", label: "Closed" },
+  { value: 'open', label: 'Open' },
+  { value: 'close', label: 'Closed' },
 ];
 
 const NEW_JOB_DEFAULTS = {
-  location: "Tokyo, Japan",
-  status: "open",
+  location: 'Tokyo, Japan',
+  status: 'open',
 };
 
 function coerceJsonFields(values, fieldNames) {
   const coerced = { ...values };
   for (const name of fieldNames) {
-    if (typeof coerced[name] === "string" && coerced[name] !== "") {
+    if (typeof coerced[name] === 'string' && coerced[name] !== '') {
       try {
         coerced[name] = JSON.parse(coerced[name]);
       } catch {
@@ -47,8 +47,8 @@ export default function JobEditPage() {
   const toast = useToast();
   const { post, patch } = useApi();
 
-  const isNew = id === "new";
-  const apiPath = "/jobs";
+  const isNew = id === 'new';
+  const apiPath = '/jobs';
   const { data, isLoading } = useGet(isNew ? null : `${apiPath}/${id}`);
 
   if (!isNew && isLoading) {
@@ -60,24 +60,24 @@ export default function JobEditPage() {
     );
   }
 
-  const defaults = isNew ? NEW_JOB_DEFAULTS : data?.item ?? {};
+  const defaults = isNew ? NEW_JOB_DEFAULTS : (data?.item ?? {});
 
   async function handleSubmit(values) {
-    let payload = coerceJsonFields(values, ["details"]);
+    let payload = coerceJsonFields(values, ['details']);
     payload = removeEmptyFields(payload);
 
     const url = isNew ? apiPath : `${apiPath}/${id}`;
     const res = isNew ? await post(url, payload) : await patch(url, payload);
 
     if (res?.ok) {
-      toast.success(`Job ${isNew ? "created" : "updated"} successfully`);
-      router.replace("/admin/jobs");
+      toast.success(`Job ${isNew ? 'created' : 'updated'} successfully`);
+      router.replace('/admin/jobs');
     }
     return res;
   }
 
   return (
-    <AdminLayout title={`${isNew ? "New" : "Edit"} Job`} formId="job-form">
+    <AdminLayout title={`${isNew ? 'New' : 'Edit'} Job`} formId="job-form">
       <Form
         defaults={defaults}
         id="job-form"
@@ -101,7 +101,10 @@ export default function JobEditPage() {
 
               <div className="flex gap-4">
                 <Input name="location" placeholder="Location" required />
-                <Input name="workingHours" placeholder="Working hours (optional)" />
+                <Input
+                  name="workingHours"
+                  placeholder="Working hours (optional)"
+                />
                 <Select name="status" placeholder="Status" required>
                   {STATUS_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useResolvedDefault } from "@/packages/admin/components/atoms/Input.jsx";
-import { Plus, X } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { useResolvedDefault } from '@/packages/admin/components/atoms/Input.jsx';
+import { Plus, X } from 'lucide-react';
 
 export const inputClass =
-  "w-full rounded-sm border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none";
+  'w-full rounded-sm border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none';
 
 export function Field({ label, children }) {
   return (
@@ -23,12 +23,16 @@ export function ObjectListEditor({ items, onChange, fields, addLabel }) {
   const update = (i, key, val) =>
     onChange(items.map((it, idx) => (idx === i ? { ...it, [key]: val } : it)));
   const remove = (i) => onChange(items.filter((_, idx) => idx !== i));
-  const add = () => onChange([...items, Object.fromEntries(fields.map((f) => [f.key, ""]))]);
+  const add = () =>
+    onChange([...items, Object.fromEntries(fields.map((f) => [f.key, '']))]);
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {items.map((item, i) => (
-        <div key={i} className="flex flex-col gap-2 rounded-lg border border-gray-200 p-3">
+        <div
+          key={i}
+          className="flex flex-col gap-2 rounded-lg border border-gray-200 p-3"
+        >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
               Entry {i + 1}
@@ -45,17 +49,17 @@ export function ObjectListEditor({ items, onChange, fields, addLabel }) {
 
           {fields.map((f) => (
             <Field key={f.key} label={f.label}>
-              {f.type === "textarea" ? (
+              {f.type === 'textarea' ? (
                 <textarea
                   className={`${inputClass} min-h-[70px]`}
-                  value={item[f.key] ?? ""}
+                  value={item[f.key] ?? ''}
                   placeholder={f.placeholder}
                   onChange={(e) => update(i, f.key, e.target.value)}
                 />
               ) : (
                 <input
                   className={inputClass}
-                  value={item[f.key] ?? ""}
+                  value={item[f.key] ?? ''}
                   placeholder={f.placeholder}
                   onChange={(e) => update(i, f.key, e.target.value)}
                 />
@@ -80,9 +84,10 @@ export function ObjectListEditor({ items, onChange, fields, addLabel }) {
 // Same grid treatment: each string is a single short line, no reason
 // to give it the full row width.
 export function StringListEditor({ items, onChange, placeholder, addLabel }) {
-  const update = (i, val) => onChange(items.map((it, idx) => (idx === i ? val : it)));
+  const update = (i, val) =>
+    onChange(items.map((it, idx) => (idx === i ? val : it)));
   const remove = (i) => onChange(items.filter((_, idx) => idx !== i));
-  const add = () => onChange([...items, ""]);
+  const add = () => onChange([...items, '']);
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
@@ -114,4 +119,3 @@ export function StringListEditor({ items, onChange, placeholder, addLabel }) {
     </div>
   );
 }
-

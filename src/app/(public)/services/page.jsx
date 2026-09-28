@@ -32,7 +32,7 @@ export default async function ServicesPage() {
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
       <AnimatedHeading text="Services" />
-      
+
       {!services || services.length === 0 ? (
         <p className="mt-10 text-center text-gray-500">
           No services available at the moment.

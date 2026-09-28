@@ -10,8 +10,7 @@ import { gallery } from './gallery.js';
 import { services } from './services.js';
 import { users } from './users.js';
 import { countries } from './countries.js';
-import { jobs } from "./jobs.js";
-
+import { jobs } from './jobs.js';
 
 export const entities = defineEntities({
   users,
