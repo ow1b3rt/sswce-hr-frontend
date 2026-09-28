@@ -1,16 +1,24 @@
+'use client';
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
+import Link from 'next/link';
 
 const JobCard = ({ job, className }) => {
+  const router = useRouter();
   const {
-    title = 'Job Title',
-    locationType = 'Onsite',
-    salaryMin = 'Rs 5000',
-    salaryMax = 'Rs 8000',
-    description = 'Lorem ipsum dolor sit amet consectetur. Eget morbi at varius in sagittis tellus commodo diam scelerisque. Orci quis enim tristique nam neque mauris tellus consectetur.',
-    experienceYears = 2,
-    postedDaysAgo = 3,
+    title,
+    workingHours,
+    salary,
+    description,
+    experience,
+    createdAt,
+    slug,
   } = job;
+
+  // Calculate days ago
+  const postedDaysAgo = createdAt
+    ? Math.floor((new Date() - new Date(createdAt)) / (1000 * 60 * 60 * 24))
+    : 0;
 
   return (
     <BaseCard className={className}>
@@ -24,11 +32,11 @@ const JobCard = ({ job, className }) => {
         <div className="text-foreground mb-5 flex flex-wrap items-center gap-4 text-base font-medium sm:gap-6">
           <span className="flex items-center justify-center gap-2">
             <MapPin size={20} className="text-foreground" />
-            {locationType}
+            {workingHours || 'Full-time'}
           </span>
           <span className="flex items-center gap-2">
             <Banknote size={20} className="text-foreground" />
-            {salaryMin} – {salaryMax}
+            {salary || 'Not disclosed'}
           </span>
         </div>
 
@@ -42,7 +50,7 @@ const JobCard = ({ job, className }) => {
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-destructive text-2xl leading-none font-extrabold md:text-3xl lg:text-4xl">
-              {experienceYears}+
+              {experience ? experience.replace(/[^0-9+]/g, '') : '0+'}
             </span>
             <span className="text-foreground text-lg font-medium">
               Years of Experience
@@ -55,11 +63,13 @@ const JobCard = ({ job, className }) => {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span className="text-foreground flex items-center gap-2 text-base">
             <Clock size={20} />
-            {postedDaysAgo} Days ago
+            {postedDaysAgo === 0 ? 'Today' : `${postedDaysAgo} Days ago`}
           </span>
-          <button className="bg-primary-blue hover:bg-dark-green cursor-pointer rounded-full px-6 py-2.5 text-base font-semibold text-white transition-colors duration-200">
-            Apply Now
-          </button>
+          <Link href={`/jobs/${slug}`}>
+            <button className="bg-primary-blue hover:bg-dark-green cursor-pointer rounded-full px-6 py-2.5 text-base font-semibold text-white transition-colors duration-200">
+              Apply Now
+            </button>
+          </Link>
         </div>
       </div>
     </BaseCard>
