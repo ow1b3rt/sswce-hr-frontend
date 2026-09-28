@@ -6,7 +6,7 @@ import { ROUTES } from '@/constants/routes/routes';
 
 async function fetchJobs(page = 1) {
   try {
-    const res = await fetch(ROUTES.API.JOBS.OPEN(page, 9), {
+    const res = await fetch(ROUTES.API.JOBS.HOME(page, 9), {
       cache: 'no-store',
     });
     if (!res.ok) {

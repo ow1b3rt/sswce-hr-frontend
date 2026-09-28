@@ -3,6 +3,7 @@ import { ROUTES } from '@/constants/routes/routes';
 import { slugify } from '@/lib/utils';
 import { AnimatedHeading } from '@/components/atoms/headings';
 
+import { stripHtml } from '@/packages/admin/utils/utils';
 // TODO: Blogs will need a slightly different card layout (to be updated later).
 // Using InfoCard as a placeholder for now to match the overall page structure.
 import { Pagenav } from '@/components/Reusables';
@@ -25,6 +26,7 @@ export default async function BlogsPage(props) {
   const page = Number(searchParams?.page || 1);
   const data = await getBlogs(page);
   const blogs = data?.items || [];
+  console.log('blogs', blogs);
   const totalPages = data?.totalPages || 1;
 
   const cols = Math.min(blogs.length || 1, 3);
@@ -53,7 +55,7 @@ export default async function BlogsPage(props) {
               key={blog.id}
               item={{
                 name: blog.title || blog.name,
-                description: blog.description,
+                description: stripHtml(blog.content),
               }}
               href={ROUTES.BLOGS.SINGLE(
                 blog.slug || slugify(blog.title || blog.name),
