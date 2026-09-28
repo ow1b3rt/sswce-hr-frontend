@@ -5,8 +5,10 @@ import SafeImage from '@/components/ui/safe-image';
 import Navlinks from './Navlinks';
 import MobileNav from './MobileNavbar';
 import { ROUTES } from '@/constants/routes/routes';
+import { simpleLinks, getDropdownGroups } from '@/resources/data/nav-data';
 
-export const Navbar = () => {
+export const Navbar = async () => {
+  const dropdownGroups = await getDropdownGroups();
   return (
     <header className="bg-card sticky top-0 z-50 w-full pt-2">
       <div className="container mx-auto grid grid-cols-12 items-center gap-2 md:gap-4">
@@ -22,7 +24,7 @@ export const Navbar = () => {
           </Link>
         </div>
 
-        <Navlinks />
+        <Navlinks dropdownGroups={dropdownGroups} />
 
         <div className="col-span-2 hidden max-h-20 items-center justify-end lg:flex">
           <Link
@@ -40,7 +42,7 @@ export const Navbar = () => {
         </div>
 
         <div className="col-span-4 flex justify-end pr-4 lg:hidden">
-          <MobileNav />
+          <MobileNav simpleLinks={simpleLinks} dropdownGroups={dropdownGroups} />
         </div>
       </div>
     </header>

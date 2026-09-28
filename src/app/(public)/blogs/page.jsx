@@ -1,4 +1,4 @@
-import InfoCard from '@/components/molecules/cards/InfoCard';
+import { BlogCard } from '@/components/molecules/cards/BlogCard';
 import { ROUTES } from '@/constants/routes/routes';
 import { slugify } from '@/lib/utils';
 import { AnimatedHeading } from '@/components/atoms/headings';
@@ -51,16 +51,7 @@ export default async function BlogsPage(props) {
           className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
         >
           {blogs.map((blog) => (
-            <InfoCard
-              key={blog.id}
-              item={{
-                name: blog.title || blog.name,
-                description: stripHtml(blog.content),
-              }}
-              href={ROUTES.BLOGS.SINGLE(
-                blog.slug || slugify(blog.title || blog.name),
-              )}
-            />
+            <BlogCard key={blog.id} item={blog} />
           ))}
         </div>
       )}

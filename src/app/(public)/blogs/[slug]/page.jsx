@@ -3,7 +3,7 @@ import { capitalise } from '@/packages/admin/utils/utils';
 
 import { getBlog, getBlogs } from '@/lib/api/blogs';
 import { getMediaUrl, localDate, mapBlogItem } from '@/lib/utils';
-import DetailPage from '@/components/templates/DetailPage';
+import BlogDetailPage from '@/components/templates/BlogDetailPage';
 import { ImageContainer } from '@/components/molecules/ImageContainer';
 import BlogsList from '@/components/organisms/BlogsList';
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function BlogDetailPage({ params }) {
+export default async function SingleBlogPage({ params }) {
   const { slug } = await params;
 
   const [blog, relatedResult] = await Promise.all([
@@ -49,8 +49,8 @@ export default async function BlogDetailPage({ params }) {
   const publishedOn = blog.publishedAt || blog.createdAt;
 
   return (
-    <main className="flex flex-col gap-10 pb-12">
-      <DetailPage data={blogData} isBlog />
+    <main className="flex flex-col gap-10 px-4 md:px-20 pb-12">
+      <BlogDetailPage data={blogData} isBlog />
 
       <div className="container mx-auto flex flex-col items-center gap-4 px-4 sm:flex-row lg:px-0">
         <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full">
@@ -73,7 +73,7 @@ export default async function BlogDetailPage({ params }) {
       </div>
 
       {relatedBlogs.length > 0 && (
-        <section className="container mx-auto px-4 lg:px-0">
+        <section className="container mx-auto lg:px-0">
           <BlogsList title="Other Blog Articles" blogs={relatedBlogs} />
         </section>
       )}

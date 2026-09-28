@@ -14,7 +14,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { simpleLinks, dropdownGroups } from '@/resources/data/nav-data';
 import SafeImage from '@/components/ui/safe-image';
 
 function AccordionGroup({ label, items, onNavigate }) {
@@ -65,7 +64,7 @@ function AccordionGroup({ label, items, onNavigate }) {
   );
 }
 
-export function MobileNav() {
+export function MobileNav({ simpleLinks, dropdownGroups }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 

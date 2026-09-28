@@ -4,15 +4,24 @@ import SafeImage from '../ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
 import ArticleBody from '@/packages/admin/components/templates/ArticleBody';
 
-export default function DetailPage({ data, isBlog = false }) {
+export default function BlogDetailPage({ data, isBlog = false }) {
   if (!data) return null;
 
   return (
-    <main className="text-foreground container mx-auto px-4 pb-10 md:px-8">
+    <main className="text-foreground container mx-auto">
+      <h1 className="py-6 text-xl font-bold text-center tracking-tight md:py-8 md:text-5xl lg:text-6xl">
+        <AnimatedWords
+          text={data.title}
+          animKey="detail-title"
+          durationMs={800}
+          staggerMs={80}
+          direction="up"
+        />
+      </h1>
       {data.image?.src && (
         <AnimatedCard
           direction="down"
-        className="relative mb-8 max-h-143.75 w-full mx-auto md:w-3/4 overflow-hidden rounded-2xl"
+          className="relative mb-8 max-h-143.75 w-full overflow-hidden rounded-2xl"
         >
           <SafeImage
             src={data.image.src}
@@ -24,19 +33,6 @@ export default function DetailPage({ data, isBlog = false }) {
             priority
           />
 
-          {data.title && (
-            <div className="absolute top-3 left-3 z-10 sm:top-6 sm:left-6 md:top-8 md:left-8">
-              <h1 className="rounded-xl bg-black/70 px-6 py-2 text-xl font-bold tracking-tight text-white backdrop-blur-sm md:px-8 md:py-4 md:text-2xl lg:text-3xl">
-                <AnimatedWords
-                  text={data.title}
-                  animKey="detail-title"
-                  durationMs={800}
-                  staggerMs={80}
-                  direction="up"
-                />
-              </h1>
-            </div>
-          )}
         </AnimatedCard>
       )}
 
@@ -49,7 +45,7 @@ export default function DetailPage({ data, isBlog = false }) {
       )}
 
       {data.content?.length > 0 && (
-        <AnimatedCard className="mx-auto w-full space-y-6 text-lg leading-relaxed md:w-3/4">
+        <AnimatedCard className="mx-auto w-full space-y-6 text-lg leading-relaxed">
           {isBlog ? (
             <ArticleBody html={data.content} />
           ) : (

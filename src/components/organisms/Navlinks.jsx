@@ -10,7 +10,6 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { dropdownGroups } from '@/resources/data/nav-data';
 
 function NavLink({ href, children }) {
   const pathname = usePathname();
@@ -63,7 +62,7 @@ function NavDropdown({ label, items }) {
   );
 }
 
-export function Navlinks() {
+export function Navlinks({ dropdownGroups }) {
   return (
     <nav className="col-span-8 hidden items-center justify-center gap-2 px-2 lg:flex">
       <NavLink href="/">Home</NavLink>

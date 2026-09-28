@@ -4,11 +4,14 @@ import DetailPage from '@/components/templates/DetailPage';
 
 async function getServiceBySlug(slug) {
   try {
-    const res = await fetch(ROUTES.API.SERVICES, { cache: 'no-store' });
+    const res = await fetch(ROUTES.API.SERVICES.LAYOUT, { cache: 'no-store' });
+
+    console.log('res', res)
 
     if (!res.ok) return null;
 
     const data = await res.json();
+    console.log('Fetched service data:', data);
     if (data?.success && data?.layout?.items) {
       return data.layout.items.find((service) => service.slug === slug) ?? null;
     }
@@ -32,6 +35,8 @@ export async function generateMetadata({ params }) {
 export default async function ServiceDetailPage({ params }) {
   const { slug } = await params;
   const service = await getServiceBySlug(slug);
+  console.log('Service:', service);
+  console.log('slug:', slug);
 
   if (!service) notFound();
 

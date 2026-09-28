@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { Phone, MapPin, Mail } from 'lucide-react';
 import SafeImage from '@/components/ui/safe-image';
 import Divider from '@/components/ui/divider';
+import {
+  getCountryLinks,
+  getServicesLinks,
+} from '@/resources/data/nav-data'; // adjust path to wherever nav-data.js lives
 
 const FacebookIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -46,25 +50,6 @@ const SOCIALS = [
   },
 ];
 
-const SERVICES = [
-  { label: 'Career Counselling', href: '/services/career-counselling' },
-  { label: 'Visa Guidance & Documentation', href: '/services/visa-guidance' },
-  {
-    label: 'Japanese Language Preparation',
-    href: '/services/japanese-language',
-  },
-  { label: 'SSW Training', href: '/services/ssw-training' },
-  { label: 'Hostel Facility', href: '/services/hostel-facility' },
-];
-
-const COUNTRIES = [
-  { label: 'Nepal', href: '/countries/nepal' },
-  { label: 'India', href: '/countries/india' },
-  { label: 'China', href: '/countries/china' },
-  { label: 'Bangladesh', href: '/countries/bangladesh' },
-  { label: 'Pakistan', href: '/countries/pakistan' },
-];
-
 const CONTACT = {
   address: {
     line1: 'Narayangopal Chowk,',
@@ -100,6 +85,10 @@ const COPYRIGHT = {
   company: 'Enlighten Infosys Pvt. Ltd.',
   companyHref: '/',
 };
+
+// nav-data uses `title`, FooterColumn expects `label`
+const toColumnItems = (links) =>
+  links.map(({ title, href }) => ({ label: title, href }));
 
 function FooterColumn({ title, items }) {
   return (
@@ -162,7 +151,12 @@ function ContactColumn({ title, contact }) {
   );
 }
 
-export function Footer() {
+export async function Footer() {
+  const [services, countries] = await Promise.all([
+    getServicesLinks(),
+    getCountryLinks(),
+  ]);
+
   return (
     <footer className="bg-card w-full pt-16 pb-8 text-gray-800 inset-shadow-2xs inset-shadow-gray-300">
       <div className="mx-auto px-4 lg:px-0">
@@ -253,8 +247,14 @@ export function Footer() {
             <Divider backgroundColor="bg-gray-200" className="mb-10" />
 
             <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3">
-              <FooterColumn title="Services" items={SERVICES} />
-              <FooterColumn title="Country" items={COUNTRIES} />
+              <FooterColumn
+                title="Services"
+                items={toColumnItems(services)}
+              />
+              <FooterColumn
+                title="Country"
+                items={toColumnItems(countries)}
+              />
               <ContactColumn title="Get In Touch" contact={CONTACT} />
             </div>
           </div>

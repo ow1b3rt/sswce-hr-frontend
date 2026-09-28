@@ -1,4 +1,3 @@
-import { stripHtml } from '@/packages/admin/utils/utils';
 
 export { cn } from 'cn';
 
@@ -9,6 +8,11 @@ export function slugify(str) {
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+export function stripHtml(html) {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, '').trim();
 }
 
 export function timeAgo(dateString) {
