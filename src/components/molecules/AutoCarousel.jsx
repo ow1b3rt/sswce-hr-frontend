@@ -306,6 +306,14 @@ function MarqueeCarousel({
   const dragStateRef = React.useRef(null);
   const suppressClickRef = React.useRef(false);
 
+  // Keep the latest values in refs so the native wheel listener
+  // (added once in an effect below) always reads current props
+  // without needing to be re-attached on every render.
+  const stopOnInteractionRef = React.useRef(stopOnInteraction);
+  React.useEffect(() => {
+    stopOnInteractionRef.current = stopOnInteraction;
+  }, [stopOnInteraction]);
+
   const count = items.length;
 
   React.useEffect(() => {
@@ -384,15 +392,6 @@ function MarqueeCarousel({
     };
   }, []);
 
-  if (count === 0) return null;
-
-  const maskStyle = showGradientMask
-    ? {
-        WebkitMaskImage: `linear-gradient(to right, transparent 0%, black ${gradientWidth}, black calc(100% - ${gradientWidth}), transparent 100%)`,
-        maskImage: `linear-gradient(to right, transparent 0%, black ${gradientWidth}, black calc(100% - ${gradientWidth}), transparent 100%)`,
-      }
-    : undefined;
-
   const clearResumeTimeout = () => {
     if (resumeTimeoutRef.current) {
       window.clearTimeout(resumeTimeoutRef.current);
@@ -400,8 +399,8 @@ function MarqueeCarousel({
     }
   };
 
-  const registerInteraction = () => {
-    if (stopOnInteraction) {
+  const registerInteraction = React.useCallback(() => {
+    if (stopOnInteractionRef.current) {
       permanentlyStoppedRef.current = true;
       return;
     }
@@ -410,7 +409,35 @@ function MarqueeCarousel({
     resumeTimeoutRef.current = window.setTimeout(() => {
       isUserInteractingRef.current = false;
     }, 1200);
-  };
+  }, []);
+
+  // Native (non-passive) wheel listener so preventDefault() actually
+  // stops the page from scrolling while the pointer is over the track.
+  React.useEffect(() => {
+    const node = scrollerRef.current;
+    if (!node) return;
+
+    const wheelHandler = (e) => {
+      // Vertical wheel/trackpad input drives horizontal marquee scroll.
+      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+        node.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+      registerInteraction();
+    };
+
+    node.addEventListener('wheel', wheelHandler, { passive: false });
+    return () => node.removeEventListener('wheel', wheelHandler);
+  }, [registerInteraction]);
+
+  if (count === 0) return null;
+
+  const maskStyle = showGradientMask
+    ? {
+        WebkitMaskImage: `linear-gradient(to right, transparent 0%, black ${gradientWidth}, black calc(100% - ${gradientWidth}), transparent 100%)`,
+        maskImage: `linear-gradient(to right, transparent 0%, black ${gradientWidth}, black calc(100% - ${gradientWidth}), transparent 100%)`,
+      }
+    : undefined;
 
   const handlePointerDown = (e) => {
     if (!draggable) return;
@@ -454,17 +481,6 @@ function MarqueeCarousel({
     }
   };
 
-  const handleWheel = (e) => {
-    if (!draggable) return;
-    const node = scrollerRef.current;
-    if (!node) return;
-    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
-      node.scrollLeft += e.deltaY;
-      e.preventDefault();
-    }
-    registerInteraction();
-  };
-
   return (
     <div
       className={cn('relative flex w-full flex-col', className)}
@@ -477,7 +493,10 @@ function MarqueeCarousel({
       `}</style>
 
       <div
-        className={cn('relative w-full overflow-hidden', gradientMaskClassName)}
+        className={cn(
+          'relative w-full overflow-hidden py-16 lg:py-20',
+          gradientMaskClassName,
+        )}
         style={maskStyle}
       >
         <div
@@ -494,7 +513,6 @@ function MarqueeCarousel({
           onPointerCancel={endDrag}
           onPointerLeave={endDrag}
           onClickCapture={handleClickCapture}
-          onWheel={handleWheel}
         >
           {[...items, ...items, ...items].map((item, i) => (
             <div

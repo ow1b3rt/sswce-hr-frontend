@@ -26,7 +26,11 @@ export default async function EventsPage(props) {
   const mdCols = Math.min(events.length || 1, 2);
   const mdColClass = mdCols === 1 ? 'md:grid-cols-1' : 'md:grid-cols-2';
   const lgColClass =
-    cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
+    cols === 1
+      ? 'lg:grid-cols-1'
+      : cols === 2
+        ? 'lg:grid-cols-2'
+        : 'lg:grid-cols-3';
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">

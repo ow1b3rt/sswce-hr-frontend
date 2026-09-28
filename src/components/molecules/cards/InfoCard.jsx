@@ -8,7 +8,10 @@ const InfoCard = ({ item = {}, imageAlt, onAction, href, icon: Icon }) => {
 
   const ActionWrapper = ({ children }) =>
     href ? (
-      <Link href={href} className="bg-primary-blue hover:bg-dark-green rounded-baseRadius cursor-pointer px-8 py-2 text-white transition-colors duration-200 inline-flex items-center justify-center">
+      <Link
+        href={href}
+        className="bg-primary-blue hover:bg-dark-green rounded-baseRadius inline-flex cursor-pointer items-center justify-center px-8 py-2 text-white transition-colors duration-200"
+      >
         {children}
       </Link>
     ) : (

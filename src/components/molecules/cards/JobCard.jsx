@@ -1,8 +1,10 @@
+'use client';
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
 import Link from 'next/link';
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, className }) => {
+  const router = useRouter();
   const {
     title,
     workingHours,
@@ -19,7 +21,7 @@ const JobCard = ({ job }) => {
     : 0;
 
   return (
-    <BaseCard>
+    <BaseCard className={className}>
       <div className="flex flex-col px-6 pt-6 pb-6">
         <h2 className="text-foreground pb-4 text-center text-xl font-bold md:text-2xl">
           {title}

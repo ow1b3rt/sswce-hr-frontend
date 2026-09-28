@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { Button } from '@/components/ui/button';
 import SafeImage from '@/components/ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
@@ -15,6 +17,7 @@ const TrustedPartners = [
 ];
 
 export const HeroSection = () => {
+  const router = useRouter();
   return (
     <AnimatedCard
       direction="down"
@@ -28,7 +31,7 @@ export const HeroSection = () => {
         className="absolute z-20 h-full w-full rounded-xl"
       >
         <div className="flex h-full w-full flex-col items-center justify-center gap-8">
-          <h1 className="text-card max-w-4xl text-center text-4xl font-bold md:text-5xl lg:text-7xl">
+          <h1 className="text-card mt-12 max-w-4xl text-center text-4xl font-bold sm:mt-24 md:text-5xl lg:text-7xl">
             Connecting Talent <br />
             <AnimatedWords
               text="With Global Opportunities"
@@ -49,7 +52,10 @@ export const HeroSection = () => {
               className="justify-center"
             />
           </p>
-          <Button className="bg-card text-dark-green hover:text-card flex! cursor-pointer items-center! rounded-xl px-6 py-6 text-xl transition duration-300 ease-in-out lg:py-7 lg:text-2xl">
+          <Button
+            onClick={() => router.push('/jobs')}
+            className="bg-card text-dark-green hover:text-card flex! cursor-pointer items-center! rounded-xl px-6 py-6 text-xl transition duration-300 ease-in-out lg:py-7 lg:text-2xl"
+          >
             <AnimatedWords
               text="View Jobs"
               animKey="text"

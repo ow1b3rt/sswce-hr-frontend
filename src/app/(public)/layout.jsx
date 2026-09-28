@@ -5,7 +5,9 @@ export default function PageLayout({ children }) {
   return (
     <main className="container mx-auto">
       <Navbar />
-      <Breadcrumb />
+      <div className="py-2">
+        <Breadcrumb />
+      </div>
       {children}
       <Footer />
     </main>
