@@ -1,6 +1,12 @@
 import { ROUTES } from '@/constants/routes/routes';
 
-const EMPTY_LIST = { success: false, items: [], total: 0, page: 1, totalPages: 1 };
+const EMPTY_LIST = {
+  success: false,
+  items: [],
+  total: 0,
+  page: 1,
+  totalPages: 1,
+};
 
 export async function getBlogs(page = 1, limit = 9) {
   try {

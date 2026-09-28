@@ -229,6 +229,13 @@ export default function DataTable({
       case 'status':
         return <Badge value={value} className="text-sm!" />;
 
+      case 'textarea':
+        return (
+          <p className="w-48 truncate text-sm text-gray-600" title={value}>
+            {value}
+          </p>
+        );
+
       default:
         return (
           <span className="text-base text-gray-600" title={value}>

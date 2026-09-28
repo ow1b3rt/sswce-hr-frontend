@@ -32,13 +32,13 @@ export function HomeBlogCard({ section: data = section }) {
                 alt={data.author.name}
                 sizes="40px"
               />
-              <span className="text-base text-foreground/70">
+              <span className="text-foreground/70 text-base">
                 {data.author.name}
               </span>
             </div>
           )}
           {data.date && (
-            <span className="text-sm text-muted-foreground">{data.date}</span>
+            <span className="text-muted-foreground text-sm">{data.date}</span>
           )}
         </div>
       )}
@@ -48,7 +48,7 @@ export function HomeBlogCard({ section: data = section }) {
 
       <Link
         href={data.url}
-        className="bg-primary-blue hover:bg-dark-green group-hover:bg-primary-red inline-flex w-fit items-center gap-2 rounded-baseRadius px-8 py-2 text-lg font-bold text-white transition-colors duration-500 ease-in-out"
+        className="bg-primary-blue hover:bg-dark-green group-hover:bg-primary-red rounded-baseRadius inline-flex w-fit items-center gap-2 px-8 py-2 text-lg font-bold text-white transition-colors duration-500 ease-in-out"
       >
         {data.ctaLabel}
         <ArrowRight size={24} />

@@ -2,13 +2,10 @@
 import Image from 'next/image';
 import { HexGridBackground } from '@/components/ui/hexgrid-background';
 import { TestimonialCard } from '@/components/organisms/about-us/TestimonialCard';
-import {
-  featuredTestimonial,
-  floatingAvatars,
-} from '@/resources/data/testimonials-data';
+import { floatingAvatars } from '@/resources/data/testimonials-data';
 import { AutoCarousel } from '@/components/molecules/AutoCarousel';
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ testimonails }) {
   return (
     <section className="bg-faint-green relative isolate mb-16 overflow-hidden py-16 sm:py-20 lg:py-24">
       <HexGridBackground />
@@ -38,11 +35,10 @@ export function TestimonialsSection() {
         </h2>
         <div className="mt-10 sm:mt-12 lg:mt-16">
           <AutoCarousel
-            items={featuredTestimonial}
+            items={testimonails}
             itemsClassName="basis-full sm:basis-1/2 lg:basis-1/3 h-full"
             transition="marquee"
             marqueeSpeed={90}
-
             renderItem={(testimonial, index) => (
               <TestimonialCard testimonial={testimonial} />
             )}
