@@ -1,30 +1,30 @@
 // blocks/EmbedBlock.jsx
-"use no memo";
-"use client";
+'use no memo';
+'use client';
 
-import { useState } from "react";
-import { createReactBlockSpec } from "@blocknote/react";
+import { useState } from 'react';
+import { createReactBlockSpec } from '@blocknote/react';
 
 // YouTube (and most providers) hand out a full <iframe ...></iframe>
 // snippet under "Share > Embed" rather than a bare URL. Detect that case
 // and pull just the src out, so pasting the whole snippet works too.
 function extractUrl(value) {
   const trimmed = value.trim();
-  if (!/^<iframe[\s>]/i.test(trimmed) || typeof window === "undefined") {
+  if (!/^<iframe[\s>]/i.test(trimmed) || typeof window === 'undefined') {
     return trimmed;
   }
-  const doc = new DOMParser().parseFromString(trimmed, "text/html");
-  const iframe = doc.querySelector("iframe");
-  return iframe?.getAttribute("src")?.trim() || trimmed;
+  const doc = new DOMParser().parseFromString(trimmed, 'text/html');
+  const iframe = doc.querySelector('iframe');
+  return iframe?.getAttribute('src')?.trim() || trimmed;
 }
 
 export const EmbedBlock = createReactBlockSpec(
   {
-    type: "embed",
+    type: 'embed',
     propSchema: {
-      url: { default: "" },
+      url: { default: '' },
     },
-    content: "none",
+    content: 'none',
   },
   {
     render: (props) => {
@@ -32,7 +32,7 @@ export const EmbedBlock = createReactBlockSpec(
       // No url yet (freshly inserted) → start in editing mode so the
       // input is focused immediately, same pattern as the image block.
       const [editing, setEditing] = useState(!block.props.url);
-      const [inputValue, setInputValue] = useState(block.props.url || "");
+      const [inputValue, setInputValue] = useState(block.props.url || '');
 
       const commitUrl = () => {
         const trimmed = inputValue.trim();
@@ -51,13 +51,13 @@ export const EmbedBlock = createReactBlockSpec(
       };
 
       const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
           e.preventDefault();
           commitUrl();
         }
-        if (e.key === "Escape") {
+        if (e.key === 'Escape') {
           e.preventDefault();
-          setInputValue(block.props.url || "");
+          setInputValue(block.props.url || '');
           if (!block.props.url) {
             editor.removeBlocks([block.id]);
           } else {
@@ -83,7 +83,10 @@ export const EmbedBlock = createReactBlockSpec(
       }
 
       return (
-        <div className="group relative w-full overflow-hidden rounded-lg" contentEditable={false}>
+        <div
+          className="group relative w-full overflow-hidden rounded-lg"
+          contentEditable={false}
+        >
           <iframe
             src={block.props.url}
             className="block aspect-video w-full rounded-lg border-0 bg-black"
@@ -107,13 +110,16 @@ export const EmbedBlock = createReactBlockSpec(
     // Recognizes <iframe> tags (bare, or wrapped in our exported
     // div.embed-container) when loading initialHTML.
     parse: (element) => {
-      if (element.tagName === "IFRAME") {
-        return { url: element.getAttribute("src") || "" };
+      if (element.tagName === 'IFRAME') {
+        return { url: element.getAttribute('src') || '' };
       }
-      if (element.tagName === "DIV" && element.classList?.contains("embed-container")) {
-        const iframe = element.querySelector("iframe");
+      if (
+        element.tagName === 'DIV' &&
+        element.classList?.contains('embed-container')
+      ) {
+        const iframe = element.querySelector('iframe');
         if (iframe) {
-          return { url: iframe.getAttribute("src") || "" };
+          return { url: iframe.getAttribute('src') || '' };
         }
       }
       return undefined;

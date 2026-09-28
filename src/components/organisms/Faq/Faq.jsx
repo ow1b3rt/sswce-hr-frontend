@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import { useState } from 'react';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 
 function FaqItem({ number, question, answer, open, onToggle }) {
   return (
@@ -21,13 +21,13 @@ function FaqItem({ number, question, answer, open, onToggle }) {
         >
           <FaCaretUp
             size={18}
-            className={`${open ? "rotate-0" : "rotate-180"} transform transition-transform duration-300`}
+            className={`${open ? 'rotate-0' : 'rotate-180'} transform transition-transform duration-300`}
           />
         </span>
       </button>
 
       <div
-        className={`grid bg-white transition-all duration-300 ease-in-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        className={`grid bg-white transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">
           <p className="p-6 text-lg text-black/70">{answer}</p>

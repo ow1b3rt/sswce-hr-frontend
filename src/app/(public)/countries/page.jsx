@@ -29,22 +29,29 @@ export default async function CountriesPage() {
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Countries</h1>
-      
+
       {!countries || countries.length === 0 ? (
-        <p className="mt-10 text-center text-gray-500">No countries available at the moment.</p>
+        <p className="mt-10 text-center text-gray-500">
+          No countries available at the moment.
+        </p>
       ) : (
-        <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
+        <div
+          className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
+        >
           {countries.map((country, index) => (
             <InfoCard
               key={country.slug || index.toString()}
               item={{
                 name: country.title,
                 description: country.description,
-                imageSrc: country.image?.src || `/flags/${slugify(country.title)}.webp`,
+                imageSrc:
+                  country.image?.src || `/flags/${slugify(country.title)}.webp`,
               }}
               imageAlt={`${country.title} flag`}
               icon={Globe}
-              href={ROUTES.COUNTRIES.SINGLE(country.slug || slugify(country.title))}
+              href={ROUTES.COUNTRIES.SINGLE(
+                country.slug || slugify(country.title),
+              )}
             />
           ))}
         </div>

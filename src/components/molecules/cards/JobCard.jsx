@@ -3,12 +3,13 @@ import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ROUTES } from '@/constants/routes/routes';
 
 const JobCard = ({ job, className }) => {
-  const router = useRouter();
   const {
     title,
     workingHours,
+    location,
     salary,
     description,
     experience,
@@ -16,7 +17,6 @@ const JobCard = ({ job, className }) => {
     slug,
   } = job;
 
-  // Calculate days ago
   const postedDaysAgo = createdAt
     ? Math.floor((new Date() - new Date(createdAt)) / (1000 * 60 * 60 * 24))
     : 0;
@@ -33,7 +33,7 @@ const JobCard = ({ job, className }) => {
         <div className="text-foreground mb-5 flex flex-wrap items-center gap-4 text-base font-medium sm:gap-6">
           <span className="flex items-center justify-center gap-2">
             <MapPin size={20} className="text-foreground" />
-            {workingHours || 'Full-time'}
+            {location || workingHours || 'Not specified'}
           </span>
           <span className="flex items-center gap-2">
             <Banknote size={20} className="text-foreground" />
@@ -66,7 +66,7 @@ const JobCard = ({ job, className }) => {
             <Clock size={20} />
             {postedDaysAgo === 0 ? 'Today' : `${postedDaysAgo} Days ago`}
           </span>
-          <Link href={`/jobs/${slug}`}>
+          <Link href={ROUTES.JOBS.SINGLE(slug)}>
             <button className="bg-primary-blue hover:bg-dark-green cursor-pointer rounded-full px-6 py-2.5 text-base font-semibold text-white transition-colors duration-200">
               Apply Now
             </button>

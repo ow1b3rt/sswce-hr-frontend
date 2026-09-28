@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { fetcher, resolveUrl } from "../../utils/utils.js";
-import { useResolvedDefault } from "../atoms/Input.jsx";
-import { MediaLibraryModal } from "../organisms/MediaLibraryModal.jsx";
+import { fetcher, resolveUrl } from '../../utils/utils.js';
+import { useResolvedDefault } from '../atoms/Input.jsx';
+import { MediaLibraryModal } from '../organisms/MediaLibraryModal.jsx';
 
 export function ImageUploader({
   name,
@@ -12,16 +12,16 @@ export function ImageUploader({
   titlename,
   setCoverImage = () => {},
   removeCoverImage = null,
-  id = "cover-image-input",
-  caption = "Cover Image",
+  id = 'cover-image-input',
+  caption = 'Cover Image',
   defaultCover = null,
   ...rest
 }) {
   const [coverPreview, setCoverPreview] = useState(defaultCover);
   const [selectedMediaId, setSelectedMediaId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [alt, setAlt] = useState("");
-  const [title, setTitle] = useState("");
+  const [alt, setAlt] = useState('');
+  const [title, setTitle] = useState('');
   const defaultProps = useResolvedDefault(name, rest);
   const defValue = defaultProps?.defaultValue;
 
@@ -93,14 +93,24 @@ export function ImageUploader({
             <circle cx="8.5" cy="8.5" r="1.5" />
             <path d="M21 15l-5-5L5 21" />
           </svg>
-          <span className="text-sm font-medium">Click to choose from media library</span>
-          <span className="text-xs text-gray-300">PNG, JPG, WEBP up to 10MB</span>
+          <span className="text-sm font-medium">
+            Click to choose from media library
+          </span>
+          <span className="text-xs text-gray-300">
+            PNG, JPG, WEBP up to 10MB
+          </span>
         </button>
       )}
 
       {/* Hidden field so the selected media id still submits with the form, if needed */}
       {selectedMediaId && (
-        <input type="hidden" name={name} id={id} value={selectedMediaId} readOnly />
+        <input
+          type="hidden"
+          name={name}
+          id={id}
+          value={selectedMediaId}
+          readOnly
+        />
       )}
       {/* <input type="hidden" name={altname || `${name?.split("_")?.[0]}_alt`} value={alt} readOnly />
       <input

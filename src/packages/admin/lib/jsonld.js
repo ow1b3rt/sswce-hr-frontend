@@ -8,8 +8,8 @@
  * - All schema injected as <script type="application/ld+json"> in <head>
  */
 
-const SITE_URL = "https://sswtrainingcentre.com.np";
-const SITE_NAME = "SSW Training Centre Nepal";
+const SITE_URL = 'https://sswtrainingcentre.com.np';
+const SITE_NAME = 'SSW Training Centre Nepal';
 const LOGO_URL = `${SITE_URL}/favicon.ico`;
 
 /**
@@ -24,7 +24,7 @@ export function toNepalISO(dateStr) {
     // Offset is +05:45 for Nepal (5 hours 45 minutes = 345 minutes)
     const offset = 345;
     const local = new Date(d.getTime() + offset * 60 * 1000);
-    const iso = local.toISOString().replace("Z", "");
+    const iso = local.toISOString().replace('Z', '');
     return `${iso.slice(0, 19)}+05:45`;
   } catch {
     return null;
@@ -35,12 +35,12 @@ export function toNepalISO(dateStr) {
  * Remove all properties with null/undefined/empty-string values (deep).
  */
 function clean(obj) {
-  if (obj === null || obj === undefined || obj === "") return undefined;
+  if (obj === null || obj === undefined || obj === '') return undefined;
   if (Array.isArray(obj)) {
     const cleaned = obj.map(clean).filter((x) => x !== undefined);
     return cleaned.length > 0 ? cleaned : undefined;
   }
-  if (typeof obj === "object") {
+  if (typeof obj === 'object') {
     const result = {};
     for (const [key, value] of Object.entries(obj)) {
       const cleaned = clean(value);
@@ -55,7 +55,7 @@ function clean(obj) {
  * Safely stringify an object, omitting empty fields.
  */
 export function stringifyLD(obj) {
-  return JSON.stringify(clean(obj), null, 2).replace(/</g, "\\u003c");
+  return JSON.stringify(clean(obj), null, 2).replace(/</g, '\\u003c');
 }
 
 // ──────────────────────────────────────────────
@@ -72,32 +72,32 @@ export function siteSchema({ facebook, twitter } = {}) {
   if (twitter) sameAs.push(twitter);
 
   return clean({
-    "@context": "https://schema.org",
-    "@graph": [
+    '@context': 'https://schema.org',
+    '@graph': [
       {
-        "@type": "NewsMediaOrganization",
-        "@id": `${SITE_URL}/#organization`,
+        '@type': 'NewsMediaOrganization',
+        '@id': `${SITE_URL}/#organization`,
         name: SITE_NAME,
         url: SITE_URL,
         logo: {
-          "@type": "ImageObject",
+          '@type': 'ImageObject',
           url: LOGO_URL,
         },
         ...(sameAs.length > 0 ? { sameAs } : {}),
       },
       {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
         name: SITE_NAME,
-        publisher: { "@id": `${SITE_URL}/#organization` },
+        publisher: { '@id': `${SITE_URL}/#organization` },
         potentialAction: {
-          "@type": "SearchAction",
+          '@type': 'SearchAction',
           target: {
-            "@type": "EntryPoint",
+            '@type': 'EntryPoint',
             urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
           },
-          "query-input": "required name=search_term_string",
+          'query-input': 'required name=search_term_string',
         },
       },
     ],
@@ -117,12 +117,12 @@ export function homepageToolsSchema(tools = []) {
 
   const itemListElement = tools.map((tool, i) =>
     clean({
-      "@type": "ListItem",
+      '@type': 'ListItem',
       position: i + 1,
       item: {
-        "@type": "SoftwareApplication",
+        '@type': 'SoftwareApplication',
         name: tool.name,
-        applicationCategory: tool.category || "UtilitiesApplication",
+        applicationCategory: tool.category || 'UtilitiesApplication',
         url: `${SITE_URL}${tool.path}`,
       },
     }),
@@ -131,12 +131,12 @@ export function homepageToolsSchema(tools = []) {
   if (!itemListElement.length) return null;
 
   return clean({
-    "@context": "https://schema.org",
-    "@graph": [
+    '@context': 'https://schema.org',
+    '@graph': [
       {
-        "@type": "ItemList",
-        "@id": `${SITE_URL}/#tools-hub`,
-        name: "Featured Interactive Tools",
+        '@type': 'ItemList',
+        '@id': `${SITE_URL}/#tools-hub`,
+        name: 'Featured Interactive Tools',
         itemListElement,
       },
     ],
@@ -167,8 +167,8 @@ export function articleSchema({
 
   const graph = [
     clean({
-      "@type": "Article",
-      "@id": `${articleUrl}/#article`,
+      '@type': 'Article',
+      '@id': `${articleUrl}/#article`,
       headline: title,
       description: excerpt,
       url: articleUrl,
@@ -177,17 +177,17 @@ export function articleSchema({
       image: imageUrl ? [imageUrl] : undefined,
       author: authorName
         ? {
-            "@type": "Person",
+            '@type': 'Person',
             name: authorName,
             ...(authorUrl ? { url: authorUrl } : {}),
           }
         : undefined,
-      publisher: { "@id": `${SITE_URL}/#organization` },
+      publisher: { '@id': `${SITE_URL}/#organization` },
     }),
   ];
 
   // BreadcrumbList
-  const breadcrumbItems = [{ position: 1, name: "Home", item: SITE_URL }];
+  const breadcrumbItems = [{ position: 1, name: 'Home', item: SITE_URL }];
   if (categoryName && categoryUrl) {
     breadcrumbItems.push({
       position: 2,
@@ -199,11 +199,11 @@ export function articleSchema({
 
   graph.push(
     clean({
-      "@type": "BreadcrumbList",
-      "@id": `${articleUrl}/#breadcrumbs`,
+      '@type': 'BreadcrumbList',
+      '@id': `${articleUrl}/#breadcrumbs`,
       itemListElement: breadcrumbItems.map((crumb) =>
         clean({
-          "@type": "ListItem",
+          '@type': 'ListItem',
           position: crumb.position,
           name: crumb.name,
           ...(crumb.item ? { item: crumb.item } : {}),
@@ -213,8 +213,8 @@ export function articleSchema({
   );
 
   return clean({
-    "@context": "https://schema.org",
-    "@graph": graph,
+    '@context': 'https://schema.org',
+    '@graph': graph,
   });
 }
 
@@ -243,8 +243,8 @@ export function newsArticleSchema({
 
   const graph = [
     clean({
-      "@type": "NewsArticle",
-      "@id": `${articleUrl}/#article`,
+      '@type': 'NewsArticle',
+      '@id': `${articleUrl}/#article`,
       headline: title,
       description: excerpt,
       url: articleUrl,
@@ -253,17 +253,17 @@ export function newsArticleSchema({
       image: imageUrls && imageUrls.length > 0 ? imageUrls : undefined,
       author: authorName
         ? {
-            "@type": "Person",
+            '@type': 'Person',
             name: authorName,
             ...(authorUrl ? { url: authorUrl } : {}),
           }
         : undefined,
-      publisher: { "@id": `${SITE_URL}/#organization` },
+      publisher: { '@id': `${SITE_URL}/#organization` },
     }),
   ];
 
   // BreadcrumbList
-  const breadcrumbItems = [{ position: 1, name: "Home", item: SITE_URL }];
+  const breadcrumbItems = [{ position: 1, name: 'Home', item: SITE_URL }];
   if (categoryName && categoryUrl) {
     breadcrumbItems.push({
       position: 2,
@@ -275,11 +275,11 @@ export function newsArticleSchema({
 
   graph.push(
     clean({
-      "@type": "BreadcrumbList",
-      "@id": `${articleUrl}/#breadcrumbs`,
+      '@type': 'BreadcrumbList',
+      '@id': `${articleUrl}/#breadcrumbs`,
       itemListElement: breadcrumbItems.map((crumb) =>
         clean({
-          "@type": "ListItem",
+          '@type': 'ListItem',
           position: crumb.position,
           name: crumb.name,
           ...(crumb.item ? { item: crumb.item } : {}),
@@ -289,8 +289,8 @@ export function newsArticleSchema({
   );
 
   return clean({
-    "@context": "https://schema.org",
-    "@graph": graph,
+    '@context': 'https://schema.org',
+    '@graph': graph,
   });
 }
 
@@ -308,7 +308,7 @@ export function toolSchema({
   url,
   name,
   description,
-  category = "UtilitiesApplication",
+  category = 'UtilitiesApplication',
   averageRating,
   totalReviews,
 }) {
@@ -316,49 +316,49 @@ export function toolSchema({
 
   const graph = [
     clean({
-      "@type": "WebApplication",
-      "@id": `${toolUrl}/#software`,
+      '@type': 'WebApplication',
+      '@id': `${toolUrl}/#software`,
       name,
       description,
       url: toolUrl,
       applicationCategory: category,
-      operatingSystem: "All",
-      browserRequirements: "Requires JavaScript",
+      operatingSystem: 'All',
+      browserRequirements: 'Requires JavaScript',
       offers: {
-        "@type": "Offer",
-        price: "0.00",
-        priceCurrency: "NPR",
+        '@type': 'Offer',
+        price: '0.00',
+        priceCurrency: 'NPR',
       },
       ...(averageRating != null && totalReviews != null
         ? {
             aggregateRating: {
-              "@type": "AggregateRating",
+              '@type': 'AggregateRating',
               ratingValue: String(averageRating),
               ratingCount: String(totalReviews),
             },
           }
         : {}),
-      publisher: { "@id": `${SITE_URL}/#organization` },
+      publisher: { '@id': `${SITE_URL}/#organization` },
     }),
   ];
 
   // BreadcrumbList
   graph.push(
     clean({
-      "@type": "BreadcrumbList",
-      "@id": `${toolUrl}/#breadcrumbs`,
+      '@type': 'BreadcrumbList',
+      '@id': `${toolUrl}/#breadcrumbs`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
         {
-          "@type": "ListItem",
+          '@type': 'ListItem',
           position: 2,
-          name: "Tools",
+          name: 'Tools',
           item: `${SITE_URL}/tools/`,
         },
-        { "@type": "ListItem", position: 3, name },
+        { '@type': 'ListItem', position: 3, name },
       ].map((crumb) =>
         clean({
-          "@type": "ListItem",
+          '@type': 'ListItem',
           position: crumb.position,
           name: crumb.name,
           ...(crumb.item ? { item: crumb.item } : {}),
@@ -368,8 +368,8 @@ export function toolSchema({
   );
 
   return clean({
-    "@context": "https://schema.org",
-    "@graph": graph,
+    '@context': 'https://schema.org',
+    '@graph': graph,
   });
 }
 
@@ -387,7 +387,7 @@ export function breadcrumbSchema(crumbs = [], pageUrl = SITE_URL) {
 
   const itemListElement = crumbs.map((crumb, i) =>
     clean({
-      "@type": "ListItem",
+      '@type': 'ListItem',
       position: i + 1,
       name: crumb.name,
       ...(crumb.item ? { item: crumb.item } : {}),
@@ -395,11 +395,11 @@ export function breadcrumbSchema(crumbs = [], pageUrl = SITE_URL) {
   );
 
   return clean({
-    "@context": "https://schema.org",
-    "@graph": [
+    '@context': 'https://schema.org',
+    '@graph': [
       {
-        "@type": "BreadcrumbList",
-        "@id": `${pageUrl}/#breadcrumbs`,
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}/#breadcrumbs`,
         itemListElement,
       },
     ],
@@ -428,8 +428,8 @@ export function generalAuthorSchema({
   const websiteUrl = SITE_URL;
   const graph = [
     clean({
-      "@type": "Person",
-      "@id": `${websiteUrl}/#author`,
+      '@type': 'Person',
+      '@id': `${websiteUrl}/#author`,
       name: publicDisplayName,
       givenName: firstName,
       familyName: lastName,
@@ -438,21 +438,21 @@ export function generalAuthorSchema({
       url: websiteUrl,
       description: [
         {
-          "@language": "en",
-          "@value": bioEnglish,
+          '@language': 'en',
+          '@value': bioEnglish,
         },
         {
-          "@language": secondLocale,
-          "@value": bioSecondLocale,
+          '@language': secondLocale,
+          '@value': bioSecondLocale,
         },
       ],
       image: {
-        "@type": "ImageObject",
+        '@type': 'ImageObject',
         url: profilePicture,
       },
       jobTitle: jobTitle,
       worksFor: {
-        "@type": "Organization",
+        '@type': 'Organization',
         name: companName,
         url: companyUrl,
       },
@@ -460,25 +460,34 @@ export function generalAuthorSchema({
     }),
   ];
   return clean({
-    "@context": "https://schema.org",
-    "@graph": graph,
+    '@context': 'https://schema.org',
+    '@graph': graph,
   });
 }
 
-export function authorSchema({ name, bio, email, avatarUrl, authorUrl, socialLinks = [] }) {
+export function authorSchema({
+  name,
+  bio,
+  email,
+  avatarUrl,
+  authorUrl,
+  socialLinks = [],
+}) {
   const person = clean({
-    "@type": "Person",
-    "@id": authorUrl ? `${authorUrl}#author` : undefined,
+    '@type': 'Person',
+    '@id': authorUrl ? `${authorUrl}#author` : undefined,
     name,
     email,
     url: authorUrl,
     description: bio,
-    image: avatarUrl ? clean({ "@type": "ImageObject", url: avatarUrl }) : undefined,
+    image: avatarUrl
+      ? clean({ '@type': 'ImageObject', url: avatarUrl })
+      : undefined,
     sameAs: socialLinks.filter(Boolean), // drop empty/undefined entries
   });
 
   return {
-    "@context": "https://schema.org",
-    "@graph": [person],
+    '@context': 'https://schema.org',
+    '@graph': [person],
   };
 }

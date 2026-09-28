@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Trash2 } from 'lucide-react';
 
-import Badge from "@/components/molecules/Badge";
-import { ConfirmationDialog } from "@/components/molecules/ConfirmationModal";
+import Badge from '@/components/molecules/Badge';
+import { ConfirmationDialog } from '@/components/molecules/ConfirmationModal';
 
-import { resolveUrl } from "../../utils/utils.js";
-import { EditButton, ViewButton } from "../atoms/Buttons.jsx";
-import { DeleteAction } from "../organisms/DeleteAction.jsx";
-import { useEntity } from "./AdminChildrenLayout.jsx";
+import { resolveUrl } from '../../utils/utils.js';
+import { EditButton, ViewButton } from '../atoms/Buttons.jsx';
+import { DeleteAction } from '../organisms/DeleteAction.jsx';
+import { useEntity } from './AdminChildrenLayout.jsx';
 
 function normalizePayloadResponse(data) {
   if (Array.isArray(data)) {
@@ -35,9 +35,9 @@ function normalizePayloadResponse(data) {
 
 // Payload relationship/upload fields come back either as a raw id string
 // (depth: 0) or a populated object (depth >= 1). Handle both without erroring.
-function resolveRelationValue(value, labelKey = "name") {
+function resolveRelationValue(value, labelKey = 'name') {
   if (value == null) return null;
-  if (typeof value === "string") return { id: value, label: value }; // unpopulated — just the id
+  if (typeof value === 'string') return { id: value, label: value }; // unpopulated — just the id
   return { id: value.id, label: value[labelKey] ?? value.filename ?? value.id };
 }
 
@@ -80,7 +80,9 @@ export default function DataTable({
   }, [someOnPageSelected]);
 
   const toggleAll = () => {
-    setSelectedIds(allOnPageSelected ? new Set() : new Set(items.map((item) => item.id)));
+    setSelectedIds(
+      allOnPageSelected ? new Set() : new Set(items.map((item) => item.id)),
+    );
   };
 
   const toggleOne = (id) => {
@@ -106,9 +108,13 @@ export default function DataTable({
     setIsDeleting(true);
     try {
       const results = await Promise.allSettled(
-        Array.from(selectedIds).map((id) => fetch(`/${name}/${id}`, { method: "DELETE" })),
+        Array.from(selectedIds).map((id) =>
+          fetch(`/${name}/${id}`, { method: 'DELETE' }),
+        ),
       );
-      const failed = results.filter((r) => r.status === "rejected" || r.value?.ok === false);
+      const failed = results.filter(
+        (r) => r.status === 'rejected' || r.value?.ok === false,
+      );
       if (failed.length > 0) {
         console.error(`${failed.length} of ${selectedCount} deletes failed`);
       }
@@ -121,19 +127,24 @@ export default function DataTable({
   };
 
   const renderCell = (item, field) => {
-    const [key, type, ...rest] = field.key.split(":");
+    const [key, type, ...rest] = field.key.split(':');
     const value = item[key];
 
     switch (type) {
-      case "image":
+      case 'image':
         return (
           <div className="h-9 w-9 overflow-hidden rounded-lg bg-gray-100 ring-1 ring-gray-200">
-            <img src={resolveUrl(value)} alt={field.head} className="h-full w-full object-cover" />
+            <img
+              src={resolveUrl(value)}
+              alt={field.head}
+              className="h-full w-full object-cover"
+            />
           </div>
         );
 
-      case "upload": {
-        const media = typeof value === "object" && value !== null ? value : null;
+      case 'upload': {
+        const media =
+          typeof value === 'object' && value !== null ? value : null;
         const src = media?.url ? resolveUrl(media.url) : null;
         if (!src) {
           return (
@@ -144,13 +155,17 @@ export default function DataTable({
         }
         return (
           <div className="h-9 w-9 overflow-hidden rounded-lg bg-gray-100 ring-1 ring-gray-200">
-            <img src={src} alt={media?.alt ?? field.head} className="h-full w-full object-cover" />
+            <img
+              src={src}
+              alt={media?.alt ?? field.head}
+              className="h-full w-full object-cover"
+            />
           </div>
         );
       }
 
-      case "relationship": {
-        const labelKey = rest[0] ?? "name";
+      case 'relationship': {
+        const labelKey = rest[0] ?? 'name';
         const resolved = resolveRelationValue(value, labelKey);
         return resolved ? (
           <span className="text-base text-gray-700">{resolved.label}</span>
@@ -159,34 +174,34 @@ export default function DataTable({
         );
       }
 
-      case "date":
+      case 'date':
         if (!value) {
           return <span className="text-sm text-gray-400">—</span>;
         }
 
         const date = new Date(value);
 
-        const dateText = date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
+        const dateText = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit',
         });
 
-        const timeText = date.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
+        const timeText = date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
           hour12: false,
         });
 
         const period = date
-          .toLocaleTimeString("en-US", {
-            hour: "2-digit",
+          .toLocaleTimeString('en-US', {
+            hour: '2-digit',
             hour12: true,
           })
           .slice(-2);
 
-        const weekday = date.toLocaleDateString("en-US", {
-          weekday: "short",
+        const weekday = date.toLocaleDateString('en-US', {
+          weekday: 'short',
         });
 
         return (
@@ -206,10 +221,12 @@ export default function DataTable({
             </span>
           </div>
         );
-      case "bold":
-        return <span className="text-base font-semibold text-gray-900">{value}</span>;
+      case 'bold':
+        return (
+          <span className="text-base font-semibold text-gray-900">{value}</span>
+        );
 
-      case "status":
+      case 'status':
         return <Badge value={value} className="text-sm!" />;
 
       default:
@@ -225,14 +242,18 @@ export default function DataTable({
     <>
       {canEdit && editHref && (
         <Link
-          href={typeof editHref === "function" ? editHref(item) : editHref + item.id}
+          href={
+            typeof editHref === 'function' ? editHref(item) : editHref + item.id
+          }
           title="Edit"
           className="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
         >
           <EditButton />
         </Link>
       )}
-      {canDelete && <DeleteAction route={`/${name}/${item.id}`} mutate={mutate} />}
+      {canDelete && (
+        <DeleteAction route={`/${name}/${item.id}`} mutate={mutate} />
+      )}
     </>
   );
 
@@ -243,8 +264,8 @@ export default function DataTable({
       {selectionEnabled && selectedCount > 0 && (
         <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5">
           <span className="text-base text-gray-600">
-            <span className="font-medium text-gray-900">{selectedCount}</span>{" "}
-            {selectedCount === 1 ? "record" : "records"} selected
+            <span className="font-medium text-gray-900">{selectedCount}</span>{' '}
+            {selectedCount === 1 ? 'record' : 'records'} selected
           </span>
           <div className="flex items-center gap-3">
             <button
@@ -261,7 +282,7 @@ export default function DataTable({
               className="flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-base font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Trash2 size={14} />
-              {isDeleting ? "Deleting…" : "Delete"}
+              {isDeleting ? 'Deleting…' : 'Delete'}
             </button>
           </div>
         </div>
@@ -306,7 +327,7 @@ export default function DataTable({
                 return (
                   <tr
                     key={item.id ?? index}
-                    className={`transition-colors hover:bg-gray-50 ${isSelected ? "bg-gray-50" : ""}`}
+                    className={`transition-colors hover:bg-gray-50 ${isSelected ? 'bg-gray-50' : ''}`}
                   >
                     {selectionEnabled && (
                       <td className="align-middle">
@@ -320,7 +341,10 @@ export default function DataTable({
                       </td>
                     )}
                     {fields.map((field, i) => (
-                      <td key={i} className="px-4 py-3 align-middle whitespace-nowrap">
+                      <td
+                        key={i}
+                        className="px-4 py-3 align-middle whitespace-nowrap"
+                      >
                         {renderCell(item, field)}
                       </td>
                     ))}
@@ -337,7 +361,11 @@ export default function DataTable({
               {items.length === 0 && (
                 <tr>
                   <td
-                    colSpan={(selectionEnabled ? 1 : 0) + fields.length + (renderActions ? 1 : 0)}
+                    colSpan={
+                      (selectionEnabled ? 1 : 0) +
+                      fields.length +
+                      (renderActions ? 1 : 0)
+                    }
                     className="px-4 py-12 text-center text-base text-gray-400"
                   >
                     No records found.
@@ -352,8 +380,8 @@ export default function DataTable({
       {onPageChange && totalPages > 1 && (
         <div className="flex items-center justify-between text-base">
           <span className="text-gray-500">
-            Page <span className="font-medium text-gray-700">{page}</span> of{" "}
-            <span className="font-medium text-gray-700">{totalPages}</span>{" "}
+            Page <span className="font-medium text-gray-700">{page}</span> of{' '}
+            <span className="font-medium text-gray-700">{totalPages}</span>{' '}
             <span className="text-gray-400">({total} total)</span>
           </span>
           <div className="flex gap-2">
@@ -382,9 +410,9 @@ export default function DataTable({
         onOpenChange={(open) => {
           if (!open) setConfirmBulkDeleteOpen(false);
         }}
-        title={`Delete ${selectedCount} ${selectedCount === 1 ? "record" : "records"}?`}
+        title={`Delete ${selectedCount} ${selectedCount === 1 ? 'record' : 'records'}?`}
         description="This action can't be undone."
-        confirmLabel={isDeleting ? "Deleting…" : "Delete"}
+        confirmLabel={isDeleting ? 'Deleting…' : 'Delete'}
         variant="destructive"
         onConfirm={performBulkDelete}
       />

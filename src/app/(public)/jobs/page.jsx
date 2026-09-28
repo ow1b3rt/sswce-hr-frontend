@@ -2,13 +2,13 @@ import JobCard from '@/components/molecules/cards/JobCard';
 import { AnimatedHeading } from '@/components/atoms/headings';
 
 import { Pagenav } from '@/components/Reusables';
+import { ROUTES } from '@/constants/routes/routes';
 
 async function fetchJobs(page = 1) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/jobs?page=${page}&limit=9`,
-      { cache: 'no-store' },
-    );
+    const res = await fetch(ROUTES.API.JOBS.HOME(page, 9), {
+      cache: 'no-store',
+    });
     if (!res.ok) {
       throw new Error('Failed to fetch jobs');
     }
@@ -54,11 +54,7 @@ export default async function Jobs(props) {
         </p>
       )}
 
-      {totalPages > 1 && (
-        <div className="mt-8 w-full max-w-4xl">
-          <Pagenav page={page} totalPages={totalPages} />
-        </div>
-      )}
+      {totalPages > 1 && <Pagenav page={page} totalPages={totalPages} />}
     </section>
   );
 }

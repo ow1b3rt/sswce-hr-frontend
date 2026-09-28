@@ -1,41 +1,42 @@
-"use client";
+'use client';
 
-import { useContext, useRef } from "react";
+import { useContext, useRef } from 'react';
 
-import { DefaultsContext } from "../molecules/Form";
+import { DefaultsContext } from '../molecules/Form';
 
 // Converts snake_case / camelCase / kebab-case names into readable labels
 // e.g. "country_name" -> "Country Name", "firstName" -> "First Name"
-function humanize(name = "") {
+function humanize(name = '') {
   return name
-    .replace(/_/g, " ") // snake_case -> spaces
-    .replace(/-/g, " ") // kebab-case -> spaces
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2") // camelCase -> spaces
+    .replace(/_/g, ' ') // snake_case -> spaces
+    .replace(/-/g, ' ') // kebab-case -> spaces
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2') // camelCase -> spaces
     .trim()
-    .replace(/\s+/g, " ")
-    .split(" ")
+    .replace(/\s+/g, ' ')
+    .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    .join(' ');
 }
 
 function toLocalDatetimeString(isoString) {
-  if (!isoString) return "";
+  if (!isoString) return '';
   const date = new Date(isoString);
   if (isNaN(date.getTime())) return isoString;
-  const pad = (n) => String(n).padStart(2, "0");
+  const pad = (n) => String(n).padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 export function useResolvedDefault(name, rest) {
   const contextDefaults = useContext(DefaultsContext);
-  const isControlled = "value" in rest;
-  let resolvedDefaultValue = "defaultValue" in rest ? rest.defaultValue : contextDefaults?.[name];
+  const isControlled = 'value' in rest;
+  let resolvedDefaultValue =
+    'defaultValue' in rest ? rest.defaultValue : contextDefaults?.[name];
 
-  if (rest.type === "datetime-local" && resolvedDefaultValue) {
+  if (rest.type === 'datetime-local' && resolvedDefaultValue) {
     resolvedDefaultValue = toLocalDatetimeString(resolvedDefaultValue);
   }
 
-  if (rest.type === "date" && resolvedDefaultValue) {
+  if (rest.type === 'date' && resolvedDefaultValue) {
     const date = new Date(resolvedDefaultValue);
     if (!isNaN(date)) {
       resolvedDefaultValue = toLocalDatetimeString(date).slice(0, 10);
@@ -72,8 +73,8 @@ export function Input({
 
   return (
     <div
-      className={`flex w-full flex-col gap-1.5 border-black ${className || ""}`}
-      style={{ display: hidden ? "none" : "flex", ...style }}
+      className={`flex w-full flex-col gap-1.5 border-black ${className || ''}`}
+      style={{ display: hidden ? 'none' : 'flex', ...style }}
     >
       {resolvedPlaceholder && (
         <label htmlFor={name} className="text-sm font-medium text-gray-700">
@@ -86,7 +87,7 @@ export function Input({
         id={name}
         name={name}
         required={required}
-        className={`w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none ${inputClassName || ""}`}
+        className={`w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none ${inputClassName || ''}`}
         {...defaultProps}
         {...rest}
       />
@@ -94,14 +95,22 @@ export function Input({
   );
 }
 
-export function Select({ placeholder, children, className, name, required, ...rest }) {
+export function Select({
+  placeholder,
+  children,
+  className,
+  name,
+  required,
+  ...rest
+}) {
   const defaultProps = useResolvedDefault(name, rest);
   const resolvedPlaceholder = placeholder ?? humanize(name);
   const selectRef = useRef(null);
-  const hasDefault = defaultProps.defaultValue != null && defaultProps.defaultValue !== "";
+  const hasDefault =
+    defaultProps.defaultValue != null && defaultProps.defaultValue !== '';
 
   return (
-    <div className={`flex w-full flex-col gap-1.5 ${className || ""}`}>
+    <div className={`flex w-full flex-col gap-1.5 ${className || ''}`}>
       {resolvedPlaceholder && (
         <label htmlFor={name} className="text-sm font-medium text-gray-700">
           {resolvedPlaceholder}
@@ -130,7 +139,7 @@ export function Textarea({ placeholder, className, name, required, ...rest }) {
   const textareaRef = useRef(null);
 
   return (
-    <div className={`flex w-full flex-col gap-1.5 ${className || ""}`}>
+    <div className={`flex w-full flex-col gap-1.5 ${className || ''}`}>
       {resolvedPlaceholder && (
         <label htmlFor={name} className="text-sm font-medium text-gray-700">
           {resolvedPlaceholder}
@@ -186,11 +195,11 @@ export function RateInput({
       <span
         className="font-semibold"
         style={{
-          color: required ? "var(--secondary-1000)" : "black",
-          marginBottom: "5px",
+          color: required ? 'var(--secondary-1000)' : 'black',
+          marginBottom: '5px',
         }}
       >
-        {tag + (required ? "*" : "")}
+        {tag + (required ? '*' : '')}
       </span>
       <input
         type={type}
@@ -213,18 +222,18 @@ export function RateDisplay({ required = false, value, tag, style }) {
       <span
         className="font-source-serif"
         style={{
-          color: required ? "var(--secondary-1000)" : "black",
+          color: required ? 'var(--secondary-1000)' : 'black',
           fontWeight: 300,
         }}
       >
-        {tag + (required ? "*" : "")}
+        {tag + (required ? '*' : '')}
       </span>
       <div
         className="rate-input"
         style={{
-          display: "flex",
-          alignItems: "center",
-          color: value ? "black" : "#bbb",
+          display: 'flex',
+          alignItems: 'center',
+          color: value ? 'black' : '#bbb',
           ...style,
         }}
       >

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { AdminLayout, useApi, useGet, useToast } from "@/packages/admin";
+import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { AdminLayout, useApi, useGet, useToast } from '@/packages/admin';
 import {
   CalendarClock,
   CalendarDays,
@@ -15,27 +15,27 @@ import {
   MapPin,
   Phone,
   Target,
-} from "lucide-react";
+} from 'lucide-react';
 
 const STATUS_SELECT_STYLES = {
-  warning: "border-yellow-200 bg-yellow-50 text-yellow-800",
-  success: "border-green-200 bg-green-50 text-green-800",
-  danger: "border-red-200 bg-red-50 text-red-800",
-  primary: "border-blue-200 bg-blue-50 text-blue-800",
-  default: "border-gray-200 bg-gray-50 text-gray-700",
+  warning: 'border-yellow-200 bg-yellow-50 text-yellow-800',
+  success: 'border-green-200 bg-green-50 text-green-800',
+  danger: 'border-red-200 bg-red-50 text-red-800',
+  primary: 'border-blue-200 bg-blue-50 text-blue-800',
+  default: 'border-gray-200 bg-gray-50 text-gray-700',
 };
 
 const STATUS_LABEL = {
-  pending: "Pending",
-  confirmed: "Confirmed",
-  cancelled: "Cancelled",
-  completed: "Completed",
+  pending: 'Pending',
+  confirmed: 'Confirmed',
+  cancelled: 'Cancelled',
+  completed: 'Completed',
 };
 
 function FieldTile({ icon: Icon, label, value, fullWidth = false }) {
   return (
     <div
-      className={`rounded-xl border border-gray-200 bg-white p-4 shadow-sm ${fullWidth ? "sm:col-span-2" : ""}`}
+      className={`rounded-xl border border-gray-200 bg-white p-4 shadow-sm ${fullWidth ? 'sm:col-span-2' : ''}`}
     >
       <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-gray-500 uppercase">
         {Icon && <Icon size={14} className="text-gray-400" />}
@@ -50,17 +50,17 @@ function FieldTile({ icon: Icon, label, value, fullWidth = false }) {
 
 function formatDate(value) {
   if (!value) return null;
-  return new Date(value).toLocaleString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+  return new Date(value).toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 }
 
 function StatusSelect({ defaultValue, disabled }) {
-  const styleKey = STATUS_LABEL[defaultValue] ? defaultValue : "default";
+  const styleKey = STATUS_LABEL[defaultValue] ? defaultValue : 'default';
 
   return (
     <div className="relative shrink-0">
@@ -91,23 +91,25 @@ export default function AppointmentDetailPage() {
   const { patch } = useApi();
   const router = useRouter();
   const record = data?.item;
-  const status = record?.status ?? "pending";
+  const status = record?.status ?? 'pending';
 
   const [saving, setSaving] = useState(false);
 
-  const fullName = record ? [record.firstName, record.lastName].filter(Boolean).join(" ") : "";
+  const fullName = record
+    ? [record.firstName, record.lastName].filter(Boolean).join(' ')
+    : '';
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const next = new FormData(e.target).get("status");
+    const next = new FormData(e.target).get('status');
     if (!next || next === status) return;
 
     setSaving(true);
     try {
       const res = await patch(`/appointments/${id}`, { status: next });
       if (res) {
-        toast.success("Appointment status updated successfully");
-        router.replace("/admin/appointments");
+        toast.success('Appointment status updated successfully');
+        router.replace('/admin/appointments');
       }
     } finally {
       setSaving(false);
@@ -115,7 +117,10 @@ export default function AppointmentDetailPage() {
   }
 
   return (
-    <AdminLayout title={fullName || "Appointment"} formId="appointment-status-form">
+    <AdminLayout
+      title={fullName || 'Appointment'}
+      formId="appointment-status-form"
+    >
       {loading ? (
         <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-sm">
           <Loader2 size={18} className="animate-spin text-gray-400" />
@@ -138,13 +143,19 @@ export default function AppointmentDetailPage() {
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="truncate text-lg font-semibold text-gray-900">
-                {fullName || "Appointment"}
+                {fullName || 'Appointment'}
               </h2>
               <p className="truncate text-sm text-gray-500">{record.email}</p>
             </div>
             <div className="flex shrink-0 items-center gap-3">
-              {saving && <Loader2 size={16} className="animate-spin text-gray-400" />}
-              <StatusSelect defaultValue={status} key={status} disabled={saving} />
+              {saving && (
+                <Loader2 size={16} className="animate-spin text-gray-400" />
+              )}
+              <StatusSelect
+                defaultValue={status}
+                key={status}
+                disabled={saving}
+              />
             </div>
           </div>
 
@@ -159,7 +170,11 @@ export default function AppointmentDetailPage() {
               label="Appointment Type"
               value={record.appointmentType}
             />
-            <FieldTile icon={Clock} label="Preferred Time" value={record.preferredTime} />
+            <FieldTile
+              icon={Clock}
+              label="Preferred Time"
+              value={record.preferredTime}
+            />
             <FieldTile
               icon={CalendarDays}
               label="Received at"

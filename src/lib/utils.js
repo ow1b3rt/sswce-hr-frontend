@@ -1,3 +1,5 @@
+import { stripHtml } from '@/packages/admin/utils/utils';
+
 export { cn } from 'cn';
 
 export function slugify(str) {
@@ -41,4 +43,38 @@ export function resolveUrl(url) {
   if (!url) return null;
 
   return url.startsWith('http') ? url : `${process.env.NEXT_PUBLIC_HOST}${url}`;
+}
+
+export function localDate(date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  });
+}
+
+export function getMediaUrl(path) {
+  if (!path) return '';
+  return path.startsWith('http')
+    ? path
+    : `${process.env.NEXT_PUBLIC_HOST}${path}`;
+}
+
+export function mapBlogItem(item) {
+  const content = stripHtml(item.content);
+  return {
+    image: {
+      src: item.media ? getMediaUrl(item.media.url) : '/images/logo.svg',
+      alt: item.media?.alt || item.title,
+    },
+    author: {
+      name: item.author?.name || 'SSWCE Team',
+      avatar: getMediaUrl(item.author?.avatar) || '/images/logo.svg',
+    },
+    date: localDate(item.publishedAt || item.createdAt),
+    title: item.title,
+    desc: content.slice(0, 160) + (content.length > 160 ? '...' : ''),
+    ctaLabel: 'Read More',
+    url: `/blogs/${item.slug}`,
+  };
 }

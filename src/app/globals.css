@@ -8,18 +8,17 @@
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
 
-   --color-primary-green: #4CAB47;
+  --color-primary-green: #4cab47;
   --color-primary-green-dark: hsl(117 41% 32%);
 
   --color-primary-red: #d41920;
   --color-primary-red-dark: hsl(358 79% 31%);
-  --color-faint-red: #FFF6F6;
+  --color-faint-red: #fff6f6;
 
   --color-text-color: #4b4b4b;
-  --color-primary-blue: #001F6B;
+  --color-primary-blue: #001f6b;
   --color-primary-blue-dark: hsl(223 100% 21%);
-  --color-faint-blue:#F3F7FF;
-
+  --color-faint-blue: #f3f7ff;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -187,6 +186,12 @@
     object-fit: cover;
   }
 }
+/* blog article content (rendered by ArticleBody) */
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 /* animations */
 .marquee-track {
   animation-name: var(--marquee-name);
