@@ -52,7 +52,7 @@ export const ROUTES = {
       SINGLE_VIA_SLUG: (slug) =>
         `${process.env.NEXT_PUBLIC_API}/jobs/slug/${slug}`,
     },
-    COUNTRY: `${process.env.NEXT_PUBLIC_API}/layouts/country`,
+    COUNTRY: `${process.env.NEXT_PUBLIC_API}/layouts/countries`,
     APPOINTMENTS: `${process.env.NEXT_PUBLIC_API}/appointments`,
     EVENTS: {
       HOME: (page = 1, limit = 9) =>

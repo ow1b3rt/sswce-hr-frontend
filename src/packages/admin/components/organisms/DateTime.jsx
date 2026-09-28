@@ -1,17 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import DatePicker from "react-datepicker";
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export function DateTime({
   defaultValue,
-  name = "publishedAt",
-  label = "Publish date",
+  name = 'publishedAt',
+  label = 'Publish date',
   required = false,
 }) {
-  const [publishedAt, setPublishedAt] = useState(defaultValue ? new Date(defaultValue) : null);
+  const [publishedAt, setPublishedAt] = useState(
+    defaultValue ? new Date(defaultValue) : null,
+  );
 
   return (
     <fieldset className="flex w-full flex-col gap-1.5">
@@ -30,7 +32,11 @@ export function DateTime({
         placeholderText="Select date and time"
         className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
       />
-      <input type="hidden" name={name} value={publishedAt ? publishedAt.toISOString() : ""} />
+      <input
+        type="hidden"
+        name={name}
+        value={publishedAt ? publishedAt.toISOString() : ''}
+      />
     </fieldset>
   );
 }

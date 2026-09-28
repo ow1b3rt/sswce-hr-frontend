@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Calendar } from "lucide-react";
+import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
-import { BlogCard } from "@/components/molecules/cards/BlogCard";
+import { BlogCard } from '@/components/molecules/cards/BlogCard';
 
 export function EventsSection({ title, events, initialLimit }) {
   const [expanded, setExpanded] = useState(false);
@@ -15,7 +15,9 @@ export function EventsSection({ title, events, initialLimit }) {
 
   return (
     <>
-      <h2 className="mt-10 mb-6 text-xl font-bold text-gray-900 md:text-2xl">{title}</h2>
+      <h2 className="mt-10 mb-6 text-xl font-bold text-gray-900 md:text-2xl">
+        {title}
+      </h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visibleEvents.map((event, index) => (
           <BlogCard key={index} blog={event.blog} CardIcon={Calendar} />
@@ -28,7 +30,7 @@ export function EventsSection({ title, events, initialLimit }) {
             onClick={() => setExpanded((prev) => !prev)}
             className="border-primary text-primary hover:bg-primary hover:bg-primary-green rounded-full border px-6 py-2 text-sm font-medium transition hover:text-white"
           >
-            {expanded ? "See less" : "See more"}
+            {expanded ? 'See less' : 'See more'}
           </button>
         </div>
       )}

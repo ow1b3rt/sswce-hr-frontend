@@ -1,46 +1,56 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
-import { FileText, FileVideo, ImageIcon, Loader2, Search, Upload, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
+import {
+  FileText,
+  FileVideo,
+  ImageIcon,
+  Loader2,
+  Search,
+  Upload,
+  X,
+} from 'lucide-react';
 
-import { useApi, useGet } from "../../contexts/ApiContext.jsx";
-import { getMediaRoute } from "../../lib/runtime.config.js";
-import { resolveUrl } from "../../utils/utils.js";
-import { Input, Select } from "../atoms/Input.jsx";
+import { useApi, useGet } from '../../contexts/ApiContext.jsx';
+import { getMediaRoute } from '../../lib/runtime.config.js';
+import { resolveUrl } from '../../utils/utils.js';
+import { Input, Select } from '../atoms/Input.jsx';
 
 const LIMIT = 20;
 const SEARCH_DEBOUNCE_MS = 400;
-const TYPE_OPTIONS = ["pdf", "docx", "image", "video"];
+const TYPE_OPTIONS = ['pdf', 'docx', 'image', 'video'];
 
 // Falls back to guessing from the file extension if the item has no `type` field
 function getFileKind(item) {
   if (item.type) return item.type;
-  const source = item.filename || item.url || "";
-  const ext = source.split(".").pop()?.toLowerCase();
-  if (["jpg", "jpeg", "png", "webp", "gif", "svg"].includes(ext)) return "image";
-  if (ext === "pdf") return "pdf";
-  if (["doc", "docx"].includes(ext)) return "docx";
-  if (["mp4", "webm", "mov", "avi"].includes(ext)) return "video";
-  return "file";
+  const source = item.filename || item.url || '';
+  const ext = source.split('.').pop()?.toLowerCase();
+  if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'].includes(ext))
+    return 'image';
+  if (ext === 'pdf') return 'pdf';
+  if (['doc', 'docx'].includes(ext)) return 'docx';
+  if (['mp4', 'webm', 'mov', 'avi'].includes(ext)) return 'video';
+  return 'file';
 }
 
 // Same idea, but for a raw browser File object (from the upload picker)
 function getFileKindFromFile(file) {
-  if (file.type.startsWith("image/")) return "image";
-  if (file.type.startsWith("video/")) return "video";
-  if (file.type === "application/pdf") return "pdf";
+  if (file.type.startsWith('image/')) return 'image';
+  if (file.type.startsWith('video/')) return 'video';
+  if (file.type === 'application/pdf') return 'pdf';
   if (
-    file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-    file.type === "application/msword"
+    file.type ===
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+    file.type === 'application/msword'
   ) {
-    return "docx";
+    return 'docx';
   }
-  const ext = file.name.split(".").pop()?.toLowerCase();
-  if (ext === "pdf") return "pdf";
-  if (["doc", "docx"].includes(ext)) return "docx";
-  if (["mp4", "webm", "mov", "avi"].includes(ext)) return "video";
-  return "file";
+  const ext = file.name.split('.').pop()?.toLowerCase();
+  if (ext === 'pdf') return 'pdf';
+  if (['doc', 'docx'].includes(ext)) return 'docx';
+  if (['mp4', 'webm', 'mov', 'avi'].includes(ext)) return 'video';
+  return 'file';
 }
 
 function FilePreview({ label, kind }) {
@@ -60,7 +70,7 @@ function FilePreview({ label, kind }) {
       >
         {label}
       </span>
-      {kind !== "file" && (
+      {kind !== 'file' && (
         <span className="rounded bg-gray-200 px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-gray-500 uppercase">
           {kind}
         </span>
@@ -70,10 +80,10 @@ function FilePreview({ label, kind }) {
 }
 
 export function MediaLibraryModal({ onClose, onSelect, name }) {
-  const [activeTab, setActiveTab] = useState("browse");
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
+  const [activeTab, setActiveTab] = useState('browse');
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [page, setPage] = useState(1);
 
   const debounceRef = useRef(null);
@@ -95,10 +105,10 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
 
   const mediaPath = useMemo(() => {
     const params = new URLSearchParams();
-    if (debouncedSearch) params.set("search", debouncedSearch);
-    if (typeFilter) params.set("type", typeFilter);
-    params.set("page", String(page));
-    params.set("limit", String(LIMIT));
+    if (debouncedSearch) params.set('search', debouncedSearch);
+    if (typeFilter) params.set('type', typeFilter);
+    params.set('page', String(page));
+    params.set('limit', String(LIMIT));
     return `${getMediaRoute()}?${params.toString()}`;
   }, [debouncedSearch, typeFilter, page]);
 
@@ -128,18 +138,21 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
       if (!file) return null;
 
       const kind = getFileKindFromFile(file);
-      const objectUrl = kind === "image" || kind === "video" ? URL.createObjectURL(file) : null;
+      const objectUrl =
+        kind === 'image' || kind === 'video' ? URL.createObjectURL(file) : null;
 
       return { name: file.name, kind, objectUrl };
     });
   };
 
   const resetUploadTab = () => {
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (fileInputRef.current) fileInputRef.current.value = '';
     const altEl = uploadFieldsRef.current?.querySelector('input[name="alt"]');
-    const titleEl = uploadFieldsRef.current?.querySelector('input[name="title"]');
-    if (altEl) altEl.value = "";
-    if (titleEl) titleEl.value = "";
+    const titleEl = uploadFieldsRef.current?.querySelector(
+      'input[name="title"]',
+    );
+    if (altEl) altEl.value = '';
+    if (titleEl) titleEl.value = '';
     setSelectedFile((prev) => {
       if (prev?.objectUrl) URL.revokeObjectURL(prev.objectUrl);
       return null;
@@ -152,29 +165,36 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
 
     setUploading(true);
     const formData = new FormData();
-    formData.append("media", file);
-    const alt = uploadFieldsRef.current?.querySelector('input[name="alt"]')?.value;
-    const title = uploadFieldsRef.current?.querySelector('input[name="title"]')?.value;
-    const caption = uploadFieldsRef.current?.querySelector('input[name="caption"]')?.value;
-    const type = uploadFieldsRef.current?.querySelector('select[name="type"]')?.value;
+    formData.append('media', file);
+    const alt =
+      uploadFieldsRef.current?.querySelector('input[name="alt"]')?.value;
+    const title = uploadFieldsRef.current?.querySelector(
+      'input[name="title"]',
+    )?.value;
+    const caption = uploadFieldsRef.current?.querySelector(
+      'input[name="caption"]',
+    )?.value;
+    const type = uploadFieldsRef.current?.querySelector(
+      'select[name="type"]',
+    )?.value;
 
-    if (alt) formData.append("alt", alt);
-    if (title) formData.append("title", title);
-    if (caption) formData.append("caption", caption);
-    if (type) formData.append("type", type);
+    if (alt) formData.append('alt', alt);
+    if (title) formData.append('title', title);
+    if (caption) formData.append('caption', caption);
+    if (type) formData.append('type', type);
 
-    const created = await post("/media", formData);
+    const created = await post('/media', formData);
     setUploading(false);
     if (created) {
       resetUploadTab();
       mutate();
-      setActiveTab("browse");
+      setActiveTab('browse');
     }
   };
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
-    if (!confirm("Delete this image from the media library?")) return;
+    if (!confirm('Delete this image from the media library?')) return;
     setDeletingId(id);
     await del(`/media/${id}`);
     setDeletingId(null);
@@ -191,7 +211,9 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
-          <h3 className="m-0 text-lg font-semibold text-gray-900">Media Library</h3>
+          <h3 className="m-0 text-lg font-semibold text-gray-900">
+            Media Library
+          </h3>
           <button
             type="button"
             className="flex h-8 w-8 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
@@ -206,13 +228,13 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
           <button
             type="button"
             role="tab"
-            aria-selected={activeTab === "browse"}
+            aria-selected={activeTab === 'browse'}
             className={`inline-flex translate-y-px items-center gap-1.5 border-b-2 px-3.5 py-2 text-sm font-medium transition-colors ${
-              activeTab === "browse"
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500 hover:text-gray-900"
+              activeTab === 'browse'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
-            onClick={() => setActiveTab("browse")}
+            onClick={() => setActiveTab('browse')}
           >
             <ImageIcon size={15} />
             <span>Browse</span>
@@ -220,20 +242,20 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
           <button
             type="button"
             role="tab"
-            aria-selected={activeTab === "upload"}
+            aria-selected={activeTab === 'upload'}
             className={`inline-flex translate-y-px items-center gap-1.5 border-b-2 px-3.5 py-2 text-sm font-medium transition-colors ${
-              activeTab === "upload"
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500 hover:text-gray-900"
+              activeTab === 'upload'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
-            onClick={() => setActiveTab("upload")}
+            onClick={() => setActiveTab('upload')}
           >
             <Upload size={15} />
             <span>Upload</span>
           </button>
         </div>
 
-        {activeTab === "browse" ? (
+        {activeTab === 'browse' ? (
           <>
             <div className="flex items-center gap-2">
               <div className="flex flex-1 items-center gap-2 rounded-md border border-gray-300 px-2.5 py-1.5">
@@ -247,7 +269,7 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
                 {search && (
                   <button
                     type="button"
-                    onClick={() => setSearch("")}
+                    onClick={() => setSearch('')}
                     title="Clear search"
                     className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700"
                   >
@@ -278,8 +300,8 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
             ) : items.length === 0 ? (
               <p className="flex items-center justify-center gap-2 px-4 py-10 text-sm text-gray-500">
                 {search || typeFilter
-                  ? "No media matches your filters."
-                  : "No images uploaded yet."}
+                  ? 'No media matches your filters.'
+                  : 'No images uploaded yet.'}
               </p>
             ) : (
               <div className="flex flex-col gap-2.5 overflow-y-scroll">
@@ -295,16 +317,16 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
                           onClick={() => onSelect(item)}
                           title={item.filename}
                         >
-                          {kind === "image" ? (
+                          {kind === 'image' ? (
                             <Image
                               src={resolveUrl(item)}
-                              alt={item.alt || item.filename || "media item"}
+                              alt={item.alt || item.filename || 'media item'}
                               className="h-full w-full bg-gray-100 object-cover"
                               fill
                             />
                           ) : (
                             <FilePreview
-                              label={item.title || item.filename || "Untitled"}
+                              label={item.title || item.filename || 'Untitled'}
                               kind={kind}
                             />
                           )}
@@ -341,7 +363,9 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
                     </span>
                     <button
                       type="button"
-                      onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
+                      onClick={() =>
+                        setPage((p) => Math.min(data.totalPages, p + 1))
+                      }
                       disabled={page >= data.totalPages}
                       className="rounded-md border border-gray-300 px-3 py-1 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
                     >
@@ -353,11 +377,13 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
             )}
           </>
         ) : (
-          <div className={`flex flex-col gap-2 ${uploading ? "opacity-70" : ""}`}>
+          <div
+            className={`flex flex-col gap-2 ${uploading ? 'opacity-70' : ''}`}
+          >
             <label
               className={`relative flex h-50 w-full cursor-pointer flex-col items-center justify-center gap-1.5 overflow-hidden rounded-lg border-2 border-dashed border-gray-300 ${
-                uploading ? "cursor-default opacity-70" : ""
-              } ${selectedFile ? "border-solid p-0" : ""}`}
+                uploading ? 'cursor-default opacity-70' : ''
+              } ${selectedFile ? 'border-solid p-0' : ''}`}
             >
               {uploading ? (
                 <>
@@ -366,14 +392,14 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
                 </>
               ) : selectedFile ? (
                 <>
-                  {selectedFile.kind === "image" && (
+                  {selectedFile.kind === 'image' && (
                     <img
                       src={selectedFile.objectUrl}
                       alt="Selected file preview"
                       className="absolute inset-0 h-full w-full object-contain"
                     />
                   )}
-                  {selectedFile.kind === "video" && (
+                  {selectedFile.kind === 'video' && (
                     <video
                       src={selectedFile.objectUrl}
                       className="absolute inset-0 h-full w-full object-contain"
@@ -381,11 +407,14 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
                       controls
                     />
                   )}
-                  {(selectedFile.kind === "pdf" ||
-                    selectedFile.kind === "docx" ||
-                    selectedFile.kind === "file") && (
+                  {(selectedFile.kind === 'pdf' ||
+                    selectedFile.kind === 'docx' ||
+                    selectedFile.kind === 'file') && (
                     <div className="absolute inset-0">
-                      <FilePreview label={selectedFile.name} kind={selectedFile.kind} />
+                      <FilePreview
+                        label={selectedFile.name}
+                        kind={selectedFile.kind}
+                      />
                     </div>
                   )}
                   <button
@@ -433,7 +462,11 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
 
               <Input name="alt" placeholder="Alt text" disabled={uploading} />
 
-              <Input name="caption" placeholder="Caption" disabled={uploading} />
+              <Input
+                name="caption"
+                placeholder="Caption"
+                disabled={uploading}
+              />
             </div>
 
             <button
@@ -442,7 +475,7 @@ export function MediaLibraryModal({ onClose, onSelect, name }) {
               onClick={handleUpload}
               disabled={uploading || !selectedFile}
             >
-              {uploading ? "Uploading…" : "Upload"}
+              {uploading ? 'Uploading…' : 'Upload'}
             </button>
           </div>
         )}

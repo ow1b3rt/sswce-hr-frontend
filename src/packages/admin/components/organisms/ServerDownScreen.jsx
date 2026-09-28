@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { AlertTriangle, RefreshCw, ServerOff, WifiOff } from "lucide-react";
+import { useState } from 'react';
+import { AlertTriangle, RefreshCw, ServerOff, WifiOff } from 'lucide-react';
 
 export function ServerDownScreen({ onRetry }) {
   const [isRetrying, setIsRetrying] = useState(false);
@@ -36,8 +36,9 @@ export function ServerDownScreen({ onRetry }) {
           Service Unavailable
         </h1>
         <p className="text-text-color mt-3 text-lg leading-relaxed">
-          We are unable to connect to the administration server. The service may be offline,
-          undergoing maintenance, or experiencing network disruptions.
+          We are unable to connect to the administration server. The service may
+          be offline, undergoing maintenance, or experiencing network
+          disruptions.
         </p>
 
         {failedAttempt && (
@@ -53,8 +54,10 @@ export function ServerDownScreen({ onRetry }) {
           disabled={isRetrying}
           className="bg-primary-green mt-8 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-xl px-6 py-3 text-base font-semibold text-white transition duration-200 hover:bg-black active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <RefreshCw className={`h-4 w-4 ${isRetrying ? "animate-spin" : ""}`} />
-          {isRetrying ? "Checking Connection…" : "Retry Connection"}
+          <RefreshCw
+            className={`h-4 w-4 ${isRetrying ? 'animate-spin' : ''}`}
+          />
+          {isRetrying ? 'Checking Connection…' : 'Retry Connection'}
         </button>
 
         <div className="mt-8 flex items-center gap-2 text-base text-slate-500">

@@ -28,7 +28,7 @@ export function Pagenav({ page, totalPages, nonext = false }) {
         </Link>
 
         {hasTotal && (
-          <span className="text-sm text-gray-400">
+          <span className="hidden text-sm text-gray-400 sm:inline">
             Page <span className="font-semibold text-gray-700">{page}</span> of{' '}
             <span className="font-semibold text-gray-700">{totalPages}</span>
           </span>

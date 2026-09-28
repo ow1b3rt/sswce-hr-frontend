@@ -16,7 +16,6 @@ const JobCard = ({ job, className }) => {
     slug,
   } = job;
 
-  // Calculate days ago
   const postedDaysAgo = createdAt
     ? Math.floor((new Date() - new Date(createdAt)) / (1000 * 60 * 60 * 24))
     : 0;

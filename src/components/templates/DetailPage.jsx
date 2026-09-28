@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { AnimatedWords } from '@/components/ui/animated-words';
+import SafeImage from '../ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
 import ArticleBody from '@/packages/admin/components/templates/ArticleBody';
 
@@ -7,32 +8,43 @@ export default function DetailPage({ data, isBlog = false }) {
   if (!data) return null;
 
   return (
-    <main className="text-foreground container mx-auto px-4 py-10">
-      {data.title && (
-        <h1 className="mb-8 text-center text-3xl font-black tracking-tight md:text-5xl lg:text-[54px]">
-          <AnimatedWords
-            text={data.title}
-            animKey="detail-title"
-            durationMs={800}
-            staggerMs={80}
-            direction="up"
-          />
-        </h1>
-      )}
-
+    <main className="text-foreground container mx-auto px-4 py-10 md:px-8">
       {data.image?.src && (
         <AnimatedCard
           direction="down"
-          className="relative mx-auto mb-8 w-full overflow-hidden rounded-2xl md:w-3/4"
+          className="relative mb-8 max-h-143.75 w-full overflow-hidden rounded-2xl"
         >
-          <Image
+          <SafeImage
             src={data.image.src}
             alt={data.image.alt || data.title || 'Image'}
-            width={1200}
-            height={675}
+            width={1920}
+            height={1080}
             className="aspect-video w-full object-cover"
-            sizes="(max-width: 768px) 100vw, 75vw"
+            sizes="(max-width: 768px) 100vw, 100vw"
+            priority
           />
+
+          {data.title && (
+            <div className="absolute top-3 left-3 z-10 sm:top-6 sm:left-6 md:top-8 md:left-8">
+              <h1 className="rounded-xl bg-black/70 px-6 py-2 text-xl font-bold tracking-tight text-white backdrop-blur-sm md:px-8 md:py-4 md:text-5xl lg:text-6xl">
+                <AnimatedWords
+                  text={data.title}
+                  animKey="detail-title"
+                  durationMs={800}
+                  staggerMs={80}
+                  direction="up"
+                />
+              </h1>
+            </div>
+          )}
+        </AnimatedCard>
+      )}
+
+      {data.description && (
+        <AnimatedCard className="w-full space-y-6 text-base leading-relaxed md:text-lg">
+          <p className="text-muted-foreground whitespace-pre-line">
+            {data.description}
+          </p>
         </AnimatedCard>
       )}
 
@@ -66,14 +78,14 @@ function ContentBlock({ block }) {
 
     case 'heading':
       return (
-        <h2 className="text-foreground pt-4 text-[28px] font-bold">
+        <h2 className="text-foreground pt-4 text-2xl font-bold md:text-3xl">
           {block.text}
         </h2>
       );
 
     case 'subheading':
       return (
-        <h3 className="text-foreground pt-2 text-[22px] font-semibold">
+        <h3 className="text-foreground pt-2 text-xl font-semibold md:text-2xl">
           {block.text}
         </h3>
       );

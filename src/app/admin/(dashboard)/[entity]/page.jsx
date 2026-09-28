@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { notFound, useParams } from "next/navigation";
-import { AdminChildrenLayout } from "@/packages/admin";
+import { notFound, useParams } from 'next/navigation';
+import { AdminChildrenLayout } from '@/packages/admin';
 
-import { entities } from "@/app/admin/entities";
+import { entities } from '@/app/admin/entities';
 
 function tableFields(config) {
   return config.fields
-    .filter((f) => f.type !== "relationship" && !f.invisible)
+    .filter((f) => f.type !== 'relationship' && !f.invisible)
     .map((f) => ({ key: f.name, head: f.label }));
 }
 

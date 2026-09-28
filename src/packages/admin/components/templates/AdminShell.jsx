@@ -1,23 +1,29 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ChevronDown, LogOut, PanelLeftClose, PanelLeftOpen, User2 } from "lucide-react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  ChevronDown,
+  LogOut,
+  PanelLeftClose,
+  PanelLeftOpen,
+  User2,
+} from 'lucide-react';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ConfirmationDialog } from "@/components/molecules/ConfirmationModal";
+} from '@/components/ui/dropdown-menu';
+import { ConfirmationDialog } from '@/components/molecules/ConfirmationModal';
 
-import { useApi } from "../../contexts/ApiContext.jsx";
-import { useAuth } from "../../contexts/AuthContext.jsx";
-import { getEntities } from "../../lib/runtime.config.js";
-import Breadcrumb from "../molecules/Breadcrumb.jsx";
-import { AdminNav } from "../organisms/AdminNav.jsx";
-import { Logo } from "../organisms/AdminNavLogo.jsx";
+import { useApi } from '../../contexts/ApiContext.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { getEntities } from '../../lib/runtime.config.js';
+import Breadcrumb from '../molecules/Breadcrumb.jsx';
+import { AdminNav } from '../organisms/AdminNav.jsx';
+import { Logo } from '../organisms/AdminNavLogo.jsx';
 
 export function AdminShell({ children }) {
   const [panel, setPanel] = useState(true);
@@ -36,20 +42,20 @@ export function AdminShell({ children }) {
 
   const handleLogout = async () => {
     await logout();
-    router.push("/admin/login");
+    router.push('/admin/login');
   };
 
   return (
     <div className="bg-black-500 flex h-screen text-xs">
       <div
         className={`bg-primary-green relative flex flex-col gap-1 transition-all duration-500 ${
-          panel ? "w-55" : "w-18"
+          panel ? 'w-55' : 'w-18'
         }`}
       >
         <button
           type="button"
           onClick={() => setPanel((prev) => !prev)}
-          title={panel ? "Collapse sidebar" : "Expand sidebar"}
+          title={panel ? 'Collapse sidebar' : 'Expand sidebar'}
           className="border-primary-green-dark text-primary-green-dark absolute top-40 -right-3.5 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 bg-white shadow-sm transition-colors hover:text-gray-900 focus:outline-none"
         >
           {panel ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}
@@ -78,15 +84,18 @@ export function AdminShell({ children }) {
                     size={20}
                     className="border-primary-blue-dark rounded-full border-2 bg-white"
                   />
-                  Hello {user?.role?.toUpperCase() || "USER"}
+                  Hello {user?.role?.toUpperCase() || 'USER'}
                   <ChevronDown size={14} className="text-primary-blue/70" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40 bg-white ring-0">
+                <DropdownMenuContent
+                  align="end"
+                  className="w-40 bg-white ring-0"
+                >
                   <DropdownMenuItem
-                    onClick={() => router.push("/admin/dashboard")}
+                    onClick={() => router.push('/admin/dashboard')}
                     className="text-primary-blue focus:text-primary-blue cursor-pointer text-base"
                   >
-                    {user?.role || "USER"}
+                    {user?.role || 'USER'}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setLogoutOpen(true)}

@@ -1,14 +1,19 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import { MediaLibraryModal, resolveUrl, setPath, useToast } from "@/packages/admin";
-import { FaGripVertical, FaPlus, FaTrash } from "react-icons/fa";
+import { useRef, useState } from 'react';
+import {
+  MediaLibraryModal,
+  resolveUrl,
+  setPath,
+  useToast,
+} from '@/packages/admin';
+import { FaGripVertical, FaPlus, FaTrash } from 'react-icons/fa';
 
-import { ImageContainer } from "@/components/molecules/ImageContainer";
+import { ImageContainer } from '@/components/molecules/ImageContainer';
 
 const THEMES = {
-  lightblue: "bg-primary-blue-dark/10 text-primary-blue-dark",
-  darkblue: "bg-primary-blue-dark text-white",
+  lightblue: 'bg-primary-blue-dark/10 text-primary-blue-dark',
+  darkblue: 'bg-primary-blue-dark text-white',
 };
 
 function GalleryCardEditable({
@@ -21,7 +26,7 @@ function GalleryCardEditable({
   dragHandleProps,
 }) {
   const cardRef = useRef(null);
-  const theme = item.theme ?? "lightblue";
+  const theme = item.theme ?? 'lightblue';
 
   return (
     <div
@@ -65,12 +70,15 @@ function GalleryCardEditable({
           No image
         </div>
       )}
-
     </div>
   );
 }
 
-export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave }) => {
+export const HomeGalleryEditable = ({
+  section: initialSection,
+  onChange,
+  onSave,
+}) => {
   const [section, setSection] = useState(initialSection);
   const [mediaPath, setMediaPath] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -83,7 +91,7 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
   };
 
   const handleChange = (path) => (e) => {
-    const value = e.target.value === "" ? null : e.target.value;
+    const value = e.target.value === '' ? null : e.target.value;
     update(setPath(section, path, value));
   };
 
@@ -93,7 +101,10 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
   };
 
   const addItem = () => {
-    update({ ...section, items: [...section.items, { image: { src: "", alt: "" }, label: null }] });
+    update({
+      ...section,
+      items: [...section.items, { image: { src: '', alt: '' }, label: null }],
+    });
   };
 
   const removeItem = (i) => {
@@ -128,13 +139,14 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
             onImageClick={() => setMediaPath(`items.${i}.image.src`)}
             onRemove={() => removeItem(i)}
             dragHandleProps={{
-              onDragStart: (e) => e.dataTransfer.setData("text/plain", String(i)),
+              onDragStart: (e) =>
+                e.dataTransfer.setData('text/plain', String(i)),
             }}
             dropProps={{
               onDragOver: (e) => e.preventDefault(),
               onDrop: (e) => {
                 e.preventDefault();
-                const from = Number(e.dataTransfer.getData("text/plain"));
+                const from = Number(e.dataTransfer.getData('text/plain'));
                 if (from !== i) reorder(from, i);
               },
             }}
@@ -142,11 +154,11 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
         ))}
       </div>
 
-      <div className="sticky bottom-0 mb-10 p-4 bg-gray-50 flex items-center justify-between">
+      <div className="sticky bottom-0 mb-10 flex items-center justify-between bg-gray-50 p-4">
         <button
           type="button"
           onClick={addItem}
-          className="flex w-fit items-center gap-2 rounded-full border border-dashed border-gray-400 px-4 py-2 text-sm font-bold text-black/60"
+          className="flex w-fit cursor-pointer items-center gap-2 rounded-full border border-dashed border-gray-400 px-4 py-2 text-sm font-bold text-black/60"
         >
           <FaPlus size={12} /> Add image
         </button>
@@ -155,9 +167,9 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="bg-primary-green-dark rounded-full px-6 py-2 text-sm font-bold text-white disabled:opacity-60"
+          className="bg-primary-green-dark cursor-pointer rounded-full px-6 py-2 text-sm font-bold text-white disabled:opacity-60"
         >
-          {saving ? "Saving…" : "Save Gallery"}
+          {saving ? 'Saving…' : 'Save Gallery'}
         </button>
       </div>
 

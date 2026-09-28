@@ -1,7 +1,7 @@
 const EventDateBadge = ({ time }) => {
   const date = new Date(time);
 
-  const month = date.toLocaleString("en-US", { month: "short" });
+  const month = date.toLocaleString('en-US', { month: 'short' });
   const day = date.getDate();
 
   return (

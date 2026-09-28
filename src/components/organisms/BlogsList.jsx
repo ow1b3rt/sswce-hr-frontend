@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import { AutoCarousel } from "@/components/molecules/AutoCarousel";
 import { HomeBlogCard } from "@/components/molecules/cards/HomeBlogCard";
 
-const BlogsList = ({ title = " Latest News & Blogs", blogs }) => {
+const BlogsList = ({ title = ' Latest News & Blogs', blogs }) => {
   return (
     <div className="flex w-full flex-col gap-6">
       <h5 className="text-2xl leading-normal font-bold lg:text-4xl">{title}</h5>
@@ -12,7 +12,9 @@ const BlogsList = ({ title = " Latest News & Blogs", blogs }) => {
           items={blogs}
           transition="slide"
           itemClassName="flex items-stretch w-full justify-center basis-full sm:basis-1/2 lg:basis-1/3 md:px-7"
-          renderItem={(blog, index) => <HomeBlogCard section={blog} key={index} />}
+          renderItem={(blog, index) => (
+            <HomeBlogCard section={blog} key={index} />
+          )}
           transitionDuration={500}
           loop={true}
           showControls={true}
