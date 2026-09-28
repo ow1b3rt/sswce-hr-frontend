@@ -36,3 +36,9 @@ export function timeAgo(dateString) {
   const years = Math.floor(months / 12);
   return `${years} year${years > 1 ? 's' : ''} ago`;
 }
+
+export function resolveUrl(url) {
+  if (!url) return null;
+
+  return url.startsWith('http') ? url : `${process.env.NEXT_PUBLIC_HOST}${url}`;
+}

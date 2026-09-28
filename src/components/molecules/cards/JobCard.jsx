@@ -1,6 +1,7 @@
 'use client';
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const JobCard = ({ job, className }) => {
