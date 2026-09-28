@@ -1,6 +1,7 @@
 import { stripHtml } from '@/packages/admin/utils/utils';
 
 export { cn } from 'cn';
+import { countryCodeMap } from '@/resources/data/country-code.js';
 
 export function slugify(str) {
   return str
@@ -71,4 +72,17 @@ export function mapBlogItem(item) {
     ctaLabel: 'Read More',
     url: `/blogs/${item.slug}`,
   };
+}
+
+export function getFlagUrlByCountryName(inputName, width = 640) {
+  if (!inputName) return null;
+
+  const key = inputName.trim().toLowerCase();
+
+  const code = countryCodeMap[key];
+  if (!code) {
+    return null;
+  }
+
+  return `https://flagcdn.com/w${width}/${code}.webp`;
 }
