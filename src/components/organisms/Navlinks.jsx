@@ -19,7 +19,7 @@ function NavLink({ href, children }) {
     <Link
       href={href}
       className={cn(
-        'my-0.5 rounded-full px-4 py-1.5 font-semibold transition-colors lg:text-lg xl:text-xl',
+        'my-0.5 rounded-full px-4 py-1.5 font-semibold transition-colors lg:text-base xl:text-xl',
         isActive
           ? 'bg-primary-blue text-primary-foreground'
           : 'text-foreground hover:bg-muted',
@@ -35,7 +35,7 @@ function NavDropdown({ label, items }) {
 
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger className="hover:bg-muted data-[state=open]:bg-muted rounded-full bg-transparent px-4 py-2 text-lg font-semibold xl:text-xl">
+      <NavigationMenuTrigger className="hover:bg-muted data-[state=open]:bg-muted rounded-full bg-transparent px-4 py-2 text-base font-semibold xl:text-lg 2xl:text-xl">
         {label}
       </NavigationMenuTrigger>
       <NavigationMenuContent>
@@ -64,7 +64,7 @@ function NavDropdown({ label, items }) {
 
 export function Navlinks({ dropdownGroups }) {
   return (
-    <nav className="col-span-8 hidden items-center justify-center gap-2 px-2 lg:flex">
+    <nav className="col-span-8 hidden items-center justify-center gap-2 px-2 lg:flex xl:col-span-8">
       <NavLink href="/">Home</NavLink>
       <NavLink href="/about-us">About Us</NavLink>
       <NavLink href="/jobs">Jobs</NavLink>

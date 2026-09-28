@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import SafeImage from '@/components/ui/safe-image';
 import Navlinks from './Navlinks';
 import MobileNav from './MobileNavbar';
@@ -12,7 +11,7 @@ export const Navbar = async () => {
   return (
     <header className="bg-card sticky top-0 z-50 w-full pt-2">
       <div className="container mx-auto grid grid-cols-12 items-center gap-2 md:gap-4">
-        <div className="col-span-8 flex max-h-20 max-w-44 items-center lg:col-span-2">
+        <div className="col-span-8 flex max-w-44 items-center lg:col-span-2 xl:col-span-2 xl:max-h-20">
           <Link href="/">
             <SafeImage
               src="/images/logo.svg"
@@ -37,7 +36,9 @@ export const Navbar = async () => {
               height={20}
               alt="application"
             />
-            <span className="text-lg font-semibold">Application</span>
+            <span className="text-base font-semibold 2xl:text-lg">
+              Application
+            </span>
           </Link>
         </div>
 

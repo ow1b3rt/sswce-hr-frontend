@@ -2,6 +2,8 @@ import InfoCard from '@/components/molecules/cards/InfoCard';
 import { ROUTES } from '@/constants/routes/routes';
 import { slugify } from '@/lib/utils';
 import { Globe } from 'lucide-react';
+import { getFlagUrlByCountryName } from '@/lib/utils';
+import { AnimatedWords } from '@/components/ui/animated-words';
 
 async function getCountries() {
   try {
@@ -28,8 +30,16 @@ export default async function CountriesPage() {
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
-      <h1 className="text-primary-blue text-4xl font-bold">Countries</h1>
-
+      <h1 className="text-destructive text-center text-4xl font-bold md:text-5xl lg:text-7xl">
+        <AnimatedWords
+          text="Countries"
+          animKey="text"
+          staggerMs={100}
+          durationMs={800}
+          direction="up"
+          className="mt-1 justify-center"
+        />
+      </h1>
       {!countries || countries.length === 0 ? (
         <p className="mt-10 text-center text-gray-500">
           No countries available at the moment.
@@ -38,22 +48,25 @@ export default async function CountriesPage() {
         <div
           className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
         >
-          {countries.map((country, index) => (
-            <InfoCard
-              key={country.slug || index.toString()}
-              item={{
-                name: country.title,
-                description: country.description,
-                imageSrc:
-                  country.image?.src || `/flags/${slugify(country.title)}.webp`,
-              }}
-              imageAlt={`${country.title} flag`}
-              icon={Globe}
-              href={ROUTES.COUNTRIES.SINGLE(
-                country.slug || slugify(country.title),
-              )}
-            />
-          ))}
+          {countries.map((country, index) => {
+            const flagUrl = getFlagUrlByCountryName(country.title);
+            const finalImageSrc = flagUrl;
+            return (
+              <InfoCard
+                key={country.slug || index.toString()}
+                item={{
+                  name: country.title,
+                  description: country.description,
+                  imageSrc: finalImageSrc,
+                }}
+                imageAlt={country.image?.alt || `${country.title} flag`}
+                icon={Globe}
+                href={ROUTES.COUNTRIES.SINGLE(
+                  country.slug || slugify(country.title),
+                )}
+              />
+            );
+          })}
         </div>
       )}
     </section>

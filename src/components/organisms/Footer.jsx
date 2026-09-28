@@ -159,7 +159,7 @@ export async function Footer() {
 
   return (
     <footer className="bg-card w-full pt-16 pb-8 text-gray-800 inset-shadow-2xs inset-shadow-gray-300">
-      <div className="mx-auto px-4 lg:px-0">
+      <div className="mx-auto">
         <div className="flex flex-col gap-12 lg:flex-row lg:gap-8">
           <div className="flex w-full flex-col justify-between lg:w-1/3 lg:pr-8">
             <div>
