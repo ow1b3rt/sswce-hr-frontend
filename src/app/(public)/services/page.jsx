@@ -2,6 +2,7 @@ import InfoCard from '@/components/molecules/cards/InfoCard';
 import { ROUTES } from '@/constants/routes/routes';
 import { slugify } from '@/lib/utils';
 import { Settings } from 'lucide-react';
+import { AnimatedHeading } from '@/components/atoms/headings';
 
 import { Pagenav } from '@/components/Reusables';
 
@@ -34,7 +35,7 @@ export default async function ServicesPage(props) {
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
-      <h1 className="text-primary-blue text-4xl font-bold">Services</h1>
+      <AnimatedHeading text="Services" />
       
       {!services || services.length === 0 ? (
         <p className="mt-10 text-center text-gray-500">No services available at the moment.</p>

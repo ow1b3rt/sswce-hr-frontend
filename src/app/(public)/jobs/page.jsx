@@ -1,4 +1,5 @@
 import JobCard from '@/components/molecules/cards/JobCard';
+import { AnimatedHeading } from '@/components/atoms/headings';
 
 import { Pagenav } from '@/components/Reusables';
 
@@ -38,7 +39,7 @@ export default async function Jobs(props) {
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
-      <h1 className="text-primary-blue text-4xl font-bold">Jobs</h1>
+      <AnimatedHeading text="Jobs" />
       {jobs.length > 0 ? (
         <div
           className={`grid w-full grid-cols-1 items-start justify-center gap-6 ${mdColClass} ${lgColClass}`}

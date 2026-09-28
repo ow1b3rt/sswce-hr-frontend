@@ -1,6 +1,7 @@
 import { fetcher } from "@/packages/admin";
 import SafeImage from "@/components/ui/safe-image";
 import AnimatedCard from "@/components/ui/animated-card";
+import { AnimatedHeading } from "@/components/atoms/headings";
 
 export default async function GalleryPage() {
   const data = await fetcher("/layouts/gallery")
@@ -13,7 +14,7 @@ export default async function GalleryPage() {
 
   return (
     <div className='flex flex-col gap-6 py-6'>
-      <h1 className='text-2xl font-bold'>Gallery</h1>
+      <AnimatedHeading text='Gallery' />
       <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3'>
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className='flex flex-col gap-6'>

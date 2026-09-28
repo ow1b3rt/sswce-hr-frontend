@@ -146,7 +146,7 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
         <button
           type="button"
           onClick={addItem}
-          className="flex w-fit items-center gap-2 rounded-full border border-dashed border-gray-400 px-4 py-2 text-sm font-bold text-black/60"
+          className="flex w-fit cursor-pointer items-center gap-2 rounded-full border border-dashed border-gray-400 px-4 py-2 text-sm font-bold text-black/60"
         >
           <FaPlus size={12} /> Add image
         </button>
@@ -155,7 +155,7 @@ export const HomeGalleryEditable = ({ section: initialSection, onChange, onSave 
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="bg-primary-green-dark rounded-full px-6 py-2 text-sm font-bold text-white disabled:opacity-60"
+          className="bg-primary-green-dark cursor-pointer rounded-full px-6 py-2 text-sm font-bold text-white disabled:opacity-60"
         >
           {saving ? "Saving…" : "Save Gallery"}
         </button>

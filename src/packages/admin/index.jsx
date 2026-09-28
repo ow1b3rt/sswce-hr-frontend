@@ -51,6 +51,7 @@ export {
   Textarea,
   NumberSelector,
   RateInput,
+  useResolvedDefault,
   RateDisplay,
 } from "./components/atoms/Input.jsx";
 export { RelationshipField } from "./components/atoms/RelationshipField.jsx";

@@ -9,6 +9,8 @@ import { faqs } from "./faqs.js";
 import { gallery } from "./gallery.js";
 import { services } from "./services.js";
 import { users } from "./users.js";
+import { jobs } from "./jobs.js";
+
 
 export const entities = defineEntities({
   users,
@@ -19,5 +21,6 @@ export const entities = defineEntities({
   events,
   contact,
   appointments,
+  jobs,
   "sections/services": services,
 });
