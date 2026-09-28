@@ -220,7 +220,9 @@ export default function ApplicationForm({ positions = [] }) {
                   >
                     <option value="">Select a vacancy</option>
                     {positions.map((p) => (
-                      <option key={p.value} value={p.value}>{p.label}</option>
+                      <option key={p.value} value={p.value}>
+                        {p.label}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown />

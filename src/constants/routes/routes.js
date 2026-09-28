@@ -54,6 +54,10 @@ export const ROUTES = {
     },
     COUNTRY: `${process.env.NEXT_PUBLIC_API}/layouts/countries`,
     APPOINTMENTS: `${process.env.NEXT_PUBLIC_API}/appointments`,
+    TESTIMONIALS: {
+      ALL_TESTIMONIALS: (page = 1, limit = 9) =>
+        `${process.env.NEXT_PUBLIC_API}/testimonials?page=${page}&limit=${limit}`,
+    },
     EVENTS: {
       HOME: (page = 1, limit = 9) =>
         `${process.env.NEXT_PUBLIC_API}/events?page=${page}&limit=${limit}`,
