@@ -1,3 +1,3 @@
-import { entities as files } from "./_entities";
+import { entities as files } from './_entities';
 
 export const entities = files;

@@ -4,7 +4,9 @@ import DetailPage from '@/components/templates/DetailPage';
 
 async function getEventBySlug(slug) {
   try {
-    const res = await fetch(ROUTES.API.EVENTS.SINGLE_VIA_SLUG(slug), { cache: 'no-store' });
+    const res = await fetch(ROUTES.API.EVENTS.SINGLE_VIA_SLUG(slug), {
+      cache: 'no-store',
+    });
 
     if (!res.ok) return null;
 

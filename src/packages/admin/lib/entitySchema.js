@@ -19,33 +19,38 @@
  *          shape/autocomplete purposes, not transformation
  */
 export function defineEntity(def) {
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== 'production') {
     if (!def.label) {
-      console.warn("[@lynx/admin-panel] entity is missing a required `label`");
+      console.warn('[@lynx/admin-panel] entity is missing a required `label`');
     }
     if (!Array.isArray(def.fields) || def.fields.length === 0) {
       console.warn(
-        `[@lynx/admin-panel] entity "${def.label ?? "?"}" has no \`fields\` — table will render empty columns`,
+        `[@lynx/admin-panel] entity "${def.label ?? '?'}" has no \`fields\` — table will render empty columns`,
       );
     }
     if (def.filters && !Array.isArray(def.filters)) {
-      console.warn(`[@lynx/admin-panel] entity "${def.label ?? "?"}" \`filters\` must be an array`);
-    }
-    if (def.canCreate !== undefined && typeof def.canCreate !== "boolean") {
       console.warn(
-        `[@lynx/admin-panel] entity "${def.label ?? "?"}" \`canCreate\` must be a boolean`,
+        `[@lynx/admin-panel] entity "${def.label ?? '?'}" \`filters\` must be an array`,
       );
     }
-    if (def.canDelete !== undefined && typeof def.canDelete !== "boolean") {
+    if (def.canCreate !== undefined && typeof def.canCreate !== 'boolean') {
       console.warn(
-        `[@lynx/admin-panel] entity "${def.label ?? "?"}" \`canDelete\` must be a boolean`,
+        `[@lynx/admin-panel] entity "${def.label ?? '?'}" \`canCreate\` must be a boolean`,
+      );
+    }
+    if (def.canDelete !== undefined && typeof def.canDelete !== 'boolean') {
+      console.warn(
+        `[@lynx/admin-panel] entity "${def.label ?? '?'}" \`canDelete\` must be a boolean`,
       );
     }
     if (Array.isArray(def.fields)) {
       for (const field of def.fields) {
-        if (field.editable !== undefined && typeof field.editable !== "boolean") {
+        if (
+          field.editable !== undefined &&
+          typeof field.editable !== 'boolean'
+        ) {
           console.warn(
-            `[@lynx/admin-panel] entity "${def.label ?? "?"}" field "${field.name ?? "?"}" \`editable\` must be a boolean`,
+            `[@lynx/admin-panel] entity "${def.label ?? '?'}" field "${field.name ?? '?'}" \`editable\` must be a boolean`,
           );
         }
       }

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useGet } from "../contexts/ApiContext.jsx";
+import { useGet } from '../contexts/ApiContext.jsx';
 
 export function useFetchEntity(name, params) {
   const { data, mutate } = useGet(`/${name}?${params?.toString()}`);

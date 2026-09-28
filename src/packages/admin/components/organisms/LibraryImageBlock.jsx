@@ -1,13 +1,16 @@
 // components/blocks/LibraryImageBlock.jsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import { defaultProps } from "@blocknote/core";
-import { createReactBlockSpec, ResizableFileBlockWrapper } from "@blocknote/react";
-import { ImageIcon } from "lucide-react";
+import { useState } from 'react';
+import { defaultProps } from '@blocknote/core';
+import {
+  createReactBlockSpec,
+  ResizableFileBlockWrapper,
+} from '@blocknote/react';
+import { ImageIcon } from 'lucide-react';
 
-import { resolveUrl } from "../../utils/utils.js";
-import { MediaLibraryModal } from "./MediaLibraryModal";
+import { resolveUrl } from '../../utils/utils.js';
+import { MediaLibraryModal } from './MediaLibraryModal';
 
 /**
  * Replaces BlockNote's built-in "image" block. Instead of the native
@@ -17,24 +20,24 @@ import { MediaLibraryModal } from "./MediaLibraryModal";
  */
 export const LibraryImageBlock = createReactBlockSpec(
   {
-    type: "image",
+    type: 'image',
     propSchema: {
       textAlignment: defaultProps.textAlignment,
       backgroundColor: defaultProps.backgroundColor,
-      url: { default: "" },
-      name: { default: "" },
-      caption: { default: "" },
+      url: { default: '' },
+      name: { default: '' },
+      caption: { default: '' },
       // Required by ResizableFileBlockWrapper to support drag-to-resize.
       showPreview: { default: true },
-      previewWidth: { default: undefined, type: "number" },
+      previewWidth: { default: undefined, type: 'number' },
     },
-    content: "none",
+    content: 'none',
   },
   {
     // BlockNote's convention for file-type blocks (image/video/audio/file):
     // declare accepted mime types and use a File/ResizableFileBlockWrapper
     // in the render — this is what wires up resizing.
-    meta: { fileBlockAccept: ["image/*"] },
+    meta: { fileBlockAccept: ['image/*'] },
     render: (props) => {
       const { block, editor } = props;
       // Freshly inserted blocks have no url yet — open the picker
@@ -47,7 +50,7 @@ export const LibraryImageBlock = createReactBlockSpec(
         editor.updateBlock(block, {
           props: {
             url: resolveUrl(media),
-            name: media.filename || "",
+            name: media.filename || '',
           },
         });
         setModalOpen(false);
@@ -70,13 +73,16 @@ export const LibraryImageBlock = createReactBlockSpec(
             // drag-to-resize handles without reintroducing the native
             // "click to upload" empty-state button — the empty branch
             // below stays fully our own (library-only) UI.
-            <ResizableFileBlockWrapper {...props} buttonIcon={<ImageIcon size={20} />}>
+            <ResizableFileBlockWrapper
+              {...props}
+              buttonIcon={<ImageIcon size={20} />}
+            >
               <img
                 src={block.props.url}
-                alt={block.props.name || "image"}
+                alt={block.props.name || 'image'}
                 title="Click to replace image"
                 className="library-image-block-img"
-                style={{ width: "100%", height: "auto", display: "block" }}
+                style={{ width: '100%', height: 'auto', display: 'block' }}
               />
             </ResizableFileBlockWrapper>
           ) : (
@@ -91,7 +97,11 @@ export const LibraryImageBlock = createReactBlockSpec(
           )}
 
           {modalOpen && (
-            <MediaLibraryModal onClose={handleClose} onSelect={handleSelect} name="articleImage" />
+            <MediaLibraryModal
+              onClose={handleClose}
+              onSelect={handleSelect}
+              name="articleImage"
+            />
           )}
         </>
       );
@@ -109,10 +119,13 @@ export const LibraryImageBlock = createReactBlockSpec(
     parse: (element) => {
       let img = null;
 
-      if (element.tagName === "IMG") {
+      if (element.tagName === 'IMG') {
         img = element;
-      } else if (element.tagName === "DIV" && element.classList?.contains("image-container")) {
-        img = element.querySelector("img");
+      } else if (
+        element.tagName === 'DIV' &&
+        element.classList?.contains('image-container')
+      ) {
+        img = element.querySelector('img');
       }
 
       if (!img) {
@@ -120,8 +133,8 @@ export const LibraryImageBlock = createReactBlockSpec(
       }
 
       return {
-        url: img.getAttribute("src") || "",
-        name: img.getAttribute("alt") || "",
+        url: img.getAttribute('src') || '',
+        name: img.getAttribute('alt') || '',
       };
     },
     toExternalHTML: (props) => {
@@ -132,8 +145,12 @@ export const LibraryImageBlock = createReactBlockSpec(
       return (
         <img
           src={block.props.url}
-          alt={block.props.name || ""}
-          style={block.props.previewWidth ? { width: `${block.props.previewWidth}px` } : undefined}
+          alt={block.props.name || ''}
+          style={
+            block.props.previewWidth
+              ? { width: `${block.props.previewWidth}px` }
+              : undefined
+          }
         />
       );
     },

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import { setPath } from "@/packages/admin";
-import { FaCaretUp, FaGripVertical, FaPlus, FaTrash } from "react-icons/fa";
+import { useRef, useState } from 'react';
+import { setPath } from '@/packages/admin';
+import { FaCaretUp, FaGripVertical, FaPlus, FaTrash } from 'react-icons/fa';
 
 function FaqItemEditable({
   number,
@@ -23,7 +23,7 @@ function FaqItemEditable({
       ref={rowRef}
       onDragOver={dropProps.onDragOver}
       onDrop={dropProps.onDrop}
-      className={`w-full rounded-lg border border-gray-200 shadow-sm ${open ? "bg-primary-green" : "bg-white"}`}
+      className={`w-full rounded-lg border border-gray-200 shadow-sm ${open ? 'bg-primary-green' : 'bg-white'}`}
     >
       <div ref={headerRef} className="flex w-full items-center gap-4 px-4 py-3">
         <span
@@ -36,32 +36,40 @@ function FaqItemEditable({
         >
           <FaGripVertical size={16} />
         </span>
-        <button type="button" onClick={onToggle} className="cursor-pointer text-lg font-bold">
+        <button
+          type="button"
+          onClick={onToggle}
+          className="cursor-pointer text-lg font-bold"
+        >
           {number}.
         </button>
         <input
-          className={`flex-1 bg-transparent text-lg ${open ? "text-white" : "text-black"}`}
+          className={`flex-1 bg-transparent text-lg ${open ? 'text-white' : 'text-black'}`}
           value={item.question}
           onChange={onChange(`${path}.question`)}
         />
         <span
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-            open ? "text-primary-green bg-white" : "bg-primary-red text-white"
+            open ? 'text-primary-green bg-white' : 'bg-primary-red text-white'
           }`}
           onClick={onToggle}
         >
           <FaCaretUp
             size={18}
-            className={`transform cursor-pointer transition-transform duration-300 ${open ? "rotate-0" : "rotate-180"}`}
+            className={`transform cursor-pointer transition-transform duration-300 ${open ? 'rotate-0' : 'rotate-180'}`}
           />
         </span>
-        <button type="button" onClick={onRemove} className="text-black/40 hover:text-red-600">
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-black/40 hover:text-red-600"
+        >
           <FaTrash size={16} />
         </button>
       </div>
 
       <div
-        className={`grid bg-white transition-all duration-300 ease-in-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        className={`grid bg-white transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">
           <textarea
@@ -92,7 +100,10 @@ export const FaqEditable = ({ section: initialSection, onChange, onSave }) => {
   };
 
   const addItem = () => {
-    update({ ...section, items: [...section.items, { question: "", answer: "" }] });
+    update({
+      ...section,
+      items: [...section.items, { question: '', answer: '' }],
+    });
   };
 
   const removeItem = (i) => {
@@ -128,13 +139,13 @@ export const FaqEditable = ({ section: initialSection, onChange, onSave }) => {
           onToggle={() => setOpenIndex(openIndex === i ? null : i)}
           onRemove={() => removeItem(i)}
           dragHandleProps={{
-            onDragStart: (e) => e.dataTransfer.setData("text/plain", String(i)),
+            onDragStart: (e) => e.dataTransfer.setData('text/plain', String(i)),
           }}
           dropProps={{
             onDragOver: (e) => e.preventDefault(),
             onDrop: (e) => {
               e.preventDefault();
-              const from = Number(e.dataTransfer.getData("text/plain"));
+              const from = Number(e.dataTransfer.getData('text/plain'));
               if (from !== i) reorder(from, i);
             },
           }}
@@ -156,7 +167,7 @@ export const FaqEditable = ({ section: initialSection, onChange, onSave }) => {
           disabled={saving}
           className="btn btn-primary cursor-pointer rounded-lg bg-black px-6 py-2 font-bold text-white hover:bg-black/80 disabled:opacity-60"
         >
-          {saving ? "Saving…" : "Save FAQs"}
+          {saving ? 'Saving…' : 'Save FAQs'}
         </button>
       </div>
     </div>

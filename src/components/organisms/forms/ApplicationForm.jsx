@@ -117,7 +117,10 @@ export default function ApplicationForm() {
 
     // Basic validation
     if (!form.firstName.trim() || !form.lastName.trim()) {
-      toast.add({ type: 'error', description: 'First and last name are required.' });
+      toast.add({
+        type: 'error',
+        description: 'First and last name are required.',
+      });
       return;
     }
     if (!PHONE_REGEX.test(form.phone)) {
@@ -129,7 +132,10 @@ export default function ApplicationForm() {
       return;
     }
     if (!form.declarationAccepted) {
-      toast.add({ type: 'error', description: 'Please accept the declaration to proceed.' });
+      toast.add({
+        type: 'error',
+        description: 'Please accept the declaration to proceed.',
+      });
       return;
     }
 
@@ -140,7 +146,10 @@ export default function ApplicationForm() {
 
       // Append all text fields
       Object.entries(form).forEach(([key, value]) => {
-        formData.append(key, value === null || value === undefined ? '' : String(value));
+        formData.append(
+          key,
+          value === null || value === undefined ? '' : String(value),
+        );
       });
 
       // Append CV file under the "documents" field name (matches multer)
@@ -168,13 +177,17 @@ export default function ApplicationForm() {
 
       toast.add({
         type: 'success',
-        description: 'Application submitted successfully! We will contact you soon.',
+        description:
+          'Application submitted successfully! We will contact you soon.',
       });
 
       setForm(INITIAL);
       setCvFile(null);
     } catch (err) {
-      toast.add({ type: 'error', description: err?.message || 'Something went wrong.' });
+      toast.add({
+        type: 'error',
+        description: err?.message || 'Something went wrong.',
+      });
     } finally {
       setLoading(false);
     }
@@ -197,7 +210,9 @@ export default function ApplicationForm() {
         {/* ── Application Details ────────────────────────────────────── */}
         <AnimatedCard direction="up" distance={12} triggerOnView>
           <section>
-            <h2 className="text-primary-blue mb-6 text-2xl font-bold">Application Details</h2>
+            <h2 className="text-primary-blue mb-6 text-2xl font-bold">
+              Application Details
+            </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* Position */}
               <div>
@@ -214,7 +229,9 @@ export default function ApplicationForm() {
                   >
                     <option value="">Select a vacancy</option>
                     {POSITIONS.map((p) => (
-                      <option key={p.value} value={p.value}>{p.label}</option>
+                      <option key={p.value} value={p.value}>
+                        {p.label}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown />
@@ -236,7 +253,9 @@ export default function ApplicationForm() {
                   >
                     <option value="">Select country</option>
                     {COUNTRIES.map((c) => (
-                      <option key={c.value} value={c.value}>{c.label}</option>
+                      <option key={c.value} value={c.value}>
+                        {c.label}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown />
@@ -249,13 +268,18 @@ export default function ApplicationForm() {
         {/* ── Application Type ───────────────────────────────────────── */}
         <AnimatedCard direction="up" distance={12} triggerOnView>
           <section>
-            <h2 className="text-primary-blue mb-6 text-2xl font-bold">Application Type</h2>
+            <h2 className="text-primary-blue mb-6 text-2xl font-bold">
+              Application Type
+            </h2>
             <div className="space-y-3">
               {[
                 { value: 'full-time', label: 'Full-Time' },
                 { value: 'part-time', label: 'Part-Time' },
               ].map(({ value, label }) => (
-                <label key={value} className="flex cursor-pointer items-center gap-3">
+                <label
+                  key={value}
+                  className="flex cursor-pointer items-center gap-3"
+                >
                   <input
                     type="radio"
                     name="applicationType"
@@ -265,7 +289,9 @@ export default function ApplicationForm() {
                     disabled={loading}
                     className="accent-secondary-green text-secondary-green border-secondary-green focus:ring-secondary-green h-5 w-5"
                   />
-                  <span className="text-sm font-medium text-gray-700">{label}</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    {label}
+                  </span>
                 </label>
               ))}
             </div>
@@ -275,10 +301,14 @@ export default function ApplicationForm() {
         {/* ── Personal Information ────────────────────────────────────── */}
         <AnimatedCard direction="up" distance={12} triggerOnView>
           <section>
-            <h2 className="text-primary-blue mb-6 text-2xl font-bold">Personal Information</h2>
+            <h2 className="text-primary-blue mb-6 text-2xl font-bold">
+              Personal Information
+            </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">First Name</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  First Name
+                </label>
                 <input
                   type="text"
                   name="firstName"
@@ -291,7 +321,9 @@ export default function ApplicationForm() {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">Last Name</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  Last Name
+                </label>
                 <input
                   type="text"
                   name="lastName"
@@ -304,7 +336,9 @@ export default function ApplicationForm() {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">Email Address</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  Email Address
+                </label>
                 <input
                   type="email"
                   name="email"
@@ -317,7 +351,9 @@ export default function ApplicationForm() {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">Phone Number</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  Phone Number
+                </label>
                 <input
                   type="tel"
                   name="phone"
@@ -331,7 +367,9 @@ export default function ApplicationForm() {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">Location</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  Location
+                </label>
                 <input
                   type="text"
                   name="location"
@@ -343,7 +381,9 @@ export default function ApplicationForm() {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">Date of Birth</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  Date of Birth
+                </label>
                 <input
                   type="text"
                   name="dateOfBirth"
@@ -363,7 +403,9 @@ export default function ApplicationForm() {
         {/* ── Education Information ───────────────────────────────────── */}
         <AnimatedCard direction="up" distance={12} triggerOnView>
           <section>
-            <h2 className="text-primary-blue mb-6 text-2xl font-bold">Education Information</h2>
+            <h2 className="text-primary-blue mb-6 text-2xl font-bold">
+              Education Information
+            </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="mb-2 block text-sm font-bold text-gray-800">
@@ -379,14 +421,18 @@ export default function ApplicationForm() {
                   >
                     <option value="">Select qualification</option>
                     {QUALIFICATIONS.map((q) => (
-                      <option key={q.value} value={q.value}>{q.label}</option>
+                      <option key={q.value} value={q.value}>
+                        {q.label}
+                      </option>
                     ))}
                   </select>
                   <ChevronDown />
                 </div>
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">Field of Study</label>
+                <label className="mb-2 block text-sm font-bold text-gray-800">
+                  Field of Study
+                </label>
                 <input
                   type="text"
                   name="fieldOfStudy"
@@ -434,7 +480,9 @@ export default function ApplicationForm() {
         {/* ── Work Experience ─────────────────────────────────────────── */}
         <AnimatedCard direction="up" distance={12} triggerOnView>
           <section>
-            <h2 className="text-primary-blue mb-6 text-2xl font-bold">Work Experience</h2>
+            <h2 className="text-primary-blue mb-6 text-2xl font-bold">
+              Work Experience
+            </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-6">
                 <div>
@@ -451,7 +499,9 @@ export default function ApplicationForm() {
                     >
                       <option value="">Select years of experience</option>
                       {EXPERIENCE_YEARS.map((e) => (
-                        <option key={e.value} value={e.value}>{e.label}</option>
+                        <option key={e.value} value={e.value}>
+                          {e.label}
+                        </option>
                       ))}
                     </select>
                     <ChevronDown />
@@ -551,7 +601,9 @@ export default function ApplicationForm() {
         {/* ── Declaration ─────────────────────────────────────────────── */}
         <AnimatedCard direction="up" distance={12} triggerOnView>
           <section>
-            <h2 className="text-primary-blue mb-6 text-2xl font-bold">Declaration</h2>
+            <h2 className="text-primary-blue mb-6 text-2xl font-bold">
+              Declaration
+            </h2>
             <label className="flex cursor-pointer items-start gap-4">
               <input
                 type="checkbox"
@@ -563,8 +615,8 @@ export default function ApplicationForm() {
                 className="accent-secondary-green border-secondary-green text-secondary-green focus:ring-secondary-green mt-1 h-5 w-5 cursor-pointer rounded border-2"
               />
               <span className="text-sm font-medium text-gray-800 md:text-base">
-                I confirm that the information provided is accurate and that I agree to the
-                application terms and requirements.
+                I confirm that the information provided is accurate and that I
+                agree to the application terms and requirements.
               </span>
             </label>
           </section>

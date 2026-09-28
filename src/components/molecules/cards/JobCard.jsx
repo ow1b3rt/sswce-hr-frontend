@@ -2,6 +2,7 @@
 import BaseCard from '@/components/molecules/cards/BaseCard';
 import { MapPin, Banknote, Clock } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const JobCard = ({ job, className }) => {
   const router = useRouter();
@@ -15,7 +16,6 @@ const JobCard = ({ job, className }) => {
     slug,
   } = job;
 
-  // Calculate days ago
   const postedDaysAgo = createdAt
     ? Math.floor((new Date() - new Date(createdAt)) / (1000 * 60 * 60 * 24))
     : 0;

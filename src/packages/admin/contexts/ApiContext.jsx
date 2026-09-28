@@ -1,12 +1,19 @@
-"use client";
+'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { useRouter } from 'next/navigation';
 
-import { getRuntimeConfig } from "../lib/runtime.config.js";
-import { useToast } from "./ToastContext.jsx";
+import { getRuntimeConfig } from '../lib/runtime.config.js';
+import { useToast } from './ToastContext.jsx';
 
-import { isBackendDown } from "../lib/errors.js";
+import { isBackendDown } from '../lib/errors.js';
 
 export function useHost() {
   return getRuntimeConfig().host;
@@ -22,7 +29,6 @@ export function useGet(path) {
   const [error, setError] = useState(null);
   const [localLoading, setLocalLoading] = useState(false);
 
-
   const fetch_ = useCallback(async () => {
     if (!path) return null;
 
@@ -31,7 +37,7 @@ export function useGet(path) {
 
     try {
       const res = await fetch(BASE_URL + path, {
-        credentials: "include",
+        credentials: 'include',
         signal: AbortSignal.timeout(8000), // otherwise a hung backend never errors
       });
 
@@ -39,7 +45,9 @@ export function useGet(path) {
         const responseData = await res.json().catch(() => ({}));
         setData(responseData);
 
-        const err = new Error(responseData.message || `Request failed (${res.status})`);
+        const err = new Error(
+          responseData.message || `Request failed (${res.status})`,
+        );
         err.status = res.status;
         err.data = responseData;
         throw err;
@@ -60,7 +68,6 @@ export function useGet(path) {
     }
   }, [path, BASE_URL]);
 
-
   useEffect(() => {
     fetch_();
   }, [fetch_]);
@@ -76,7 +83,7 @@ export function useGet(path) {
 async function request(method, path, body, baseUrl) {
   const options = {
     method,
-    credentials: "include",
+    credentials: 'include',
     headers: {},
   };
 
@@ -84,7 +91,7 @@ async function request(method, path, body, baseUrl) {
     if (body instanceof FormData) {
       options.body = body;
     } else {
-      options.headers["Content-Type"] = "application/json";
+      options.headers['Content-Type'] = 'application/json';
       options.body = JSON.stringify(body);
     }
   }
@@ -124,15 +131,18 @@ export function ApiProvider({ baseUrl, children }) {
   );
 
   const post = useCallback(
-    (path, body, options) => handle(() => request("POST", path, body, baseUrl), options),
+    (path, body, options) =>
+      handle(() => request('POST', path, body, baseUrl), options),
     [handle],
   );
   const patch = useCallback(
-    (path, body, options) => handle(() => request("PATCH", path, body, baseUrl), options),
+    (path, body, options) =>
+      handle(() => request('PATCH', path, body, baseUrl), options),
     [handle],
   );
   const del = useCallback(
-    (path, options) => handle(() => request("DELETE", path, undefined, baseUrl), options),
+    (path, options) =>
+      handle(() => request('DELETE', path, undefined, baseUrl), options),
     [handle],
   );
 
@@ -143,6 +153,6 @@ export function ApiProvider({ baseUrl, children }) {
 
 export function useApi() {
   const ctx = useContext(ApiContext);
-  if (!ctx) throw new Error("useApi must be used inside <ApiProvider>");
+  if (!ctx) throw new Error('useApi must be used inside <ApiProvider>');
   return ctx;
 }

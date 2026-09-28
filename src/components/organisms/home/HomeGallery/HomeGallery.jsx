@@ -1,62 +1,62 @@
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes/routes";
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes/routes';
 
-import AnimatedCard from "@/components/ui/animated-card";
-import { ImageContainer } from "@/components/molecules/ImageContainer";
+import AnimatedCard from '@/components/ui/animated-card';
+import { ImageContainer } from '@/components/molecules/ImageContainer';
 
 const section = {
   items: [
     {
-      column: "left",
-      image: { src: "/favicon.jpg", alt: "Reception" },
-      label: "Reception",
+      column: 'left',
+      image: { src: '/favicon.jpg', alt: 'Reception' },
+      label: 'Reception',
       height: 340,
     },
     {
-      column: "left",
-      image: { src: "/favicon.jpg", alt: "T-shirt gift" },
+      column: 'left',
+      image: { src: '/favicon.jpg', alt: 'T-shirt gift' },
       label: null,
       height: 220,
     },
     {
-      column: "center",
-      image: { src: "/favicon.jpg", alt: "Gathering" },
-      label: "Gathering",
+      column: 'center',
+      image: { src: '/favicon.jpg', alt: 'Gathering' },
+      label: 'Gathering',
       height: 580,
     },
     {
-      column: "right",
-      image: { src: "/favicon.jpg", alt: "Team Member" },
-      label: "Team Member",
+      column: 'right',
+      image: { src: '/favicon.jpg', alt: 'Team Member' },
+      label: 'Team Member',
       height: 340,
     },
     {
-      column: "right",
-      image: { src: "/favicon.jpg", alt: "Team gathering" },
+      column: 'right',
+      image: { src: '/favicon.jpg', alt: 'Team gathering' },
       label: null,
       height: 220,
     },
   ],
-  ctaLabel: "Explore Gallery",
+  ctaLabel: 'Explore Gallery',
   ctaURL: ROUTES.GALLERY,
 };
 
-const COLUMNS = ["left", "center", "right"];
+const COLUMNS = ['left', 'center', 'right'];
 
-export function GalleryCard({ image, label, height, theme = "lightblue" }) {
+export function GalleryCard({ image, label, height, theme = 'lightblue' }) {
   const THEMES = {
-    lightblue: "bg-faint-blue text-primary-blue",
-    darkblue: "bg-primary-blue-dark text-white",
+    lightblue: 'bg-faint-blue text-primary-blue',
+    darkblue: 'bg-primary-blue-dark text-white',
   };
   return (
     <div
       className="bg-faint-blue flex w-full flex-col gap-3 rounded-2xl border p-4 shadow-sm"
-      style={{ height: height ? `${height}px` : "auto" }}
+      style={{ height: height ? `${height}px` : 'auto' }}
     >
       <ImageContainer
         className="aspect-square w-full flex-1 rounded-xl"
-        src={image?.src || ""}
-        alt={image?.alt || "Gallery Image"}
+        src={image?.src || ''}
+        alt={image?.alt || 'Gallery Image'}
       />
       {label && (
         <div
@@ -71,7 +71,7 @@ export function GalleryCard({ image, label, height, theme = "lightblue" }) {
 
 async function fetchGallery() {
   try {
-    const res = await fetch(ROUTES.API.LAYOUT_GALLERY, { cache: "no-store" });
+    const res = await fetch(ROUTES.API.LAYOUT_GALLERY, { cache: 'no-store' });
     if (!res.ok) return null;
     const data = await res.json();
     return data.success ? data.layout : null;
@@ -91,15 +91,15 @@ export async function HomeGallery({ section: fallbackData = section }) {
       const colIndex = index % 3;
       const row = Math.floor(index / 3);
 
-      let column = "left";
-      if (colIndex === 1) column = "center";
-      else if (colIndex === 2) column = "right";
+      let column = 'left';
+      if (colIndex === 1) column = 'center';
+      else if (colIndex === 2) column = 'right';
 
       let height;
       if (row === 0) {
-        height = column === "center" ? 600 : 450;
+        height = column === 'center' ? 600 : 450;
       } else {
-        height = column === "center" ? 260 : 410;
+        height = column === 'center' ? 260 : 410;
       }
 
       return {

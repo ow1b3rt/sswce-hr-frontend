@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 const DashboardCard = ({ icon, title, count, viewAllHref, children }) => {
   if (!count || count <= 0) return null;
@@ -31,7 +31,9 @@ const DashboardCard = ({ icon, title, count, viewAllHref, children }) => {
         </Link>
       </div>
 
-      <div className="flex max-h-48 flex-col gap-4 overflow-y-scroll rounded-lg">{children}</div>
+      <div className="flex max-h-48 flex-col gap-4 overflow-y-scroll rounded-lg">
+        {children}
+      </div>
     </div>
   );
 };

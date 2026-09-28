@@ -1,12 +1,12 @@
 // src/components/molecules/PayloadField.js
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react"; // Import icons for the toggle
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react'; // Import icons for the toggle
 
-import { Input, Select, Textarea } from "../atoms/Input.jsx";
-import { RelationshipField } from "../atoms/RelationshipField.jsx";
-import { ImageUploader } from "../templates/ImageUploader.jsx";
+import { Input, Select, Textarea } from '../atoms/Input.jsx';
+import { RelationshipField } from '../atoms/RelationshipField.jsx';
+import { ImageUploader } from '../templates/ImageUploader.jsx';
 
 // Dedicated Password component to handle show/hide state
 function PasswordInput({ name, placeholder, required, disabled }) {
@@ -16,7 +16,7 @@ function PasswordInput({ name, placeholder, required, disabled }) {
     <div className="relative w-full">
       <Input
         name={name}
-        type={showPassword ? "text" : "password"}
+        type={showPassword ? 'text' : 'password'}
         placeholder={placeholder}
         required={required}
         disabled={disabled}
@@ -26,7 +26,7 @@ function PasswordInput({ name, placeholder, required, disabled }) {
         type="button"
         onClick={() => setShowPassword((prev) => !prev)}
         className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-800 focus:outline-none"
-        aria-label={showPassword ? "Hide password" : "Show password"}
+        aria-label={showPassword ? 'Hide password' : 'Show password'}
       >
         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
       </button>
@@ -36,18 +36,23 @@ function PasswordInput({ name, placeholder, required, disabled }) {
 
 export function PayloadField({ field }) {
   let { name, type, label, required, options } = field;
-  name = name?.split(":")?.[0];
+  name = name?.split(':')?.[0];
 
   // Fields marked `editable: false` render as disabled inputs — visible on the
   // form but never submitted with the payload.
   const disabled = field.editable === false;
 
-  if (type === "select") {
+  if (type === 'select') {
     return (
-      <Select name={name} placeholder={label} required={required} disabled={disabled}>
+      <Select
+        name={name}
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      >
         {options.map((opt) => {
-          const value = typeof opt === "string" ? opt : opt.value;
-          const optLabel = typeof opt === "string" ? opt : opt.label;
+          const value = typeof opt === 'string' ? opt : opt.value;
+          const optLabel = typeof opt === 'string' ? opt : opt.label;
           return (
             <option key={value} value={value}>
               {optLabel}
@@ -58,17 +63,30 @@ export function PayloadField({ field }) {
     );
   }
 
-  if (type === "textarea") {
-    return <Textarea name={name} placeholder={label} required={required} disabled={disabled} />;
-  }
-
-  if (type === "email") {
+  if (type === 'textarea') {
     return (
-      <Input name={name} type="email" placeholder={label} required={required} disabled={disabled} />
+      <Textarea
+        name={name}
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      />
     );
   }
 
-  if (type === "number") {
+  if (type === 'email') {
+    return (
+      <Input
+        name={name}
+        type="email"
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      />
+    );
+  }
+
+  if (type === 'number') {
     return (
       <Input
         name={name}
@@ -80,32 +98,55 @@ export function PayloadField({ field }) {
     );
   }
 
-  if (type === "date") {
+  if (type === 'date') {
     return (
-      <Input name={name} type="date" placeholder={label} required={required} disabled={disabled} />
+      <Input
+        name={name}
+        type="date"
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      />
     );
   }
 
-  if (type === "time") {
+  if (type === 'time') {
     return (
-      <Input name={name} type="time" placeholder={label} required={required} disabled={disabled} />
+      <Input
+        name={name}
+        type="time"
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      />
     );
   }
 
   // Updated Password field using the new PasswordInput wrapper
-  if (type === "password") {
+  if (type === 'password') {
     return (
-      <PasswordInput name={name} placeholder={label} required={required} disabled={disabled} />
+      <PasswordInput
+        name={name}
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      />
     );
   }
 
-  if (type === "text") {
+  if (type === 'text') {
     return (
-      <Input name={name} type="text" placeholder={label} required={required} disabled={disabled} />
+      <Input
+        name={name}
+        type="text"
+        placeholder={label}
+        required={required}
+        disabled={disabled}
+      />
     );
   }
 
-  if (type === "date-time") {
+  if (type === 'date-time') {
     return (
       <Input
         name={name}
@@ -117,15 +158,17 @@ export function PayloadField({ field }) {
     );
   }
 
-  if (type === "relationship") {
+  if (type === 'relationship') {
     return <RelationshipField field={field} />;
   }
 
-  if (type === "image") {
+  if (type === 'image') {
     return <ImageUploader name={name} id={label} caption={label} />;
   }
 
   // relationship, richText, array, upload etc. — not handled generically, see below
-  console.warn(`No renderer for field type "${type}" — field "${name}" skipped`);
+  console.warn(
+    `No renderer for field type "${type}" — field "${name}" skipped`,
+  );
   return null;
 }

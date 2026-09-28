@@ -16,7 +16,10 @@ const DashboardCardSkeleton = ({ rows = 3 }) => {
 
       <div className="flex max-h-48 flex-col gap-4 overflow-hidden rounded-lg">
         {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex items-center justify-between rounded-lg border p-2">
+          <div
+            key={i}
+            className="flex items-center justify-between rounded-lg border p-2"
+          >
             <div className="flex flex-col gap-2">
               <div className="h-4 w-40 animate-pulse rounded bg-gray-200" />
               <div className="h-3 w-28 animate-pulse rounded bg-gray-200" />

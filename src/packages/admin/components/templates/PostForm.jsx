@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronDown, Eye, Loader2, Plus } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronDown, Eye, Loader2, Plus } from 'lucide-react';
 
-import { useApi, useGet } from "../../contexts/ApiContext.jsx";
-import { useAuth } from "../../contexts/AuthContext.jsx";
-import { useToast } from "../../contexts/ToastContext.jsx";
-import { articleSchema, newsArticleSchema } from "../../lib/jsonld.js";
-import { getRuntimeConfig } from "../../lib/runtime.config.js";
-import { isUuid, removeEmptyFields, slugify } from "../../utils/utils.js";
-import { Textarea } from "../atoms/Input.jsx";
-import { Form } from "../molecules/Form.jsx";
-import { InputFields } from "../molecules/InputFields.jsx";
-import ArticleEditor from "../organisms/BlockNote.jsx";
-import { DateTime } from "../organisms/DateTime.jsx";
-import { SchemaEditor } from "../organisms/SchemaEditor.jsx";
-import { ImageUploader } from "./ImageUploader.jsx";
+import { useApi, useGet } from '../../contexts/ApiContext.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useToast } from '../../contexts/ToastContext.jsx';
+import { articleSchema, newsArticleSchema } from '../../lib/jsonld.js';
+import { getRuntimeConfig } from '../../lib/runtime.config.js';
+import { isUuid, removeEmptyFields, slugify } from '../../utils/utils.js';
+import { Textarea } from '../atoms/Input.jsx';
+import { Form } from '../molecules/Form.jsx';
+import { InputFields } from '../molecules/InputFields.jsx';
+import ArticleEditor from '../organisms/BlockNote.jsx';
+import { DateTime } from '../organisms/DateTime.jsx';
+import { SchemaEditor } from '../organisms/SchemaEditor.jsx';
+import { ImageUploader } from './ImageUploader.jsx';
 
-const publishroles = ["admin", "editor", "junior_editor"];
+const publishroles = ['admin', 'editor', 'junior_editor'];
 
 function canPublish(role) {
   if (!role) return false;
@@ -28,7 +28,7 @@ function formatTimeAgo(date) {
   if (!date) return null;
   const diffMs = Date.now() - new Date(date).getTime();
   const diffMin = Math.floor(diffMs / 60000);
-  if (diffMin < 1) return "just now";
+  if (diffMin < 1) return 'just now';
   if (diffMin < 60) return `${diffMin} min ago`;
   const diffHr = Math.floor(diffMin / 60);
   if (diffHr < 24) return `${diffHr} hr ago`;
@@ -40,10 +40,12 @@ function formatTimeAgo(date) {
 function SidebarSection({ title, children, className }) {
   return (
     <section
-      className={`rounded-xl border border-gray-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)] ${className || ""}`}
+      className={`rounded-xl border border-gray-200/80 bg-white p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)] ${className || ''}`}
     >
       <header className="mb-3">
-        <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">{title}</h3>
+        <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
+          {title}
+        </h3>
       </header>
       <div className="flex flex-col gap-3">{children}</div>
     </section>
@@ -59,25 +61,39 @@ export function PostForm({ defaults = null, onSubmit }) {
   const { apiBaseUrl, host } = getRuntimeConfig();
   const siteUrl = host; // the public site URL used to build canonical post links for JSON-LD
 
-  const [slug, setSlug] = useState(defaults?.slug ?? "");
-  const [tags, setTags] = useState(defaults?.tags ? defaults.tags.split(",") : []);
-  const [saveAction, setSaveAction] = useState(defaults?.status ?? "published");
+  const [slug, setSlug] = useState(defaults?.slug ?? '');
+  const [tags, setTags] = useState(
+    defaults?.tags ? defaults.tags.split(',') : [],
+  );
+  const [saveAction, setSaveAction] = useState(defaults?.status ?? 'published');
   const [saveDrop, setSaveDrop] = useState(false);
 
   // --- controlled fields needed for live JSON-LD schema generation ---
-  const [title, setTitle] = useState(defaults?.title ?? "");
-  const [excerpt, setExcerpt] = useState(defaults?.metaDescription ?? defaults?.excerpt ?? "");
-  const [ogDescription, setOgDescription] = useState(
-    defaults?.ogDescription ?? defaults?.og_description ?? "",
+  const [title, setTitle] = useState(defaults?.title ?? '');
+  const [excerpt, setExcerpt] = useState(
+    defaults?.metaDescription ?? defaults?.excerpt ?? '',
   );
-  const [contentType, setContentType] = useState(defaults?.content_type ?? "news");
-  const [authorId, setAuthorId] = useState(defaults?.authorId ?? defaults?.author_id ?? "");
-  const [authorUrl, setAuthorUrl] = useState(defaults?.authorUrl ?? defaults?.author_url ?? "");
+  const [ogDescription, setOgDescription] = useState(
+    defaults?.ogDescription ?? defaults?.og_description ?? '',
+  );
+  const [contentType, setContentType] = useState(
+    defaults?.content_type ?? 'news',
+  );
+  const [authorId, setAuthorId] = useState(
+    defaults?.authorId ?? defaults?.author_id ?? '',
+  );
+  const [authorUrl, setAuthorUrl] = useState(
+    defaults?.authorUrl ?? defaults?.author_url ?? '',
+  );
 
   const [activeTab, setActiveTab] = useState(0);
-  const [thumbnailPreview, setThumbnailPreview] = useState(defaults?.thumbnail_url ?? null);
+  const [thumbnailPreview, setThumbnailPreview] = useState(
+    defaults?.thumbnail_url ?? null,
+  );
   const [thumbnailId, setThumbnailId] = useState(defaults?.thumbnail ?? null);
-  const [coverPreview, setCoverPreview] = useState(defaults?.cover_image_url ?? null);
+  const [coverPreview, setCoverPreview] = useState(
+    defaults?.cover_image_url ?? null,
+  );
   const [ogPreview, setOgPreview] = useState(defaults?.og_image_url ?? null);
 
   const [loading, setLoading] = useState(false);
@@ -85,19 +101,19 @@ export function PostForm({ defaults = null, onSubmit }) {
 
   useEffect(() => {
     if (!defaults) return;
-    setSlug(defaults?.slug ?? "");
-    setTags(defaults?.tags ? defaults.tags.split(",") : []);
-    setTitle(defaults?.title ?? "");
-    setExcerpt(defaults?.metaDescription ?? defaults?.excerpt ?? "");
-    setOgDescription(defaults?.ogDescription ?? defaults?.og_description ?? "");
-    setContentType(defaults?.content_type ?? "news");
-    setAuthorId(defaults?.authorId ?? defaults?.author_id ?? "");
-    setAuthorUrl(defaults?.authorUrl ?? defaults?.author_url ?? "");
+    setSlug(defaults?.slug ?? '');
+    setTags(defaults?.tags ? defaults.tags.split(',') : []);
+    setTitle(defaults?.title ?? '');
+    setExcerpt(defaults?.metaDescription ?? defaults?.excerpt ?? '');
+    setOgDescription(defaults?.ogDescription ?? defaults?.og_description ?? '');
+    setContentType(defaults?.content_type ?? 'news');
+    setAuthorId(defaults?.authorId ?? defaults?.author_id ?? '');
+    setAuthorUrl(defaults?.authorUrl ?? defaults?.author_url ?? '');
     setThumbnailPreview(defaults?.thumbnail_url ?? null);
     setThumbnailId(defaults?.thumbnail ?? null);
     setCoverPreview(defaults?.cover_image_url ?? null);
     setOgPreview(defaults?.og_image_url ?? null);
-    setSaveAction(defaults?.status ?? "published");
+    setSaveAction(defaults?.status ?? 'published');
   }, [defaults]);
 
   const schemaDescription = ogDescription.trim() || excerpt;
@@ -109,7 +125,7 @@ export function PostForm({ defaults = null, onSubmit }) {
     const seen = new Set();
     const images = [];
     for (const url of candidates) {
-      if (url && !seen.has(url) && !url.startsWith("blob:")) {
+      if (url && !seen.has(url) && !url.startsWith('blob:')) {
         seen.add(url);
         images.push(url);
       }
@@ -128,29 +144,37 @@ export function PostForm({ defaults = null, onSubmit }) {
       updatedAt: new Date().toISOString(),
     };
 
-    if (contentType === "article") {
+    if (contentType === 'article') {
       return articleSchema({ ...shared, imageUrl: schemaImages[0] ?? null });
     }
 
     return newsArticleSchema({ ...shared, images: schemaImages });
-  }, [contentType, slug, schemaImages, title, schemaDescription, defaultPublishedAt, siteUrl]);
+  }, [
+    contentType,
+    slug,
+    schemaImages,
+    title,
+    schemaDescription,
+    defaultPublishedAt,
+    siteUrl,
+  ]);
 
   const handleSubmit = async (formDataValues) => {
     // 1. Extract rich text HTML content from ArticleEditor ref
-    const content = (await rteRef.current?.getHtml()) ?? "";
+    const content = (await rteRef.current?.getHtml()) ?? '';
 
     if (!title?.trim()) {
-      toast.error("Please enter a blog title.");
+      toast.error('Please enter a blog title.');
       return;
     }
 
     if (!content?.trim()) {
-      toast.error("Please enter content for the blog.");
+      toast.error('Please enter content for the blog.');
       return;
     }
 
     // 2. Map form fields to backend camelCase schema
-    const resolvedStatus = formDataValues.action || saveAction || "published";
+    const resolvedStatus = formDataValues.action || saveAction || 'published';
     const selectedThumbnail =
       thumbnailId ||
       (isUuid(formDataValues.thumbnail_id)
@@ -162,7 +186,7 @@ export function PostForm({ defaults = null, onSubmit }) {
     const rawPayload = {
       title: title.trim(),
       content: content.trim(),
-      status: resolvedStatus === "published" ? "published" : "draft",
+      status: resolvedStatus === 'published' ? 'published' : 'draft',
       publishedAt: formDataValues.publishedAt || undefined,
       metaTitle: formDataValues.meta_title || undefined,
       metaDescription: formDataValues.meta_description || excerpt || undefined,
@@ -184,21 +208,31 @@ export function PostForm({ defaults = null, onSubmit }) {
       const res = isEdit
         ? await patch(url, cleanPayload, {
             success: (res) => {
-              toast.success(isEdit ? "Blog updated successfully!" : "Blog created successfully!");
+              toast.success(
+                isEdit
+                  ? 'Blog updated successfully!'
+                  : 'Blog created successfully!',
+              );
               setFormKey((prev) => prev + 1);
               onSubmit?.(res);
             },
           })
         : await post(url, cleanPayload, {
             success: (res) => {
-              toast.success(isEdit ? "Blog updated successfully!" : "Blog created successfully!");
+              toast.success(
+                isEdit
+                  ? 'Blog updated successfully!'
+                  : 'Blog created successfully!',
+              );
               setFormKey((prev) => prev + 1);
               onSubmit?.(res);
             },
           });
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Unable to save blog. Please try again.";
+        err instanceof Error
+          ? err.message
+          : 'Unable to save blog. Please try again.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -217,7 +251,7 @@ export function PostForm({ defaults = null, onSubmit }) {
         <div className="relative flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4">
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <span>
-              Status:{" "}
+              Status:{' '}
               <strong className="font-medium text-gray-900 capitalize">
                 {defaults?.status || saveAction}
               </strong>
@@ -259,12 +293,12 @@ export function PostForm({ defaults = null, onSubmit }) {
                     <Loader2 size={16} className="mr-2 animate-spin" />
                     Saving...
                   </>
-                ) : saveAction === "draft" ? (
-                  "Save Draft"
-                ) : saveAction === "published" ? (
-                  "Publish"
+                ) : saveAction === 'draft' ? (
+                  'Save Draft'
+                ) : saveAction === 'published' ? (
+                  'Publish'
                 ) : (
-                  "Submit"
+                  'Submit'
                 )}
               </button>
               <button
@@ -274,7 +308,11 @@ export function PostForm({ defaults = null, onSubmit }) {
               >
                 <ChevronDown
                   size={16}
-                  className={saveDrop ? "rotate-180 transition-transform" : "transition-transform"}
+                  className={
+                    saveDrop
+                      ? 'rotate-180 transition-transform'
+                      : 'transition-transform'
+                  }
                 />
               </button>
 
@@ -284,17 +322,19 @@ export function PostForm({ defaults = null, onSubmit }) {
                     <button
                       type="button"
                       onClick={() => {
-                        setSaveAction(canPublish(user?.role) ? "published" : "pending");
+                        setSaveAction(
+                          canPublish(user?.role) ? 'published' : 'pending',
+                        );
                         setSaveDrop(false);
                       }}
                       className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      {canPublish(user?.role) ? "Publish" : "Submit"}
+                      {canPublish(user?.role) ? 'Publish' : 'Submit'}
                     </button>
                     <button
                       type="button"
                       onClick={() => {
-                        setSaveAction("draft");
+                        setSaveAction('draft');
                         setSaveDrop(false);
                       }}
                       className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
@@ -320,11 +360,11 @@ export function PostForm({ defaults = null, onSubmit }) {
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
-                  e.target.style.height = "auto";
-                  e.target.style.height = e.target.scrollHeight + "px";
+                  e.target.style.height = 'auto';
+                  e.target.style.height = e.target.scrollHeight + 'px';
                 }}
                 rows={1}
-                style={{ overflow: "hidden" }}
+                style={{ overflow: 'hidden' }}
                 required
               />
 
@@ -338,13 +378,15 @@ export function PostForm({ defaults = null, onSubmit }) {
           <div className="flex w-[350px] shrink-0 flex-col border-l border-gray-200 bg-gray-50/60">
             {/* Sidebar Tabs */}
             <div className="flex shrink-0 gap-1 border-b border-gray-200 bg-white px-3 pt-3">
-              {["Post", "Meta", "SEO"].map((tab, index) => (
+              {['Post', 'Meta', 'SEO'].map((tab, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => setActiveTab(index)}
                   className={`relative flex-1 rounded-t-md px-4 py-2.5 text-sm font-medium transition-colors ${
-                    activeTab === index ? "text-gray-900" : "text-gray-400 hover:text-gray-700"
+                    activeTab === index
+                      ? 'text-gray-900'
+                      : 'text-gray-400 hover:text-gray-700'
                   }`}
                 >
                   {tab}
@@ -360,7 +402,10 @@ export function PostForm({ defaults = null, onSubmit }) {
               {activeTab === 0 && (
                 <>
                   <SidebarSection title="Status & Visibility">
-                    <DateTime name="publishedAt" defaultValue={defaultPublishedAt} />
+                    <DateTime
+                      name="publishedAt"
+                      defaultValue={defaultPublishedAt}
+                    />
                   </SidebarSection>
 
                   <SidebarSection title="Article Settings">
@@ -386,11 +431,13 @@ export function PostForm({ defaults = null, onSubmit }) {
               {activeTab === 1 && (
                 <>
                   <SidebarSection title="Search Result">
-                    <InputFields fields={["meta_title", "meta_description:text"]} />
+                    <InputFields
+                      fields={['meta_title', 'meta_description:text']}
+                    />
                   </SidebarSection>
 
                   <SidebarSection title="Canonical URL">
-                    <InputFields fields={["canonical_url"]} />
+                    <InputFields fields={['canonical_url']} />
                   </SidebarSection>
                 </>
               )}
@@ -398,7 +445,7 @@ export function PostForm({ defaults = null, onSubmit }) {
               {activeTab === 2 && (
                 <>
                   <SidebarSection title="Social Sharing">
-                    <InputFields fields={["og_title"]} />
+                    <InputFields fields={['og_title']} />
                     <Textarea
                       name="og_description"
                       placeholder="OG description (optional)"

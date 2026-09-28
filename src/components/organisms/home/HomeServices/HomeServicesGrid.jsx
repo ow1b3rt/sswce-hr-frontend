@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes/routes";
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes/routes';
 import {
   BedDouble,
   CreditCard,
@@ -12,9 +12,9 @@ import {
   Sprout,
   UserCheck,
   UtensilsCrossed,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { ImageContainer } from "@/components/molecules/ImageContainer";
+import { ImageContainer } from '@/components/molecules/ImageContainer';
 
 const ICONS = {
   UserCheck,
@@ -32,56 +32,56 @@ const ICONS = {
 
 const THEMES = {
   green: {
-    bg: "bg-primary-green",
-    hoverBg: "hover:bg-primary-green/10",
+    bg: 'bg-primary-green',
+    hoverBg: 'hover:bg-primary-green/10',
   },
   red: {
-    bg: "bg-primary-red",
-    hoverBg: "hover:bg-primary-red/10",
+    bg: 'bg-primary-red',
+    hoverBg: 'hover:bg-primary-red/10',
   },
   blue: {
-    bg: "bg-primary-blue-dark",
-    hoverBg: "hover:bg-faint-blue",
+    bg: 'bg-primary-blue-dark',
+    hoverBg: 'hover:bg-faint-blue',
   },
 };
 
 const section = {
-  theme: "blue",
+  theme: 'blue',
   list: [
     {
-      image: { src: "/favicon.jpg", alt: "Career Counselling" },
-      title: "Career Counselling",
-      desc: "International English Language Testing System or IELTS",
+      image: { src: '/favicon.jpg', alt: 'Career Counselling' },
+      title: 'Career Counselling',
+      desc: 'International English Language Testing System or IELTS',
       url: ROUTES.SERVICES.HOME,
     },
     {
-      image: { src: "/favicon.jpg", alt: "Test Preparations" },
-      title: "Test Preparations",
-      desc: "Preparing for tests can be stressful, but SSW Training Centre Nepal is here to help.",
+      image: { src: '/favicon.jpg', alt: 'Test Preparations' },
+      title: 'Test Preparations',
+      desc: 'Preparing for tests can be stressful, but SSW Training Centre Nepal is here to help.',
       url: ROUTES.SERVICES.HOME,
     },
     {
-      image: { src: "/favicon.jpg", alt: "Hostel Faculty" },
-      title: "Hostel Faculty",
-      desc: "We understand that finding a comfortable place to stay is essential for our trainees.",
+      image: { src: '/favicon.jpg', alt: 'Hostel Faculty' },
+      title: 'Hostel Faculty',
+      desc: 'We understand that finding a comfortable place to stay is essential for our trainees.',
       url: ROUTES.SERVICES.HOME,
     },
     {
-      image: { src: "/favicon.jpg", alt: "SSW Training" },
-      title: "SSW Training",
-      desc: "We provide training programs to equip you with needed for the SSW visa.",
+      image: { src: '/favicon.jpg', alt: 'SSW Training' },
+      title: 'SSW Training',
+      desc: 'We provide training programs to equip you with needed for the SSW visa.',
       url: ROUTES.SERVICES.HOME,
     },
     {
-      image: { src: "/favicon.jpg", alt: "JFT" },
-      title: "JFT",
-      desc: "Japanese language is crucial for a successful life and career in Japan.",
+      image: { src: '/favicon.jpg', alt: 'JFT' },
+      title: 'JFT',
+      desc: 'Japanese language is crucial for a successful life and career in Japan.',
       url: ROUTES.SERVICES.HOME,
     },
     {
-      image: { src: "/favicon.jpg", alt: "Visa Guidance" },
-      title: "Visa Guidance",
-      desc: "Navigating the visa process can be complex and time-consuming, but at SSW.",
+      image: { src: '/favicon.jpg', alt: 'Visa Guidance' },
+      title: 'Visa Guidance',
+      desc: 'Navigating the visa process can be complex and time-consuming, but at SSW.',
       url: ROUTES.SERVICES.HOME,
     },
   ],

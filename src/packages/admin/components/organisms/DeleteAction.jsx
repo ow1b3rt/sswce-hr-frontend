@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { ConfirmationDialog } from "@/components/molecules/ConfirmationModal";
+import { ConfirmationDialog } from '@/components/molecules/ConfirmationModal';
 
-import { useApi } from "../../contexts/ApiContext";
-import { DeleteButton } from "../atoms/Buttons";
+import { useApi } from '../../contexts/ApiContext';
+import { DeleteButton } from '../atoms/Buttons';
 
 export function DeleteAction({ route, mutate }) {
   const { del } = useApi();
@@ -33,7 +33,7 @@ export function DeleteAction({ route, mutate }) {
         }}
         title="Delete this record?"
         description="This action can't be undone."
-        confirmLabel={isDeleting ? "Deleting…" : "Delete"}
+        confirmLabel={isDeleting ? 'Deleting…' : 'Delete'}
         variant="destructive"
         onConfirm={handleDelete}
       />
