@@ -3,30 +3,27 @@ import { ROUTES } from '@/constants/routes/routes';
 import { slugify } from '@/lib/utils';
 import { Settings } from 'lucide-react';
 
-const services = [
-  {
-    id: '1',
-    name: 'Work Visa Assistance',
-    description:
-      'We provide end-to-end support for work visa applications, helping you navigate complex immigration processes with ease and confidence.',
-  },
-  {
-    id: '2',
-    name: 'Job Placement',
-    description:
-      'Our expert recruiters connect skilled professionals with top employers across multiple industries, ensuring the right fit for every role.',
-  },
-  {
-    id: '3',
-    name: 'Career Counseling',
-    description:
-      'Get personalised career guidance from experienced advisors who understand the demands of the international job market.',
-  },
-];
+import { Pagenav } from '@/components/Reusables';
 
-export default function ServicesPage() {
-  const cols = Math.min(services.length, 3);
-  const mdCols = Math.min(services.length, 2);
+async function getServices(page = 1) {
+  try {
+    const res = await fetch(ROUTES.API.SERVICES.HOME(page, 9), { cache: 'no-store' });
+    if (!res.ok) return { items: [], totalPages: 1 };
+    const data = await res.json();
+    return data || { items: [], totalPages: 1 };
+  } catch (error) {
+    return { items: [], totalPages: 1 };
+  }
+}
+
+export default async function ServicesPage(props) {
+  const searchParams = await props.searchParams;
+  const page = Number(searchParams?.page || 1);
+  const data = await getServices(page);
+  const services = data?.items || [];
+  const totalPages = data?.totalPages || 1;
+  const cols = Math.min(services.length || 1, 3);
+  const mdCols = Math.min(services.length || 1, 2);
   const mdColClass = mdCols === 1 ? 'md:grid-cols-1' : 'md:grid-cols-2';
   const lgColClass =
     cols === 1 ? 'lg:grid-cols-1' : cols === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
@@ -34,16 +31,30 @@ export default function ServicesPage() {
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Services</h1>
-      <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
-        {services.map((service) => (
-          <InfoCard
-            key={service.id}
-            item={service}
-            icon={Settings}
-            href={ROUTES.SERVICES.SINGLE(slugify(service.name))}
-          />
-        ))}
-      </div>
+      
+      {!services || services.length === 0 ? (
+        <p className="mt-10 text-center text-gray-500">No services available at the moment.</p>
+      ) : (
+        <div className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}>
+          {services.map((service, index) => (
+            <InfoCard
+              key={service.slug || index.toString()}
+              item={{
+                name: service.title || service.name,
+                description: service.description
+              }}
+              icon={Settings}
+              href={ROUTES.SERVICES.SINGLE(service.slug || slugify(service.title || service.name))}
+            />
+          ))}
+        </div>
+      )}
+      
+      {totalPages > 1 && (
+        <div className="mt-8 w-full max-w-4xl">
+          <Pagenav page={page} totalPages={totalPages} />
+        </div>
+      )}
     </section>
   );
 }

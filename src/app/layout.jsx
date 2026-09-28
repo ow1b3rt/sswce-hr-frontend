@@ -25,10 +25,15 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
 };
+import { Toaster } from '@/components/ui/toast';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={outfit.className}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

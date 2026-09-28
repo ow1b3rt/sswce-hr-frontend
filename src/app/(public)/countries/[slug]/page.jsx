@@ -1,76 +1,48 @@
+import { notFound } from 'next/navigation';
+import { ROUTES } from '@/constants/routes/routes';
 import DetailPage from '@/components/templates/DetailPage';
 
-// Placeholder data — replace with API call keyed by slug when backend is ready.
-const COUNTRIES_DATA = {
-  switzerland: {
-    title: 'Switzerland',
-    image: {
-      src: '/flags/switzerland.webp',
-      alt: 'Switzerland flag',
-    },
-    content: [
-      {
-        type: 'paragraph',
-        text: 'Switzerland is one of the most sought-after destinations for skilled international workers. Known for its high standard of living, political neutrality, and stunning Alpine scenery, it offers exceptional opportunities across a range of industries.',
-      },
-      {
-        type: 'heading',
-        text: 'Why Work in Switzerland?',
-      },
-      {
-        type: 'list',
-        items: [
-          'Among the highest average salaries in the world',
-          'World-class healthcare and education systems',
-          'Strong rule of law and political stability',
-          'Multilingual environment — German, French, Italian, and Romansh',
-          'Gateway to the rest of Europe',
-        ],
-      },
-      {
-        type: 'heading',
-        text: 'In-Demand Sectors',
-      },
-      {
-        type: 'list',
-        items: [
-          'Finance and Banking',
-          'Pharmaceuticals and Biotech',
-          'Engineering and Manufacturing',
-          'Information Technology',
-          'Healthcare and Nursing',
-        ],
-      },
-      {
-        type: 'heading',
-        text: 'Work Permit Overview',
-      },
-      {
-        type: 'paragraph',
-        text: 'Switzerland distinguishes between EU/EFTA nationals and third-country nationals when issuing work permits. SSW CE HR specialises in guiding candidates from Nepal, India, and beyond through the Swiss permit process.',
-      },
-    ],
-  },
-};
+async function getCountryBySlug(slug) {
+  try {
+    const res = await fetch(ROUTES.API.COUNTRY, { cache: 'no-store' });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    if (data?.success && data?.layout?.items) {
+      return data.layout.items.find((country) => country.slug === slug) ?? null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const country = await getCountryBySlug(slug);
+  return {
+    title: country
+      ? `${country.title} | SSWCE Human Resources`
+      : 'Country | SSWCE Human Resources',
+    description: country?.description || undefined,
+  };
+}
 
 export default async function CountryDetailPage({ params }) {
   const { slug } = await params;
-  const data = COUNTRIES_DATA[slug];
+  const country = await getCountryBySlug(slug);
 
-  if (!data) {
-    return (
-      <section className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
-        <h1 className="text-primary-blue text-3xl font-bold">Country Not Found</h1>
-        <p className="text-muted-foreground">
-          The country page you are looking for does not exist.
-        </p>
-      </section>
-    );
-  }
+  if (!country) notFound();
 
-  return <DetailPage data={data} />;
-}
+  const countryData = {
+    title: country.title,
+    image: {
+      src: country.image?.src || '/country_fallback.png',
+      alt: country.image?.alt || country.title,
+    },
+    content: [country.description || ''],
+  };
 
-export function generateStaticParams() {
-  return Object.keys(COUNTRIES_DATA).map((slug) => ({ slug }));
+  return <DetailPage data={countryData} />;
 }
