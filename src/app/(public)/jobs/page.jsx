@@ -1,13 +1,13 @@
 import JobCard from '@/components/molecules/cards/JobCard';
 
 import { Pagenav } from '@/components/Reusables';
+import { ROUTES } from '@/constants/routes/routes';
 
 async function fetchJobs(page = 1) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/jobs?page=${page}&limit=9`,
-      { cache: 'no-store' },
-    );
+    const res = await fetch(ROUTES.API.JOBS.OPEN(page, 9), {
+      cache: 'no-store',
+    });
     if (!res.ok) {
       throw new Error('Failed to fetch jobs');
     }
@@ -37,7 +37,7 @@ export default async function Jobs(props) {
         : 'lg:grid-cols-3';
 
   return (
-    <section className="flex flex-col items-center gap-8 pb-12">
+    <section className="flex w-full flex-col items-center justify-start gap-8 pb-12">
       <h1 className="text-primary-blue text-4xl font-bold">Jobs</h1>
       {jobs.length > 0 ? (
         <div
@@ -53,11 +53,7 @@ export default async function Jobs(props) {
         </p>
       )}
 
-      {totalPages > 1 && (
-        <div className="mt-8 w-full max-w-4xl">
-          <Pagenav page={page} totalPages={totalPages} />
-        </div>
-      )}
+      {totalPages > 1 && <Pagenav page={page} totalPages={totalPages} />}
     </section>
   );
 }
