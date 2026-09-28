@@ -3,7 +3,7 @@ import { AnimatedWords } from '@/components/ui/animated-words';
 import JobCard from '@/components/molecules/cards/JobCard';
 import { AutoCarousel } from '@/components/molecules/AutoCarousel';
 
-const jobs = [
+const jobsData = [
   {
     id: 1,
     title: 'Frontend Engineer',
@@ -50,7 +50,9 @@ const jobs = [
   },
 ];
 
-const PopularJobs = () => {
+const PopularJobs = ({ jobs }) => {
+  const jobsdata = jobs ? jobs.items.slice(0, 6) : jobsData;
+
   return (
     <section className="container mx-auto px-4 lg:px-0">
       <h1 className="text-destructive text-center text-4xl font-bold md:text-5xl lg:text-7xl">
@@ -65,7 +67,7 @@ const PopularJobs = () => {
       </h1>
       <div className="flex items-center justify-center overflow-hidden">
         <AutoCarousel
-          items={jobs}
+          items={jobsdata}
           transition="marquee"
           marqueeSpeed={90}
           itemClassName="basis-full sm:basis-1/2 lg:basis-1/3"

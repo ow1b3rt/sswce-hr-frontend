@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { OrbitingCircles } from '@/components/ui/orbiting-circles';
 import SafeImage from '@/components/ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
 import { AutoCarousel } from '@/components/molecules/AutoCarousel';
+import { ROUTES } from '@/constants/routes/routes';
 
 const industryData = [
   { id: 'foods', title: 'Foods', image: '/images/landing/hero-image.jpg' },
@@ -45,10 +47,11 @@ const industryData = [
   },
 ];
 
-export function OrbitingCirclesDemo() {
-  const halfIndex = Math.ceil(industryData.length / 2);
-  const innerOrbitItems = industryData.slice(0, halfIndex);
-  const outerOrbitItems = industryData.slice(halfIndex);
+export function OrbitingCirclesDemo({ services }) {
+  const router = useRouter();
+  const halfIndex = Math.ceil(services.length / 2);
+  const innerOrbitItems = services.slice(0, halfIndex);
+  const outerOrbitItems = services.slice(halfIndex);
   return (
     <div className="bg-faint-green relative flex min-h-84 w-full flex-col items-center justify-center overflow-hidden rounded-xl py-3 sm:min-h-240 sm:py-0">
       <div className="mb-4 max-w-84 min-w-72 sm:hidden">
@@ -64,8 +67,8 @@ export function OrbitingCirclesDemo() {
             >
               <div className="h-auto w-full overflow-hidden rounded-xl">
                 <SafeImage
-                  src="/images/landing/hero-image.jpg"
-                  alt="SSWCE Human Resources"
+                  src={item.image.src}
+                  alt={item.image.alt}
                   width={176}
                   height={64}
                   objectFit="cover"
@@ -91,7 +94,10 @@ export function OrbitingCirclesDemo() {
           Connecting Talent <br />
           Across <span className="text-destructive">Global Industries</span>
         </h3>
-        <Button className="cursor-pointer bg-[linear-gradient(180deg,#044B00_15.38%,#4CAB47_100%)] px-6 py-6 text-base font-semibold md:text-xl">
+        <Button
+          onClick={() => router.push(ROUTES.SERVICES.HOME)}
+          className="cursor-pointer bg-[linear-gradient(180deg,#044B00_15.38%,#4CAB47_100%)] px-6 py-6 text-base font-semibold md:text-xl"
+        >
           Explore Services
         </Button>
       </AnimatedCard>
@@ -107,8 +113,9 @@ export function OrbitingCirclesDemo() {
             >
               <div className="h-auto w-full overflow-hidden rounded-xl">
                 <SafeImage
-                  src="/images/landing/hero-image.jpg"
-                  alt="SSWCE Human Resources"
+                  src={item.image.src}
+
+                  alt={item.image.alt}
                   width={176}
                   height={64}
                   objectFit="cover"
@@ -137,8 +144,8 @@ export function OrbitingCirclesDemo() {
           >
             <div className="max-h-24 max-w-24 overflow-hidden rounded-xl">
               <SafeImage
-                src="/images/landing/hero-image.jpg"
-                alt="SSWCE Human Resources"
+                src={item.image.src}
+                alt={item.image.alt}
                 width={176}
                 height={64}
                 objectFit="cover"
@@ -167,11 +174,12 @@ export function OrbitingCirclesDemo() {
           >
             <div className="max-h-24 max-w-24 overflow-hidden rounded-2xl">
               <SafeImage
-                src="/images/landing/hero-image.jpg"
-                alt="SSWCE Human Resources"
+                src={item.image.src}
+                alt={item.image.alt}
                 width={176}
                 height={64}
                 objectFit="cover"
+                rounded={true}
                 className="h-full w-full rounded-xl"
               />
             </div>

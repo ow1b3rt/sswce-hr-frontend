@@ -1,8 +1,8 @@
 import { OrbitingCirclesDemo } from './OribitingCricles';
-const ServicesSection = () => {
+const ServicesSection = ({ services }) => {
   return (
     <section className="flex flex-col items-center">
-      <OrbitingCirclesDemo />
+      <OrbitingCirclesDemo services={services} />
     </section>
   );
 };
