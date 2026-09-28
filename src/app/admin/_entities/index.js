@@ -11,6 +11,7 @@ import { services } from './services.js';
 import { users } from './users.js';
 import { countries } from './countries.js';
 import { jobs } from './jobs.js';
+import { testimonials } from './testimonials.js';
 
 export const entities = defineEntities({
   users,
@@ -22,6 +23,7 @@ export const entities = defineEntities({
   contact,
   appointments,
   jobs,
+  testimonials,
   'sections/countries': countries,
   'sections/services': services,
 });

@@ -4,6 +4,7 @@ import JobOpportunitiesCard from '@/components/organisms/about-us/JobOpportuniti
 import { MissionTimeline } from '@/components/organisms/about-us/MissionTimeLine';
 import { TestimonialsSection } from '@/components/organisms/about-us/TestimonialsSection';
 import SafeImage from '@/components/ui/safe-image';
+import { getTestimonials } from '@/lib/api/testimonials';
 
 const aboutUsData = {
   whyChooseUs: {
@@ -13,9 +14,21 @@ const aboutUsData = {
   },
 };
 
-const AboutUs = () => {
+const AboutUs = async () => {
+  let testimonials = [];
+
+  try {
+    const { items: testimonialItems } = await getTestimonials({
+      page: 1,
+      limit: 10,
+    });
+    testimonials = testimonialItems;
+  } catch {
+    testimonials = [];
+  }
+
   return (
-    <div className="flex flex-col space-y-8 bg-white px-4 lg:space-y-20 lg:px-0">
+    <div className="bg-card flex flex-col space-y-8 lg:space-y-20 lg:px-0">
       <div className="grid grid-cols-1 items-center gap-y-4 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">
         <div className="relative h-72 w-full overflow-hidden rounded-xl border sm:h-125 lg:h-full">
           <SafeImage
@@ -42,7 +55,9 @@ const AboutUs = () => {
       </div>
       <MissionTimeline />
       <ChairmanMessage />
-      <TestimonialsSection />
+      {testimonials?.length > 0 && (
+        <TestimonialsSection testimonails={testimonials} />
+      )}
     </div>
   );
 };

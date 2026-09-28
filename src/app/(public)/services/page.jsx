@@ -4,7 +4,6 @@ import { slugify } from '@/lib/utils';
 import { Settings } from 'lucide-react';
 import { AnimatedHeading } from '@/components/atoms/headings';
 
-
 async function getServices() {
   try {
     const res = await fetch(ROUTES.API.SERVICES.LAYOUT, { cache: 'no-store' });
