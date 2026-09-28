@@ -1,194 +1,264 @@
-'use client';
+// src/app/admin/applications/[id]/page.js
+"use client";
 
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { AdminLayout, useApi, useGet, useToast } from '@/packages/admin';
-import {
-  CalendarClock,
-  CalendarDays,
-  ChevronDown,
-  ClipboardList,
-  Clock,
-  FileText,
-  Loader2,
-  Mail,
-  MapPin,
-  Phone,
-  Target,
-} from 'lucide-react';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { AdminLayout, useApi, useGet, useToast } from "@/packages/admin";
+import { FileText, Loader2 } from "lucide-react";
+import { resolveUrl } from "@/lib/utils";
 
-const STATUS_SELECT_STYLES = {
-  warning: 'border-yellow-200 bg-yellow-50 text-yellow-800',
-  success: 'border-green-200 bg-green-50 text-green-800',
-  danger: 'border-red-200 bg-red-50 text-red-800',
-  primary: 'border-blue-200 bg-blue-50 text-blue-800',
-  default: 'border-gray-200 bg-gray-50 text-gray-700',
+const SECTIONS = [
+  {
+    title: "Application",
+    fields: [
+      { key: "position", label: "Position" },
+      { key: "preferredCountry", label: "Preferred country" },
+      { key: "applicationType", label: "Application type" },
+    ],
+  },
+  {
+    title: "Personal Information",
+    fields: [
+      { key: "firstName", label: "First name" },
+      { key: "lastName", label: "Last name" },
+      { key: "email", label: "Email" },
+      { key: "phone", label: "Phone" },
+      { key: "location", label: "Location" },
+      { key: "dateOfBirth", label: "Date of birth" },
+    ],
+  },
+  {
+    title: "Education",
+    fields: [
+      { key: "highestQualification", label: "Highest qualification" },
+      { key: "fieldOfStudy", label: "Field of study" },
+      { key: "institutionName", label: "Institution" },
+      { key: "graduationYear", label: "Graduation year" },
+    ],
+  },
+  {
+    title: "Experience",
+    fields: [
+      { key: "totalExperience", label: "Total experience" },
+      { key: "currentPosition", label: "Current position" },
+      { key: "companyName", label: "Company" },
+      { key: "relevantExperience", label: "Relevant experience", wide: true },
+    ],
+  },
+];
+
+// Must match the values your API accepts for `status`
+const STATUS_OPTIONS = ["pending", "confirmed", "cancelled", "completed"];
+
+const STATUS_STYLES = {
+  pending: "bg-yellow-100 text-yellow-800",
+  approved: "bg-green-100 text-green-800",
+  rejected: "bg-red-100 text-red-800",
 };
 
-const STATUS_LABEL = {
-  pending: 'Pending',
-  confirmed: 'Confirmed',
-  cancelled: 'Cancelled',
-  completed: 'Completed',
-};
+const formatDateTime = (value) =>
+  value ? new Date(value).toLocaleString() : "—";
 
-function FieldTile({ icon: Icon, label, value, fullWidth = false }) {
+function getFileKind(file) {
+  const type = file?.mimeType ?? "";
+  const name = (file?.filename ?? file?.url ?? "").split("?")[0].toLowerCase();
+
+  if (type.startsWith("image/") || /\.(png|jpe?g|webp|gif|avif)$/.test(name)) return "image";
+  if (type === "application/pdf" || name.endsWith(".pdf")) return "pdf";
+  return "other";
+}
+
+function Field({ label, value, wide }) {
   return (
-    <div
-      className={`rounded-xl border border-gray-200 bg-white p-4 shadow-sm ${fullWidth ? 'sm:col-span-2' : ''}`}
-    >
-      <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-gray-500 uppercase">
-        {Icon && <Icon size={14} className="text-gray-400" />}
+    <div className={`flex flex-col gap-1 ${wide ? "sm:col-span-2" : ""}`}>
+      <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
         {label}
-      </div>
-      <div className="mt-2 text-sm whitespace-pre-wrap text-gray-900">
-        {value || <span className="text-gray-400">—</span>}
-      </div>
+      </span>
+      <span className="text-sm whitespace-pre-wrap text-gray-900">
+        {value || "—"}
+      </span>
     </div>
   );
 }
 
-function formatDate(value) {
-  if (!value) return null;
-  return new Date(value).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
-
-function StatusSelect({ defaultValue, disabled }) {
-  const styleKey = STATUS_LABEL[defaultValue] ? defaultValue : 'default';
-
+function Section({ title, children }) {
   return (
-    <div className="relative shrink-0">
-      <select
-        name="status"
-        defaultValue={defaultValue}
-        disabled={disabled}
-        className={`cursor-pointer appearance-none rounded-full border px-4 py-1.5 pr-8 text-sm font-medium capitalize transition-colors outline-none disabled:cursor-not-allowed disabled:opacity-60 ${STATUS_SELECT_STYLES[styleKey]}`}
-      >
-        {Object.entries(STATUS_LABEL).map(([val, label]) => (
-          <option key={val} value={val}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        size={16}
-        className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-gray-400"
-      />
-    </div>
+    <section className="flex flex-col gap-4 rounded-sm border border-gray-200 bg-white p-6">
+      <h3 className="text-sm font-semibold text-gray-800">{title}</h3>
+      <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+        {children}
+      </div>
+    </section>
   );
 }
 
-export default function AppointmentDetailPage() {
+export default function ApplicationViewPage() {
   const { id } = useParams();
-  const { data, loading } = useGet(`/appointments/${id}`);
   const toast = useToast();
   const { patch } = useApi();
-  const router = useRouter();
-  const record = data?.item;
-  const status = record?.status ?? 'pending';
+  const apiPath = "/appointments";
 
+  const { data, isLoading } = useGet(`${apiPath}/${id}`);
+  const item = data?.item;
+  const { data: mediaData, isLoading: mediaLoading } = useGet(
+    item?.cvMediaId ? `/media/${item.cvMediaId}` : null,
+  );
+  const cv = mediaData?.item;
+  const cvUrl = cv?.url ? resolveUrl(cv.url) : null;
+  const cvKind = getFileKind(cv);
+
+  // `status` is the dropdown value, `savedStatus` is what the server has
+  const [status, setStatus] = useState("");
+  const [savedStatus, setSavedStatus] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const fullName = record
-    ? [record.firstName, record.lastName].filter(Boolean).join(' ')
-    : '';
+  useEffect(() => {
+    if (item?.status) {
+      setStatus(item.status);
+      setSavedStatus(item.status);
+    }
+  }, [item]);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const next = new FormData(e.target).get('status');
-    if (!next || next === status) return;
-
+  async function handleStatusSave() {
     setSaving(true);
     try {
-      const res = await patch(`/appointments/${id}`, { status: next });
-      if (res) {
-        toast.success('Appointment status updated successfully');
-        router.replace('/admin/appointments');
+      const res = await patch(`${apiPath}/${id}`, { status });
+      if (res?.ok) {
+        setSavedStatus(status);
+        toast.success("Status updated successfully");
       }
     } finally {
       setSaving(false);
     }
   }
 
+  if (isLoading) {
+    return (
+      <AdminLayout title="Application">
+        <Loader2 size={18} className="animate-spin text-gray-400" />
+        Loading…
+      </AdminLayout>
+    );
+  }
+
+  if (!item) {
+    return (
+      <AdminLayout title="Application">
+        <p className="text-sm text-gray-500">Application not found.</p>
+      </AdminLayout>
+    );
+  }
+
   return (
-    <AdminLayout
-      title={fullName || 'Appointment'}
-      formId="appointment-status-form"
-    >
-      {loading ? (
-        <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-sm">
-          <Loader2 size={18} className="animate-spin text-gray-400" />
-          Loading…
+    <AdminLayout title={`${item.firstName} ${item.lastName}`}>
+      <div className="flex flex-col gap-6">
+        {/* Status + submitted date */}
+        <div className="flex flex-wrap items-center gap-4 rounded-sm border border-gray-200 bg-white p-6">
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${
+              STATUS_STYLES[savedStatus] ?? "bg-gray-100 text-gray-700"
+            }`}
+          >
+            {savedStatus}
+          </span>
+          <span className="text-sm text-gray-500">
+            Submitted {formatDateTime(item.createdAt)}
+          </span>
+
+          <div className="ml-auto flex items-center gap-3">
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              disabled={saving}
+              className="rounded-sm border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 capitalize shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none"
+            >
+              {STATUS_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              onClick={handleStatusSave}
+              disabled={saving || status === savedStatus}
+            className="flex items-center gap-2 rounded-md bg-primary-green px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-green/50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {saving && <Loader2 size={14} className="animate-spin" />}
+              Update status
+            </button>
+          </div>
         </div>
-      ) : !record ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-sm">
-          Record not found.
-        </div>
-      ) : (
-        <form
-          id="appointment-status-form"
-          onSubmit={handleSubmit}
-          className="flex w-full flex-col gap-5"
-        >
-          {/* Header card */}
-          <div className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-900 text-white">
-              <CalendarClock size={22} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="truncate text-lg font-semibold text-gray-900">
-                {fullName || 'Appointment'}
-              </h2>
-              <p className="truncate text-sm text-gray-500">{record.email}</p>
-            </div>
-            <div className="flex shrink-0 items-center gap-3">
-              {saving && (
-                <Loader2 size={16} className="animate-spin text-gray-400" />
-              )}
-              <StatusSelect
-                defaultValue={status}
-                key={status}
-                disabled={saving}
-              />
-            </div>
+
+        {SECTIONS.map(({ title, fields }) => (
+          <Section key={title} title={title}>
+            {fields.map(({ key, label, wide }) => (
+              <Field key={key} label={label} value={item[key]} wide={wide} />
+            ))}
+          </Section>
+        ))}
+
+        {/* CV + declaration */}
+        <Section title="Documents">
+          <div className="flex flex-col gap-3 sm:col-span-2">
+            <span className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
+              CV
+            </span>
+
+            {!item.cvMediaId ? (
+              <span className="text-sm text-gray-900">—</span>
+            ) : mediaLoading ? (
+              <Loader2 size={16} className="animate-spin text-gray-400" />
+            ) : cvUrl ? (
+              <>
+                <a
+                  href={cvUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-fit items-center gap-2 rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-700 shadow-sm transition-colors hover:border-indigo-500 hover:text-indigo-500"
+                >
+                  <FileText size={16} />
+                  {cv.filename ?? "Open CV in new tab"}
+                </a>
+
+                {cvKind === "image" && (
+                  <div className="relative h-[560px] w-full overflow-hidden rounded-sm border border-gray-200 bg-gray-50">
+                    <Image
+                      src={cvUrl}
+                      alt="CV preview"
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+
+                {cvKind === "pdf" && (
+                  <iframe
+                    src={cvUrl}
+                    title="CV preview"
+                    className="h-[720px] w-full rounded-sm border border-gray-200"
+                  />
+                )}
+
+                {cvKind === "other" && (
+                  <p className="text-sm text-gray-500">
+                    Preview isn't available for this file type. Use the link above to open it.
+                  </p>
+                )}
+              </>
+            ) : (
+              <span className="text-sm text-gray-500">CV file unavailable</span>
+            )}
           </div>
 
-          {/* Info grid */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FieldTile icon={Mail} label="Email" value={record.email} />
-            <FieldTile icon={Phone} label="Phone" value={record.phone} />
-            <FieldTile icon={MapPin} label="Location" value={record.location} />
-            <FieldTile icon={Target} label="Purpose" value={record.purpose} />
-            <FieldTile
-              icon={ClipboardList}
-              label="Appointment Type"
-              value={record.appointmentType}
-            />
-            <FieldTile
-              icon={Clock}
-              label="Preferred Time"
-              value={record.preferredTime}
-            />
-            <FieldTile
-              icon={CalendarDays}
-              label="Received at"
-              value={formatDate(record.createdAt)}
-            />
-            <FieldTile
-              icon={FileText}
-              label="Additional Info"
-              value={record.additionalInfo}
-              fullWidth
-            />
-          </div>
-        </form>
-      )}
+          <Field
+            label="Declaration accepted"
+            value={item.declarationAccepted ? "Yes" : "No"}
+          />
+        </Section>
+      </div>
     </AdminLayout>
   );
 }
