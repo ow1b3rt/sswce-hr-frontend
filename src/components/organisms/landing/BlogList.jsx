@@ -1,12 +1,16 @@
 import React from 'react';
 import SafeImage from '@/components/ui/safe-image';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes/routes';
+
 export const BlogList = ({ posts = [] }) => {
   if (!posts || posts.length === 0) return null;
 
   return (
     <div className="mx-auto flex w-full flex-col gap-10 p-4 md:gap-14 lg:gap-16">
       {posts.map((post, index) => (
-        <article
+        <Link
+          href={ROUTES.BLOGS.SINGLE(post.slug)}
           key={post.id || index}
           className="group grid grid-cols-1 items-center gap-6 md:grid-cols-[auto_1.2fr_2fr] md:gap-8 lg:gap-10"
         >
@@ -59,7 +63,7 @@ export const BlogList = ({ posts = [] }) => {
               {post.excerpt}
             </p>
           </div>
-        </article>
+        </Link>
       ))}
     </div>
   );

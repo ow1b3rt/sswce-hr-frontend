@@ -1,4 +1,5 @@
 import BaseCard from '@/components/molecules/cards/BaseCard';
+import SafeImage from '@/components/ui/safe-image';
 import { ArrowRight, Globe } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ const InfoCard = ({ item = {}, imageAlt, onAction, href, icon: Icon }) => {
       <div className="flex min-h-40 flex-col px-4 pt-6 pb-6 md:px-6">
         {imageSrc ? (
           <div className="relative mb-4 aspect-video w-[clamp(80px,50%,120px)] overflow-hidden rounded-xl shadow-lg">
-            <Image
+            <SafeImage
               src={imageSrc}
               alt={imageAlt ?? `${name} flag`}
               fill

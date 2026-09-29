@@ -47,7 +47,7 @@ const industryData = [
   },
 ];
 
-export function OrbitingCirclesDemo({ services }) {
+export function OrbitingCirclesDemo({ services = industryData }) {
   const router = useRouter();
   const halfIndex = Math.ceil(services.length / 2);
   const innerOrbitItems = services.slice(0, halfIndex);

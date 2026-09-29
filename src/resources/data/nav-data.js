@@ -1,33 +1,33 @@
 const API_URL = process.env.NEXT_PUBLIC_API;
 
 export const simpleLinks = [
-  { title: "Home", href: "/" },
-  { title: "About Us", href: "/about-us" },
-  { title: "Jobs", href: "/jobs" },
+  { title: 'Home', href: '/' },
+  { title: 'About Us', href: '/about-us' },
+  { title: 'Jobs', href: '/jobs' },
 ];
 
 // Fallbacks, used if the API is down
 const fallbackCountryLinks = [
-  { title: "Nepal", href: "/countries/nepal" },
-  { title: "India", href: "/countries/india" },
-  { title: "UAE", href: "/countries/uae" },
+  { title: 'Nepal', href: '/countries/nepal' },
+  { title: 'India', href: '/countries/india' },
+  { title: 'UAE', href: '/countries/uae' },
 ];
 
 const fallbackServicesLinks = [
-  { title: "Recruitment", href: "/services/recruitment" },
-  { title: "Payroll", href: "/services/payroll" },
-  { title: "Consulting", href: "/services/consulting" },
+  { title: 'Recruitment', href: '/services/recruitment' },
+  { title: 'Payroll', href: '/services/payroll' },
+  { title: 'Consulting', href: '/services/consulting' },
 ];
 
 // Stays static: these aren't database-driven
 const othersLinks = [
-  { title: "Blog", href: "/blogs" },
-  { title: "FAQs", href: "/faqs" },
-  { title: "Contact", href: "/contact" },
+  { title: 'Blog', href: '/blogs' },
+  { title: 'FAQs', href: '/faqs' },
+  { title: 'Contact', href: '/contact' },
 ];
 
 async function fetchLinks(path, hrefPrefix) {
-  const res = await fetch(`${API_URL}${path}`, { cache: "no-store" });
+  const res = await fetch(`${API_URL}${path}`, { cache: 'no-store' });
 
   if (!res.ok) throw new Error(`Failed to fetch ${path}`);
   const { layout } = await res.json();
@@ -41,7 +41,7 @@ async function fetchLinks(path, hrefPrefix) {
 
 export async function getCountryLinks() {
   try {
-    return await fetchLinks("/layouts/countries", "/countries");
+    return await fetchLinks('/layouts/countries', '/countries');
   } catch {
     return fallbackCountryLinks;
   }
@@ -49,7 +49,7 @@ export async function getCountryLinks() {
 
 export async function getServicesLinks() {
   try {
-    return await fetchLinks("/layouts/services", "/services");
+    return await fetchLinks('/layouts/services', '/services');
   } catch {
     return fallbackServicesLinks;
   }
@@ -62,8 +62,8 @@ export async function getDropdownGroups() {
   ]);
 
   return [
-    { label: "Country", items: countries },
-    { label: "Services", items: services },
-    { label: "Others", items: othersLinks },
+    { label: 'Country', items: countries },
+    { label: 'Services', items: services },
+    { label: 'Others', items: othersLinks },
   ];
 }

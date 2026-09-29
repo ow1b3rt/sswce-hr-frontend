@@ -14,7 +14,7 @@ export default function TitleDescCard({
     <section
       className={`order-1 flex h-full flex-1 flex-col gap-2 rounded-lg p-4 md:order-2 xl:gap-2 ${className}`}
     >
-      <AnimatedCard direction="up" distance={12} triggerOnView>
+      <AnimatedCard direction="left" distance={12} triggerOnView>
         <h2 className="text-destructive mb-1 text-3xl leading-none font-black tracking-[1px] md:text-4xl xl:text-5xl">
           {' '}
           {name}{' '}

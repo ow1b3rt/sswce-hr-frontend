@@ -5,6 +5,7 @@ import { MissionTimeline } from '@/components/organisms/about-us/MissionTimeLine
 import { TestimonialsSection } from '@/components/organisms/about-us/TestimonialsSection';
 import SafeImage from '@/components/ui/safe-image';
 import { getTestimonials } from '@/lib/api/testimonials';
+import AnimatedCard from '@/components/ui/animated-card';
 
 const aboutUsData = {
   whyChooseUs: {
@@ -29,7 +30,10 @@ const AboutUs = async () => {
 
   return (
     <div className="bg-card flex flex-col space-y-8 lg:space-y-20 lg:px-0">
-      <div className="grid grid-cols-1 items-center gap-y-4 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">
+      <AnimatedCard
+        direction="right"
+        className="grid grid-cols-1 items-center gap-y-4 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12"
+      >
         <div className="relative h-72 w-full overflow-hidden rounded-xl border sm:h-125 lg:h-full">
           <SafeImage
             src="/images/landing/hero-image.jpg"
@@ -52,7 +56,7 @@ const AboutUs = async () => {
             showDivider={false}
           />
         </div>
-      </div>
+      </AnimatedCard>
       <MissionTimeline />
       <ChairmanMessage />
       {testimonials?.length > 0 && (

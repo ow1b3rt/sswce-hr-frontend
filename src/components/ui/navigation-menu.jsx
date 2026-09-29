@@ -8,7 +8,7 @@ function NavigationMenu({ align = 'start', className, children, ...props }) {
     <NavigationMenuPrimitive.Root
       data-slot="navigation-menu"
       className={cn(
-        'group/navigation-menu relative flex max-w-max flex-1 items-center justify-center',
+        'group/navigation-menu relative flex max-w-max flex-1 cursor-pointer items-center justify-center',
         className,
       )}
       {...props}

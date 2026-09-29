@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import SafeImage from '@/components/ui/safe-image';
+import { ROUTES } from '@/constants/routes/routes';
 
 function AccordionGroup({ label, items, onNavigate }) {
   const [open, setOpen] = useState(false);
@@ -129,15 +130,20 @@ export function MobileNav({ simpleLinks, dropdownGroups }) {
             </div>
 
             <div className="pt-6 pb-4">
-              <Button className="from-red-shade to-destructive hover:from-foreground hover:to-foreground flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-linear-to-b py-6 transition duration-300 ease-in-out">
+              <Link
+                href={ROUTES.APPLICATION}
+                className="from-red-shade to-destructive hover:from-foreground hover:to-foreground text-card flex max-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-b px-5 py-6 transition duration-300 ease-in-out"
+              >
                 <Image
                   src="/icons/application.svg"
                   width={20}
                   height={20}
                   alt="application"
                 />
-                <span className="text-lg font-semibold">Application</span>
-              </Button>
+                <span className="text-base font-semibold 2xl:text-lg">
+                  Application
+                </span>
+              </Link>
             </div>
           </div>
         </SheetContent>
