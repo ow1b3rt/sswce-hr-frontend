@@ -11,7 +11,8 @@ export default async function Home() {
   const jobs = await fetchJobs();
   const blogs = await getBlogs();
   const services = await getServices();
-  const service = services.layout.items;
+  console.log(services)
+  const service = services?.layout?.items || [];
 
   return (
     <section className="grid space-y-20">

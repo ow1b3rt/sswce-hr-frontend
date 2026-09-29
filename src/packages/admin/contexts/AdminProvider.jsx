@@ -9,7 +9,6 @@ import { ToastProvider } from './ToastContext.jsx';
 
 export function AdminProvider({ children }) {
   const config = getRuntimeConfig();
-  console.log(config);
 
   if (!config?.apiBaseUrl) {
     throw new Error(
