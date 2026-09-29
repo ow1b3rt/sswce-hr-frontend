@@ -18,13 +18,8 @@ export function BlogCard({ item }) {
       <div className="flex min-h-40 flex-col px-6 pt-6 pb-6">
         <div className="rounded-baseRadius relative mb-4 aspect-video w-full overflow-hidden">
           <Image
-<<<<<<< HEAD
-            src={resolveUrl(item.media?.url)}
-            alt={ `${item.title} image`}
-=======
             src={resolveUrl(item?.media?.url)}
             alt={`${item.title} image`}
->>>>>>> 142ff1967cce6f3708a688dc262d33e68a848da5
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
@@ -34,13 +29,8 @@ export function BlogCard({ item }) {
           {item.author && (
             <div className="flex items-center gap-3">
               <UserCircle size={20} className="text-black" strokeWidth={1.5} />
-<<<<<<< HEAD
               <span className="text-base text-foreground/70">
                 {item.author?.name}
-=======
-              <span className="text-foreground/70 text-base">
-                {item.author.name}
->>>>>>> 142ff1967cce6f3708a688dc262d33e68a848da5
               </span>
             </div>
           )}
