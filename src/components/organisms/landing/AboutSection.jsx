@@ -20,17 +20,15 @@ export const AboutSection = () => {
             className="mt-1 justify-center"
           />
         </h1>
-        <p className="text-foreground/70 text-center leading-relaxed font-normal lg:text-xl">
+        <p className="text-foreground/70 leading-relaxed font-normal lg:text-xl">
           <AnimatedWords
           text={`
-            S.S.W.C.E. Human Resources is a professional manpower recruitment and skill development company based in Nepal, committed to creating reliable employment opportunities for Nepali youth and providing qualified, skilled, and work-ready human resources to employers in Japan and other international markets.\n
-            Our core focus is to develop skills & Japanese Language, prepare candidates, and connect the right people with the right opportunities. Through our recruitment and training programs, we aim to bridge the gap between the growing demand for skilled manpower overseas and the talented workforce available in Nepal.
-              `}
+            S.S.W.C.E. Human Resources is a professional manpower recruitment and skill development company based in Nepal, committed to creating reliable employment opportunities for Nepali youth and providing qualified, skilled, and work-ready human resources to employers in Japan and other international markets. Our core focus is to develop skills and Japanese language ability, prepare candidates, and connect the right people with the right opportunities, bridging the gap between the growing demand for skilled manpower overseas and the talented workforce available in Nepal. Through our Specified Skilled Worker (SSW) and Employment for Skill Development (ESD) programs, we prepare Nepali youth for sustainable employment with practical skills, language education, workplace knowledge, cultural understanding, and career-oriented training, helping candidates become skilled, disciplined, confident, and work-ready before entering the international job market. We support the whole journey, from skill development and language preparation to recruitment, documentation, deployment, and post-deployment coordination, ensuring a smooth and responsible employment process for both candidates and employers.`}
             animKey="text"
             staggerMs={10}
             durationMs={800}
             direction="down"
-            className="justify-center whitespace-pre-line"
+            className=" whitespace-pre-line"
           />
         </p>
         <AboutGrid />

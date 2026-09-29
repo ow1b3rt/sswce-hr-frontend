@@ -3,10 +3,14 @@ import TitleDescCard from '@/components/molecules/TitleDescCard';
 
 const chairmanMessage = {
   whyChooseUs: {
-    title: 'Binod Chaudhary',
+    title: 'Kalakar Thapa',
     subTitle: 'Executive Chairman',
     description:
-      'Lorem ipsum dolor sit amet consectetur. Vitae non tincidunt hac cursus fringilla in. Maecenas ullamcorper justo tortor pretium porttitor. Scelerisque rhoncus lacus sed ultricies suscipit interdum. Ridiculus sapien scelerisque aliquet tristique aliquam. Scelerisque donec leo aliquam ipsum turpis. Mattis lorem accumsan ullamcorper commodo etiam. Faucibus non semper placerat risus pharetra nibh pharetra. Maecenas ultricies ut scelerisque orci ipsum fermentum massa aliquet. Urna non tellus etiam ipsum ultrices. Pretium aliquam hac vitae quam mattis sit odio nibh condimentum. Sagittis duis sed consectetur mauris eget. Mattis malesuada nisi ultrices justo. Non tellus ullamcorper aliquet cursus pellentesque vel rhoncus. Nullam id ullamcorper dictum et amet at vel neque tempus.\nPretium aliquam hac vitae quam mattis sit odio nibh condimentum. Sagittis duis sed consectetur mauris eget. Mattis malesuada nisi ultrices justo. Non tellus ullamcorper aliquet cursus pellentesque vel rhoncus. Nullam id ullamcorper dictum et amet at vel neque tempus.\nLorem ipsum dolor sit amet consectetur. Vitae non tincidunt hac cursus fringilla in. Maecenas ullamcorper justo tortor pretium porttitor. Scelerisque rhoncus lacus sed ultricies suscipit interdum. Ridiculus sapien scelerisque aliquet',
+      `At S.S.W.C.E. Human Resources, our mission is to build a strong bridge between Nepal and Japan through skilled, responsible, and well-prepared human resources.
+We focus on Specified Skilled Worker (SSW) and the Employment for Skill Development Program (ESDP), providing quality Japanese language education, skill development, and workplace and cultural training.
+With Integrity, Transparency, Quality, and Professionalism, we aim to build lasting partnerships and create a WIN-WIN-WIN relationship for candidates, companies, and our communities.
+Together, let us create opportunities, develop skills, and build a brighter future between Nepal and Japan.
+Thank you for your continued trust and support.`,
   },
 };
 

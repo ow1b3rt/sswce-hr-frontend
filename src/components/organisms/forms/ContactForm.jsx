@@ -9,12 +9,12 @@ import { submitForm } from '@/lib/helpers/form-submit';
 
 const contactInfo = {
   phone: {
-    label: '01-5342506 / 9761521830',
-    href: 'tel:015342506',
+    label: '01-5921567 / 985-1248716',
+    href: 'tel:015921567',
   },
   email: {
-    label: 'info@sswce.com.np',
-    href: 'mailto:info@sswce.com.np',
+    label: 'sswcehumanresources@gmail.com',
+    href: 'mailto:sswcehumanresources@gmail.com',
   },
 };
 
@@ -139,7 +139,7 @@ export default function ContactForm() {
           </h3>
           <div className="space-y-1 text-gray-600">
             <p className="text-sm lg:text-xl">Sunday Through Friday</p>
-            <p className="text-sm lg:text-xl">8AM - 6PM</p>
+            <p className="text-sm lg:text-xl">9AM - 6PM</p>
           </div>
         </div>
       </section>

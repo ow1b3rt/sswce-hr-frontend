@@ -5,7 +5,7 @@ export const timelineEntries = [
     id: 'mission',
     title: 'Our Mission',
     description:
-      'Connect people with suitable career opportunities while supporting organizations in finding skilled and capable talent.',
+      'To develop Japanese language & skills, create employment opportunities, and build sustainable international career pathways for Nepali youth while providing employers with reliable, qualified, and work-ready manpower',
     icon: Target,
     variant: 'solid',
   },
@@ -13,15 +13,15 @@ export const timelineEntries = [
     id: 'values',
     title: 'Our Core Values',
     description:
-      'We believe in integrity, professionalism, respect, and commitment to the success of candidates and employers.',
+      'SSWCE is guided by integrity, transparency, quality, responsibility, professionalism, and skill development. We build long-term, trust-based partnerships through a WIN-WIN-WIN approach that creates lasting value for candidates, companies, and our organization.',
     icon: Sparkles,
     variant: 'solid',
   },
   {
     id: 'organization',
-    title: 'Our Organization',
+    title: 'Our Commitment',
     description:
-      'Learn about SSWCE HR, our recruitment services, and our approach to connecting talent with employment opportunities.',
+      'We are committed to maintaining a professional, transparent, and responsible recruitment process. From the first stage of skill development to successful employment and deployment, we stand with our candidates and employers throughout the journey.',
     icon: Building2,
     variant: 'soft',
   },
@@ -29,7 +29,7 @@ export const timelineEntries = [
     id: 'team',
     title: 'Our Team',
     description:
-      'Our dedicated team works together to support candidates, understand employer requirements, and deliver HR services.',
+      'Our dedicated team work together to support candidates, understand employer requirements, and deliver HR services.',
     icon: Users,
     variant: 'soft',
   },
@@ -37,7 +37,7 @@ export const timelineEntries = [
     id: 'vision',
     title: 'Our Vision',
     description:
-      'To contribute to a future where talent and opportunities, creating meaningful careers and stronger organizations.',
+      'To become a trusted and internationally recognized manpower and skill development company from Nepal, connecting skilled Nepali talent with reputable employers around the world. ',
     icon: Eye,
     variant: 'soft',
   },

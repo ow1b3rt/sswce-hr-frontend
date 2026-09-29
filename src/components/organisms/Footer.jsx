@@ -58,7 +58,7 @@ const CONTACT = {
     href: 'tel:015921567',
   },
   email: {
-    label: 'ssw@gmail.com',
+    label: 'sswcehumanresources@gmail.com',
     href: 'mailto:sswcehumanresources@gmail.com',
   },
 };
@@ -66,7 +66,7 @@ const CONTACT = {
 const ABOUT = {
   title: 'About SSWCE Human Resources',
   description:
-    'Lorem ipsum dolor sit amet consectetur. Scelerisque id condimentum a dui adipiscing urna gravida scelerisque risus.',
+    'S.S.W.C.E. Human Resources is a Nepal-based manpower recruitment and skill development company, preparing skilled, work-ready Nepali youth for employers in Japan and other international markets. Through our SSW and ESD programs, we provide Japanese language training, practical skills, and end-to-end support from recruitment to post-deployment.',
 };
 
 const CTA = {
