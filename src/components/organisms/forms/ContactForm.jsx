@@ -121,7 +121,7 @@ export default function ContactForm() {
             {contactInfo.email.label && (
               <Link
                 href={contactInfo.email.href}
-                className="hover:text-primary-red flex items-center gap-3 text-sm font-bold text-gray-900 transition-colors lg:text-xl"
+                className="hover:text-primary-red flex items-center gap-3 text-sm font-bold text-gray-900 transition-colors lg:text-lg"
               >
                 <Mail
                   size={18}
