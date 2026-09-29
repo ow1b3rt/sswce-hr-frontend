@@ -51,7 +51,7 @@ const JobCard = ({ job, className }) => {
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-destructive text-2xl leading-none font-extrabold md:text-3xl lg:text-4xl">
-              {experience ? experience.replace(/[^0-9+]/g, '') : '0+'}
+              {experience ? experience : '0-1'}
             </span>
             <span className="text-foreground text-lg font-medium">
               Years of Experience

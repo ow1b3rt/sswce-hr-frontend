@@ -49,7 +49,7 @@ export default async function SingleBlogPage({ params }) {
   const publishedOn = blog.publishedAt || blog.createdAt;
 
   return (
-    <main className="flex flex-col gap-10 px-4 md:px-20 pb-12">
+    <main className="flex flex-col gap-10 px-4 pb-12 md:px-20">
       <BlogDetailPage data={blogData} isBlog />
 
       <div className="container mx-auto flex flex-col items-center gap-4 px-4 sm:flex-row lg:px-0">

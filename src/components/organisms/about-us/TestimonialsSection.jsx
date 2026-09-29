@@ -4,10 +4,15 @@ import { HexGridBackground } from '@/components/ui/hexgrid-background';
 import { TestimonialCard } from '@/components/organisms/about-us/TestimonialCard';
 import { floatingAvatars } from '@/resources/data/testimonials-data';
 import { AutoCarousel } from '@/components/molecules/AutoCarousel';
+import AnimatedCard from '@/components/ui/animated-card';
 
 export function TestimonialsSection({ testimonails }) {
   return (
-    <section className="bg-faint-green relative isolate mb-16 overflow-hidden py-16 sm:py-20 lg:py-24">
+    <AnimatedCard
+      triggerOnView
+      direction="down"
+      className="bg-faint-green relative isolate mb-16 overflow-hidden py-16 sm:py-20 lg:py-24"
+    >
       <HexGridBackground />
       <div
         aria-hidden="true"
@@ -45,7 +50,7 @@ export function TestimonialsSection({ testimonails }) {
           />
         </div>
       </div>
-    </section>
+    </AnimatedCard>
   );
 }
 

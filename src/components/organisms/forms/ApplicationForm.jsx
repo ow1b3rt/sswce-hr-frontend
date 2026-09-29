@@ -41,10 +41,10 @@ const PHONE_REGEX = /^(\d{10}|\+\d{1,13}|\+\d{1,3} \d{10})$/;
 /* -------------------------------------------------------------------------- */
 
 const inputCls =
-  'focus:border-primary-blue focus:ring-primary-blue w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-800 outline-none placeholder:text-gray-300 focus:ring-1 disabled:opacity-50';
+  'focus:border-primary-blue focus:ring-primary-blue w-full rounded-lg border border-gray-300 px-4 py-3 text-sm md:text-base lg:text-lg text-gray-800 outline-none placeholder:text-gray-300 focus:ring-1 disabled:opacity-50';
 
 const selectCls =
-  'focus:border-primary-blue focus:ring-primary-blue w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none focus:ring-1 disabled:opacity-50';
+  'focus:border-primary-blue focus:ring-primary-blue w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm md:text-base lg:text-lg text-gray-700 outline-none focus:ring-1 disabled:opacity-50';
 
 const ChevronDown = () => (
   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
@@ -186,7 +186,7 @@ export default function ApplicationForm({ positions = [] }) {
 
   /* ---- render ------------------------------------------------------------ */
   return (
-    <div className="mx-auto w-full max-w-4xl rounded-2xl bg-white p-6 md:p-10">
+    <div className="mx-auto w-full rounded-2xl bg-white p-6 md:p-10">
       <h1 className="text-primary-red mb-12 text-center text-4xl font-black md:text-5xl">
         <AnimatedWords
           text="Online Application"
@@ -207,7 +207,7 @@ export default function ApplicationForm({ positions = [] }) {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* Position */}
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Position Applying For
                 </label>
                 <div className="relative">
@@ -231,7 +231,7 @@ export default function ApplicationForm({ positions = [] }) {
 
               {/* Preferred Country */}
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Preferred Country
                 </label>
                 <div className="relative">
@@ -280,7 +280,7 @@ export default function ApplicationForm({ positions = [] }) {
                     disabled={loading}
                     className="accent-secondary-green text-secondary-green border-secondary-green focus:ring-secondary-green h-5 w-5"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-gray-700 md:text-base lg:text-lg">
                     {label}
                   </span>
                 </label>
@@ -297,7 +297,7 @@ export default function ApplicationForm({ positions = [] }) {
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   First Name
                 </label>
                 <input
@@ -312,7 +312,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Last Name
                 </label>
                 <input
@@ -327,7 +327,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Email Address
                 </label>
                 <input
@@ -342,7 +342,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Phone Number
                 </label>
                 <input
@@ -358,7 +358,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Location
                 </label>
                 <input
@@ -372,7 +372,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Date of Birth
                 </label>
                 <input
@@ -399,7 +399,7 @@ export default function ApplicationForm({ positions = [] }) {
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Highest Qualification
                 </label>
                 <div className="relative">
@@ -421,7 +421,7 @@ export default function ApplicationForm({ positions = [] }) {
                 </div>
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Field of Study
                 </label>
                 <input
@@ -435,7 +435,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Institution Name
                 </label>
                 <input
@@ -449,7 +449,7 @@ export default function ApplicationForm({ positions = [] }) {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-bold text-gray-800">
+                <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                   Graduation Year
                 </label>
                 <input
@@ -477,7 +477,7 @@ export default function ApplicationForm({ positions = [] }) {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-6">
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-gray-800">
+                  <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                     Total Experience
                   </label>
                   <div className="relative">
@@ -499,7 +499,7 @@ export default function ApplicationForm({ positions = [] }) {
                   </div>
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-gray-800">
+                  <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                     Company/Organization
                   </label>
                   <input
@@ -515,7 +515,7 @@ export default function ApplicationForm({ positions = [] }) {
               </div>
               <div className="space-y-6">
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-gray-800">
+                  <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                     Current/Previous Position
                   </label>
                   <input
@@ -529,7 +529,7 @@ export default function ApplicationForm({ positions = [] }) {
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-gray-800">
+                  <label className="mb-2 block text-sm font-bold text-gray-800 md:text-base lg:text-lg">
                     Relevant Experience
                   </label>
                   <textarea
@@ -556,9 +556,9 @@ export default function ApplicationForm({ positions = [] }) {
             </h2>
             <div className="flex flex-1 flex-wrap items-center gap-3">
               {cvFile ? (
-                <div className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 px-4 py-2 text-sm font-medium text-green-800">
+                <div className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 px-4 py-2 text-sm font-medium text-green-800 md:text-base lg:text-lg">
                   <Paperclip size={14} />
-                  <span className="max-w-[200px] truncate">{cvFile.name}</span>
+                  <span className="max-w-50 truncate">{cvFile.name}</span>
                   <button
                     type="button"
                     onClick={removeFile}
@@ -570,7 +570,7 @@ export default function ApplicationForm({ positions = [] }) {
                   </button>
                 </div>
               ) : (
-                <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-6 py-2.5 text-sm font-bold text-gray-700 transition-colors hover:bg-gray-100">
+                <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-6 py-2.5 text-sm font-bold text-gray-700 transition-colors hover:bg-gray-100 md:text-base lg:text-lg">
                   <Paperclip size={14} />
                   <span>Upload a file</span>
                   <input
@@ -605,7 +605,7 @@ export default function ApplicationForm({ positions = [] }) {
                 required
                 className="accent-secondary-green border-secondary-green text-secondary-green focus:ring-secondary-green mt-1 h-5 w-5 cursor-pointer rounded border-2"
               />
-              <span className="text-sm font-medium text-gray-800 md:text-base">
+              <span className="text-sm font-medium text-gray-800 md:text-base lg:text-lg">
                 I confirm that the information provided is accurate and that I
                 agree to the application terms and requirements.
               </span>
@@ -619,7 +619,7 @@ export default function ApplicationForm({ positions = [] }) {
             <button
               type="submit"
               disabled={loading}
-              className="bg-secondary-green inline-flex h-12 items-center gap-2 rounded-lg px-8 text-base font-bold text-white transition-colors hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-70"
+              className="bg-secondary-green inline-flex h-12 cursor-pointer items-center gap-2 rounded-lg px-8 text-base font-bold text-white transition-colors duration-500 hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-70 lg:text-lg"
             >
               {loading ? (
                 <>
@@ -629,7 +629,7 @@ export default function ApplicationForm({ positions = [] }) {
               ) : (
                 <>
                   Submit
-                  <ArrowRight size={18} strokeWidth={3} />
+                  <ArrowRight className="size-6" strokeWidth={3} />
                 </>
               )}
             </button>

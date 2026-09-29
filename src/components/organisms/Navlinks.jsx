@@ -32,12 +32,35 @@ function NavLink({ href, children }) {
 
 function NavDropdown({ label, items }) {
   const pathname = usePathname();
+  const isActive = items.some((item) => pathname === item.href);
 
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger className="hover:bg-muted data-[state=open]:bg-muted rounded-full bg-transparent px-4 py-2 text-base font-semibold xl:text-lg 2xl:text-xl">
+      <NavigationMenuTrigger
+        className={cn(
+          'my-0.5 rounded-full px-4 py-1.5 text-base font-semibold transition-colors xl:text-lg 2xl:text-xl',
+          isActive
+            ? [
+                'bg-primary-blue text-primary-foreground',
+                'hover:bg-primary-blue hover:text-primary-foreground',
+                'focus:bg-primary-blue focus:text-primary-foreground',
+                'data-open:bg-primary-blue data-open:text-primary-foreground',
+                'data-popup-open:bg-primary-blue data-popup-open:text-primary-foreground',
+                'data-open:hover:bg-primary-blue data-open:hover:text-primary-foreground',
+                'data-popup-open:hover:bg-primary-blue data-popup-open:hover:text-primary-foreground',
+                'data-open:focus:bg-primary-blue data-open:focus:text-primary-foreground',
+              ]
+            : [
+                'text-foreground bg-transparent',
+                'hover:bg-muted hover:text-foreground',
+                'data-open:bg-muted data-open:text-foreground',
+                'data-popup-open:bg-muted data-popup-open:text-foreground',
+              ],
+        )}
+      >
         {label}
       </NavigationMenuTrigger>
+
       <NavigationMenuContent>
         <ul className="grid w-48 gap-1 p-2">
           {items.map((item) => {
@@ -70,7 +93,7 @@ export function Navlinks({ dropdownGroups }) {
       <NavLink href="/jobs">Jobs</NavLink>
 
       <NavigationMenu>
-        <NavigationMenuList className="gap-2">
+        <NavigationMenuList className="cursor-pointer gap-2">
           {dropdownGroups.map((group) => (
             <NavDropdown
               key={group.label}

@@ -1,8 +1,12 @@
 import InfoCard from '@/components/molecules/cards/InfoCard';
 import { CalendarDays } from 'lucide-react';
 import { ROUTES } from '@/constants/routes/routes';
+<<<<<<< HEAD
 import { resolveUrl } from '@/lib/utils'
 import { AnimatedHeading } from '@/components/atoms/headings'
+=======
+import { resolveUrl } from '@/lib/utils';
+>>>>>>> 142ff1967cce6f3708a688dc262d33e68a848da5
 
 import { Pagenav } from '@/components/Reusables';
 
@@ -58,6 +62,10 @@ export default async function EventsPage(props) {
                 description: event.description,
                 imageSrc: resolveUrl(event.mediaUrl),
               }}
+<<<<<<< HEAD
+=======
+              imageSrc={resolveUrl(event.content)}
+>>>>>>> 142ff1967cce6f3708a688dc262d33e68a848da5
               href={ROUTES.EVENTS.SINGLE(event.slug)}
             />
           ))}

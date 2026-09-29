@@ -6,7 +6,7 @@ async function getServiceBySlug(slug) {
   try {
     const res = await fetch(ROUTES.API.SERVICES.LAYOUT, { cache: 'no-store' });
 
-    console.log('res', res)
+    console.log('res', res);
 
     if (!res.ok) return null;
 

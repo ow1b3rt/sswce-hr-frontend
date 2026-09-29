@@ -10,11 +10,11 @@ export default function DetailPage({ data, isBlog = false, isEvent = false }) {
   if (!data) return null;
 
   return (
-    <main className="text-foreground container mx-auto px-4 pb-10 md:px-8">
+    <main className="text-foreground container mx-auto px-4 pb-10 md:px-0">
       {data.image?.src && (
         <AnimatedCard
           direction="down"
-        className="relative mb-8 max-h-143.75 w-full mx-auto md:w-3/4 overflow-hidden rounded-2xl"
+          className="relative mx-auto mb-8 max-h-143.75 w-full overflow-hidden rounded-2xl"
         >
           <SafeImage
             src={data.image.src}
@@ -76,7 +76,7 @@ export default function DetailPage({ data, isBlog = false, isEvent = false }) {
       )}
 
       {data.content?.length > 0 && (
-        <AnimatedCard className="mx-auto w-full space-y-6 text-lg leading-relaxed md:w-3/4">
+        <AnimatedCard className="mx-auto w-full space-y-6 text-lg leading-relaxed">
           {isBlog ? (
             <ArticleBody html={data.content} />
           ) : (

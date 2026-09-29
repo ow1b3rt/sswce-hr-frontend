@@ -43,7 +43,10 @@ export const Navbar = async () => {
         </div>
 
         <div className="col-span-4 flex justify-end pr-4 lg:hidden">
-          <MobileNav simpleLinks={simpleLinks} dropdownGroups={dropdownGroups} />
+          <MobileNav
+            simpleLinks={simpleLinks}
+            dropdownGroups={dropdownGroups}
+          />
         </div>
       </div>
     </header>

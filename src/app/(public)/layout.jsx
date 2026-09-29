@@ -1,6 +1,7 @@
 import Navbar from '@/components/organisms/Navbar';
 import Footer from '@/components/organisms/Footer';
 import Breadcrumb from '@/components/molecules/BreadCrumb';
+import SmoothScroll from '@/components/molecules/SmoothScroll';
 export default function PageLayout({ children }) {
   return (
     <main className="container mx-auto px-4 xl:px-0">
@@ -8,7 +9,7 @@ export default function PageLayout({ children }) {
       <div className="py-2">
         <Breadcrumb />
       </div>
-      {children}
+      <SmoothScroll>{children}</SmoothScroll>
       <Footer />
     </main>
   );

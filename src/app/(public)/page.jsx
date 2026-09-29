@@ -11,16 +11,16 @@ export default async function Home() {
   const jobs = await fetchJobs();
   const blogs = await getBlogs();
   const services = await getServices();
-  console.log(services)
   const service = services?.layout?.items || [];
 
   return (
     <section className="grid space-y-20">
       <HeroSection />
       <AboutSection />
-      <PopularJobs jobs={jobs} />
+      {jobs?.items?.length > 0 && <PopularJobs jobs={jobs} />}
+
       <ServicesSection services={service} />
-      <Highlight blogs={blogs} />
+      {blogs?.items?.length > 0 && <Highlight blogs={blogs} />}
     </section>
   );
 }

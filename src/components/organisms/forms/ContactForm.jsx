@@ -97,8 +97,10 @@ export default function ContactForm() {
       {/* Left Column - Company Info */}
       <section className="col-span-1 flex flex-col gap-6">
         <div className="flex flex-col gap-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-          <h3 className="text-xl font-bold text-gray-900">Get in touch</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="text-xl font-bold text-gray-900 lg:text-2xl">
+            Get in touch
+          </h3>
+          <p className="text-sm text-gray-600 lg:text-xl">
             We love to chat about your travel plans and are happy to talk if you
             have any questions.
           </p>
@@ -106,11 +108,11 @@ export default function ContactForm() {
             {contactInfo.phone.label && (
               <Link
                 href={contactInfo.phone.href}
-                className="hover:text-primary-red flex items-center gap-3 text-sm font-bold text-gray-900 transition-colors"
+                className="hover:text-primary-red flex items-center gap-3 text-sm font-bold text-gray-900 transition-colors lg:text-xl"
               >
                 <Phone
                   size={18}
-                  className="text-primary-blue"
+                  className="text-primary-blue size-4 lg:size-6"
                   fill="currentColor"
                 />
                 <span>{contactInfo.phone.label}</span>
@@ -119,12 +121,11 @@ export default function ContactForm() {
             {contactInfo.email.label && (
               <Link
                 href={contactInfo.email.href}
-                className="hover:text-primary-red flex items-center gap-3 text-sm font-bold text-gray-900 transition-colors"
+                className="hover:text-primary-red flex items-center gap-3 text-sm font-bold text-gray-900 transition-colors lg:text-xl"
               >
                 <Mail
                   size={18}
-                  className="text-primary-blue"
-                  fill="currentColor"
+                  className="text-primary-blue size-4 lg:size-6"
                 />
                 <span className="break-all">{contactInfo.email.label}</span>
               </Link>
@@ -133,10 +134,12 @@ export default function ContactForm() {
         </div>
 
         <div className="flex flex-1 flex-col gap-3 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
-          <h3 className="text-xl font-bold text-gray-900">Opening Hours</h3>
+          <h3 className="text-xl font-bold text-gray-900 lg:text-2xl">
+            Opening Hours
+          </h3>
           <div className="space-y-1 text-gray-600">
-            <p className="text-sm">Sunday Through Friday</p>
-            <p className="text-sm">8AM - 6PM</p>
+            <p className="text-sm lg:text-xl">Sunday Through Friday</p>
+            <p className="text-sm lg:text-xl">8AM - 6PM</p>
           </div>
         </div>
       </section>
@@ -185,7 +188,7 @@ export default function ContactForm() {
         />
 
         <div className="flex flex-1 flex-col gap-2">
-          <label className="text-base font-bold text-gray-800">
+          <label className="text-base font-bold text-gray-800 lg:text-lg">
             How can we help?<span className="text-primary-red">*</span>
           </label>
           <textarea
