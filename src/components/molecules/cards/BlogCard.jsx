@@ -29,7 +29,7 @@ export function BlogCard({ item }) {
           {item.author && (
             <div className="flex items-center gap-3">
               <UserCircle size={20} className="text-black" strokeWidth={1.5} />
-              <span className="text-base text-foreground/70">
+              <span className="text-foreground/70 text-base">
                 {item.author?.name}
               </span>
             </div>
