@@ -6,9 +6,9 @@ import { AnimatedHeading } from '@/components/atoms/headings'
 
 import { Pagenav } from '@/components/Reusables';
 
-async function getEvents(page = 1) {
+async function getNotices(page = 1) {
   try {
-    const res = await fetch(ROUTES.API.EVENTS.HOME(page, 9), {
+    const res = await fetch(ROUTES.API.NOTICES.HOME(page, 9), {
       cache: 'no-store',
     });
     if (!res.ok) return { items: [], totalPages: 1 };
@@ -19,10 +19,10 @@ async function getEvents(page = 1) {
   }
 }
 
-export default async function EventsPage(props) {
+export default async function NoticesPage(props) {
   const searchParams = await props.searchParams;
   const page = Number(searchParams?.page || 1);
-  const data = await getEvents(page);
+  const data = await getNotices(page);
   const events = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
@@ -40,15 +40,15 @@ export default async function EventsPage(props) {
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
-      <AnimatedHeading text="Events" />
+      <AnimatedHeading text="Notices" />
 
       {!events || events.length === 0 ? (
         <p className="mt-10 text-center text-gray-500">
-          No events available at the moment.
+          No notices available at the moment.
         </p>
       ) : (
         <div
-          className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
+          className={`grid w-full grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3`}
         >
           {events.map((event) => (
             <InfoCard
@@ -58,7 +58,7 @@ export default async function EventsPage(props) {
                 description: event.description,
                 imageSrc: resolveUrl(event.mediaUrl),
               }}
-              href={ROUTES.EVENTS.SINGLE(event.slug)}
+              href={ROUTES.NOTICES.SINGLE(event.slug)}
             />
           ))}
         </div>

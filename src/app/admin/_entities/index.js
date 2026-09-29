@@ -10,6 +10,7 @@ import { gallery } from './gallery.js';
 import { services } from './services.js';
 import { users } from './users.js';
 import { countries } from './countries.js';
+import { notices } from './notices.js';
 import { jobs } from './jobs.js';
 import { testimonials } from './testimonials.js';
 
@@ -20,6 +21,7 @@ export const entities = defineEntities({
   faqs,
   gallery,
   events,
+  notices,
   contact,
   appointments,
   jobs,

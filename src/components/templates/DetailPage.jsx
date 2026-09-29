@@ -3,8 +3,10 @@ import { AnimatedWords } from '@/components/ui/animated-words';
 import SafeImage from '../ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
 import ArticleBody from '@/packages/admin/components/templates/ArticleBody';
+import { Calendar, Clock, MapPin } from "lucide-react";
 
-export default function DetailPage({ data, isBlog = false }) {
+
+export default function DetailPage({ data, isBlog = false, isEvent = false }) {
   if (!data) return null;
 
   return (
@@ -38,6 +40,31 @@ export default function DetailPage({ data, isBlog = false }) {
             </div>
           )}
         </AnimatedCard>
+      )}
+
+      {isEvent && (
+        <div className="mx-auto mb-6 grid w-3/4 grid-cols-1 gap-4 px-8 sm:grid-cols-3">
+          {data.time && (
+            <div className="text-primary-blue-dark border-primary-blue flex items-center justify-center gap-2 rounded-lg border bg-white px-4 py-3 text-[15px] font-semibold">
+              <Clock className="text-primary-blue-dark h-4 w-4" />
+              <span>Time: {data.time}</span>
+            </div>
+          )}
+
+          {data.date && (
+            <div className="text-primary-blue-dark border-primary-blue flex items-center justify-center gap-2 rounded-lg border bg-white px-4 py-3 text-[15px] font-semibold">
+              <Calendar className="text-primary-blue-dark h-4 w-4" />
+              <span>Date: {data.date}</span>
+            </div>
+          )}
+
+          {data.venue && (
+            <div className="text-primary-blue-dark border-primary-blue flex items-center justify-center gap-2 rounded-lg border bg-white px-4 py-3 text-[15px] font-semibold">
+              <MapPin className="text-primary-blue-dark h-4 w-4" />
+              <span>Venue: {data.venue}</span>
+            </div>
+          )}
+        </div>
       )}
 
       {data.description && (

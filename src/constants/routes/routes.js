@@ -11,6 +11,11 @@ export const ROUTES = {
     SINGLE: (slug) => `/events/${slug}`,
   },
 
+  NOTICES: {
+    HOME: '/notices',
+    SINGLE: (slug) => `/notices/${slug}`,
+  },
+
   BLOGS: {
     HOME: '/blogs',
     SINGLE: (slug) => `/blogs/${slug}`,
@@ -63,6 +68,12 @@ export const ROUTES = {
         `${process.env.NEXT_PUBLIC_API}/events?page=${page}&limit=${limit}`,
       SINGLE_VIA_SLUG: (slug) =>
         `${process.env.NEXT_PUBLIC_API}/events/slug/${slug}`,
+    },
+    NOTICES: {
+      HOME: (page = 1, limit = 9) =>
+        `${process.env.NEXT_PUBLIC_API}/notices?page=${page}&limit=${limit}`,
+      SINGLE_VIA_SLUG: (slug) =>
+        `${process.env.NEXT_PUBLIC_API}/notices/slug/${slug}`,
     },
   },
 };

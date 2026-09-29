@@ -6,6 +6,7 @@ import Link from 'next/link';
 const InfoCard = ({ item = {}, imageAlt, onAction, href, icon: Icon }) => {
   const { name = '', description = '', imageSrc } = item;
   const ShowIcon = Icon && !imageSrc;
+  console.log('imageSrc', imageSrc)
 
   const ActionWrapper = ({ children }) =>
     href ? (
@@ -47,7 +48,7 @@ const InfoCard = ({ item = {}, imageAlt, onAction, href, icon: Icon }) => {
           </div>
         )}
 
-        <h2 className="text-foreground pb-1 font-bold md:text-2xl md:text-[1.75rem]">
+        <h2 className="text-foreground pb-1 font-bold md:text-xl lg:text-2xl xl:text-3xl">
           {name}
         </h2>
 

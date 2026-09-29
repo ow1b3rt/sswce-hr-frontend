@@ -23,6 +23,8 @@ const fallbackServicesLinks = [
 const othersLinks = [
   { title: "Blog", href: "/blogs" },
   { title: "FAQs", href: "/faqs" },
+  { title: "Notices", href: "/notices" },
+  { title: "Events", href: "/events" },
   { title: "Contact", href: "/contact" },
 ];
 

@@ -19,7 +19,7 @@ export function BlogCard({ item }) {
 
         <div className="rounded-baseRadius relative mb-4 aspect-video w-full overflow-hidden">
           <Image
-            src={resolveUrl(item.media.url)}
+            src={resolveUrl(item.media?.url)}
             alt={ `${item.title} image`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -32,7 +32,7 @@ export function BlogCard({ item }) {
             <div className="flex items-center gap-3">
               <UserCircle size={20} className="text-black" strokeWidth={1.5} />
               <span className="text-base text-foreground/70">
-                {item.author.name}
+                {item.author?.name}
               </span>
             </div>
           )}

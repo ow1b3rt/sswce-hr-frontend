@@ -2,7 +2,7 @@ import { AnimatedWords } from '@/components/ui/animated-words';
 
 export function AnimatedHeading({ as: Component = 'h1', text }) {
   return (
-    <Component className="text-destructive text-center text-4xl font-bold md:text-5xl lg:text-7xl">
+    <Component className="text-destructive text-center text-xl font-bold md:text-2xl lg:text-3xl xl:text-5xl">
       <AnimatedWords
         text={text}
         animKey="text"

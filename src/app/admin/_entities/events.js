@@ -10,8 +10,6 @@ export const events = defineEntity({
   fields: [
     { name: 'title', type: 'text', label: 'Title', required: true },
 
-    { name: 'slug', type: 'text', label: 'Slug', required: true },
-
     { name: 'description', type: 'textarea', label: 'Description' },
     {
       name: 'content:image',

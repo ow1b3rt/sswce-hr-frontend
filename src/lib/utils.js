@@ -58,6 +58,14 @@ export function localDate(date) {
   });
 }
 
+export function localTime(date) {
+  return new Date(date).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 export function getMediaUrl(path) {
   if (!path) return '';
   return path.startsWith('http')
