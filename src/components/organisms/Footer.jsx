@@ -3,10 +3,7 @@ import Link from 'next/link';
 import { Phone, MapPin, Mail } from 'lucide-react';
 import SafeImage from '@/components/ui/safe-image';
 import Divider from '@/components/ui/divider';
-import {
-  getCountryLinks,
-  getServicesLinks,
-} from '@/resources/data/nav-data'; // adjust path to wherever nav-data.js lives
+import { getCountryLinks, getServicesLinks } from '@/resources/data/nav-data'; // adjust path to wherever nav-data.js lives
 
 const FacebookIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -81,8 +78,8 @@ const CTA = {
 
 const COPYRIGHT = {
   prefix: 'Copyright ©',
-  text: 'SSWCE Human Resource Design & Maintained By',
-  company: 'Enlighten Infosys Pvt. Ltd.',
+  text: 'SSWCE Human Resource ',
+  company: 'Design & Maintained By Enlighten Infosys Pvt. Ltd.',
   companyHref: '/',
 };
 
@@ -247,14 +244,8 @@ export async function Footer() {
             <Divider backgroundColor="bg-gray-200" className="mb-10" />
 
             <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3">
-              <FooterColumn
-                title="Services"
-                items={toColumnItems(services)}
-              />
-              <FooterColumn
-                title="Country"
-                items={toColumnItems(countries)}
-              />
+              <FooterColumn title="Services" items={toColumnItems(services)} />
+              <FooterColumn title="Country" items={toColumnItems(countries)} />
               <ContactColumn title="Get In Touch" contact={CONTACT} />
             </div>
           </div>

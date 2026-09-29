@@ -9,7 +9,7 @@ export default function BlogDetailPage({ data, isBlog = false }) {
 
   return (
     <main className="text-foreground container mx-auto">
-      <h1 className="py-6 text-xl font-bold text-center tracking-tight md:py-8 md:text-5xl lg:text-6xl">
+      <h1 className="py-6 text-center text-xl font-bold tracking-tight md:py-8 md:text-5xl lg:text-6xl">
         <AnimatedWords
           text={data.title}
           animKey="detail-title"
@@ -32,7 +32,6 @@ export default function BlogDetailPage({ data, isBlog = false }) {
             sizes="(max-width: 768px) 100vw, 100vw"
             priority
           />
-
         </AnimatedCard>
       )}
 

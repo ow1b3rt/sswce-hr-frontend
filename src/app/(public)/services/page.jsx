@@ -28,6 +28,7 @@ export default async function ServicesPage() {
         ? 'lg:grid-cols-2'
         : 'lg:grid-cols-3';
 
+  console.log('services', services);
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
       <AnimatedHeading text="Services" />
@@ -46,7 +47,9 @@ export default async function ServicesPage() {
               item={{
                 name: service.title || service.name,
                 description: service.description,
+                imageSrc: service.image?.src,
               }}
+              imageAlt={service.image?.alt}
               icon={Settings}
               href={ROUTES.SERVICES.SINGLE(
                 service.slug || slugify(service.title || service.name),

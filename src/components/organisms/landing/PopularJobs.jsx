@@ -73,7 +73,12 @@ const PopularJobs = ({ jobs }) => {
           itemClassName="basis-full sm:basis-1/2 lg:basis-1/3"
           showGradientMask={false}
           className="max-w-80 sm:max-w-full"
-          renderItem={(job, index) => <JobCard key={job.id} job={job} />}
+          onlyEffectWhenNeeded
+          renderItem={(job, index) => (
+            <div data-no-drag>
+              <JobCard key={job.id} job={job} />
+            </div>
+          )}
         />
       </div>
     </section>

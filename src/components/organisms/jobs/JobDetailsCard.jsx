@@ -24,7 +24,7 @@ function TickListSection({ title, items }) {
               alt="tick"
               width={20}
               height={20}
-              className="mt-1.5 h-4 w-4 shrink-0 md:h-5 md:w-5"
+              className="mt-1.5 h-4 w-4 shrink-0 md:h-4 md:w-6"
             />
             <span className="text-muted-foreground text-base leading-relaxed md:text-xl">
               {item}

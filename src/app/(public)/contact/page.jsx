@@ -26,7 +26,7 @@ export default function ContactUs() {
       <AnimatedCard
         direction="up"
         distance={12}
-        className="w-full max-w-5xl"
+        className="w-full"
         triggerOnView
       >
         <ContactForm />

@@ -12,6 +12,8 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
+const EFFECT_MIN_ITEMS = 3;
+
 export function AutoCarousel(props) {
   const { transition = 'fade' } = props;
   if (transition === 'marquee') return <MarqueeCarousel {...props} />;
@@ -20,6 +22,21 @@ export function AutoCarousel(props) {
   ) : (
     <FadeCarousel {...props} />
   );
+}
+
+/**
+ * Decides whether the looping / auto-play / duplicated behavior
+ * should kick in.
+ * - Default (false): caller's `loop` / `autoPlay` returned unchanged.
+ * - true: effect only enabled when count > EFFECT_MIN_ITEMS.
+ */
+function useEffectiveLoop({ count, onlyEffectWhenNeeded, loop, autoPlay }) {
+  if (!onlyEffectWhenNeeded) return { loop, autoPlay };
+  const hasEnoughItems = count > EFFECT_MIN_ITEMS;
+  return {
+    loop: loop && hasEnoughItems,
+    autoPlay: autoPlay && hasEnoughItems,
+  };
 }
 
 function FadeCarousel({
@@ -34,6 +51,7 @@ function FadeCarousel({
   showDotControls = true,
   reverseControlsPosition = false,
   autoPlay = true,
+  onlyEffectWhenNeeded = false,
   showGradientMask = false,
   gradientWidth = '8%',
   gradientMaskClassName,
@@ -48,6 +66,10 @@ function FadeCarousel({
 
   const count = items.length;
 
+  const { loop: effectiveLoop, autoPlay: effectiveAutoPlay } = useEffectiveLoop(
+    { count, onlyEffectWhenNeeded, loop, autoPlay },
+  );
+
   const handleNav = React.useCallback(
     (nextIndex) => {
       setIndex(nextIndex);
@@ -57,7 +79,7 @@ function FadeCarousel({
   );
 
   React.useEffect(() => {
-    if (!autoPlay || count <= 1) return;
+    if (!effectiveAutoPlay || count <= 1) return;
     if (isPaused) return;
     if (stopOnInteraction && userInteracted) return;
 
@@ -67,14 +89,14 @@ function FadeCarousel({
 
         if (reverse) {
           const atStart = current === 0;
-          if (atStart && !loop) {
+          if (atStart && !effectiveLoop) {
             window.clearInterval(timer);
             return current;
           }
           next = atStart ? count - 1 : current - 1;
         } else {
           const atEnd = current === count - 1;
-          if (atEnd && !loop) {
+          if (atEnd && !effectiveLoop) {
             window.clearInterval(timer);
             return current;
           }
@@ -88,11 +110,11 @@ function FadeCarousel({
 
     return () => window.clearInterval(timer);
   }, [
-    autoPlay,
+    effectiveAutoPlay,
     count,
     delay,
     isPaused,
-    loop,
+    effectiveLoop,
     reverse,
     onSlideChange,
     stopOnInteraction,
@@ -169,6 +191,7 @@ function SlideCarousel({
   showDotControls = true,
   reverseControlsPosition = false,
   autoPlay = true,
+  onlyEffectWhenNeeded = false,
   showGradientMask = false,
   gradientWidth = '8%',
   gradientMaskClassName,
@@ -181,26 +204,33 @@ function SlideCarousel({
   const [snapCount, setSnapCount] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
 
+  const count = items.length;
+
+  const { loop: effectiveLoop, autoPlay: effectiveAutoPlay } = useEffectiveLoop(
+    { count, onlyEffectWhenNeeded, loop, autoPlay },
+  );
+
   const [plugin] = React.useState(() =>
     Autoplay({ delay, stopOnInteraction, stopOnMouseEnter: pauseOnHover }),
   );
 
   const plugins = React.useMemo(
-    () => (autoPlay && !reverse ? [plugin] : []),
-    [autoPlay, reverse, plugin],
+    () => (effectiveAutoPlay && !reverse ? [plugin] : []),
+    [effectiveAutoPlay, reverse, plugin],
   );
+
   React.useEffect(() => {
-    if (!api || !autoPlay || !reverse) return;
+    if (!api || !effectiveAutoPlay || !reverse) return;
     if (isPaused) return;
 
     const interval = window.setInterval(() => {
-      if (api.canScrollPrev() || loop) {
+      if (api.canScrollPrev() || effectiveLoop) {
         api.scrollPrev();
       }
     }, delay);
 
     return () => window.clearInterval(interval);
-  }, [api, autoPlay, reverse, isPaused, delay, loop]);
+  }, [api, effectiveAutoPlay, reverse, isPaused, delay, effectiveLoop]);
 
   React.useEffect(() => {
     if (!api) return;
@@ -245,7 +275,7 @@ function SlideCarousel({
     <Carousel
       setApi={setApi}
       opts={{
-        loop,
+        loop: effectiveLoop,
         duration: 60,
       }}
       plugins={plugins}
@@ -287,6 +317,7 @@ function MarqueeCarousel({
   pauseOnHover = true,
   stopOnInteraction = false,
   autoPlay = true,
+  onlyEffectWhenNeeded = false,
   showGradientMask = true,
   gradientWidth = '8%',
   gradientMaskClassName,
@@ -306,15 +337,27 @@ function MarqueeCarousel({
   const dragStateRef = React.useRef(null);
   const suppressClickRef = React.useRef(false);
 
-  // Keep the latest values in refs so the native wheel listener
-  // (added once in an effect below) always reads current props
-  // without needing to be re-attached on every render.
   const stopOnInteractionRef = React.useRef(stopOnInteraction);
   React.useEffect(() => {
     stopOnInteractionRef.current = stopOnInteraction;
   }, [stopOnInteraction]);
 
   const count = items.length;
+
+  const { autoPlay: effectiveAutoPlay } = useEffectiveLoop({
+    count,
+    onlyEffectWhenNeeded,
+    loop: true,
+    autoPlay,
+  });
+
+  // When effect is gated off (small count), render items once and skip
+  // the wrap logic. Otherwise original triple-copy marquee runs as before.
+  const shouldDuplicate = onlyEffectWhenNeeded
+    ? count > EFFECT_MIN_ITEMS
+    : true;
+
+  const renderItems = shouldDuplicate ? [...items, ...items, ...items] : items;
 
   React.useEffect(() => {
     directionRef.current = reverse ? -1 : 1;
@@ -325,10 +368,12 @@ function MarqueeCarousel({
     if (!node || count === 0) return;
 
     const measure = () => {
-      const singleSetWidth = node.scrollWidth / 3;
+      const singleSetWidth = shouldDuplicate
+        ? node.scrollWidth / 3
+        : node.scrollWidth;
       singleSetWidthRef.current = singleSetWidth;
 
-      if (!dragStateRef.current) {
+      if (!dragStateRef.current && shouldDuplicate) {
         node.scrollLeft =
           singleSetWidth + (node.scrollLeft % singleSetWidth || 0);
         if (node.scrollLeft < singleSetWidth * 0.1) {
@@ -342,7 +387,7 @@ function MarqueeCarousel({
     const ro = new ResizeObserver(measure);
     ro.observe(node);
     return () => ro.disconnect();
-  }, [count, items]);
+  }, [count, items, shouldDuplicate]);
 
   React.useEffect(() => {
     const node = scrollerRef.current;
@@ -364,25 +409,34 @@ function MarqueeCarousel({
       lastTime = time;
 
       const shouldAutoScroll =
-        autoPlay &&
+        effectiveAutoPlay &&
         !isHoverPausedRef.current &&
         !isUserInteractingRef.current &&
         !dragStateRef.current &&
         !(stopOnInteraction && permanentlyStoppedRef.current);
 
-      if (shouldAutoScroll && dt > 0) {
+      if (shouldAutoScroll && dt > 0 && shouldDuplicate) {
         node.scrollLeft += directionRef.current * marqueeSpeed * dt;
       }
-      if (node.scrollLeft < singleSetWidth * 0.5) {
-        node.scrollLeft += singleSetWidth;
-      } else if (node.scrollLeft > singleSetWidth * 1.5) {
-        node.scrollLeft -= singleSetWidth;
+
+      if (shouldDuplicate) {
+        if (node.scrollLeft < singleSetWidth * 0.5) {
+          node.scrollLeft += singleSetWidth;
+        } else if (node.scrollLeft > singleSetWidth * 1.5) {
+          node.scrollLeft -= singleSetWidth;
+        }
       }
     };
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [autoPlay, count, marqueeSpeed, stopOnInteraction]);
+  }, [
+    effectiveAutoPlay,
+    count,
+    marqueeSpeed,
+    stopOnInteraction,
+    shouldDuplicate,
+  ]);
 
   React.useEffect(() => {
     return () => {
@@ -411,14 +465,11 @@ function MarqueeCarousel({
     }, 1200);
   }, []);
 
-  // Native (non-passive) wheel listener so preventDefault() actually
-  // stops the page from scrolling while the pointer is over the track.
   React.useEffect(() => {
     const node = scrollerRef.current;
     if (!node) return;
 
     const wheelHandler = (e) => {
-      // Vertical wheel/trackpad input drives horizontal marquee scroll.
       if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
         node.scrollLeft += e.deltaY;
         e.preventDefault();
@@ -439,10 +490,18 @@ function MarqueeCarousel({
       }
     : undefined;
 
+  // ─── FIX 1: skip drag when pointer starts on interactive elements ───
   const handlePointerDown = (e) => {
     if (!draggable) return;
+
+    const interactive = e.target.closest(
+      'a, button, input, textarea, select, [role="button"], [data-no-drag]',
+    );
+    if (interactive) return;
+
     const node = scrollerRef.current;
     if (!node) return;
+
     dragStateRef.current = {
       pointerId: e.pointerId,
       startX: e.clientX,
@@ -453,22 +512,32 @@ function MarqueeCarousel({
     registerInteraction();
   };
 
+  // ─── FIX 2: raise drag threshold so click-jitter isn't treated as drag ───
   const handlePointerMove = (e) => {
     const drag = dragStateRef.current;
     const node = scrollerRef.current;
     if (!drag || !node || drag.pointerId !== e.pointerId) return;
 
     const dx = e.clientX - drag.startX;
-    if (Math.abs(dx) > 3) drag.dragged = true;
+    if (Math.abs(dx) > 6) drag.dragged = true;
     node.scrollLeft = drag.startScrollLeft - dx;
   };
 
+  // ─── FIX 3: only suppress clicks on real drags, reset async ───
   const endDrag = (e) => {
     const drag = dragStateRef.current;
     if (!drag || drag.pointerId !== e.pointerId) return;
-    if (drag.dragged) {
+
+    const dx = e.clientX - drag.startX;
+    const wasRealDrag = drag.dragged && Math.abs(dx) > 6;
+
+    if (wasRealDrag) {
       suppressClickRef.current = true;
+      window.setTimeout(() => {
+        suppressClickRef.current = false;
+      }, 0);
     }
+
     dragStateRef.current = null;
     registerInteraction();
   };
@@ -477,7 +546,6 @@ function MarqueeCarousel({
     if (suppressClickRef.current) {
       e.preventDefault();
       e.stopPropagation();
-      suppressClickRef.current = false;
     }
   };
 
@@ -514,10 +582,10 @@ function MarqueeCarousel({
           onPointerLeave={endDrag}
           onClickCapture={handleClickCapture}
         >
-          {[...items, ...items, ...items].map((item, i) => (
+          {renderItems.map((item, i) => (
             <div
               key={i}
-              aria-hidden={i >= count ? true : undefined}
+              aria-hidden={shouldDuplicate && i >= count ? true : undefined}
               className={cn('shrink-0', itemClassName)}
             >
               {renderItem(item, i % count)}

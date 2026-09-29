@@ -25,6 +25,7 @@ function toBlogPost(item) {
     title: item.title,
     excerpt: content.slice(0, 160) + (content.length > 160 ? '...' : ''),
     image: (item.media && getMediaUrl(item.media.url)) || FALLBACK_IMAGE,
+    slug: item.slug,
   };
 }
 
@@ -70,8 +71,9 @@ export default function Highlight({ blogs }) {
   const blogsPost = blogs
     ? (blogs.items ?? []).map(toBlogPost).slice(0, 4)
     : blogData;
+
   return (
-    <main className="mb-16 flex min-h-screen flex-col items-center space-y-12 bg-white">
+    <main className="mb-16 flex flex-col items-center space-y-12 bg-white">
       <h1 className="text-destructive text-center text-4xl font-bold md:text-5xl lg:text-7xl">
         <AnimatedWords
           text="Highlights"
