@@ -71,6 +71,7 @@ export const HeroSection = () => {
               height={24}
               objectFit="contain"
               className="pt-1"
+              priority
             />
           </Button>
           <div className="flex w-full flex-col items-center gap-4 md:mt-8 lg:gap-8">
