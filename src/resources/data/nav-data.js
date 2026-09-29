@@ -35,7 +35,7 @@ async function fetchLinks(path, hrefPrefix) {
   const { layout } = await res.json();
   const items = layout?.items || [];
 
-  return items.map((item) => ({
+  return items.slice(0, 5).map((item) => ({
     title: item.title,
     href: `${hrefPrefix}/${item.slug}`,
   }));
@@ -65,7 +65,7 @@ export async function getDropdownGroups() {
 
   return [
     { label: 'Country', items: countries },
-    { label: 'Services', items: services },
+    { label: 'Services', items: [ { title: 'View All', href: '/services' },  ...services ] },
     { label: 'Others', items: othersLinks },
   ];
 }

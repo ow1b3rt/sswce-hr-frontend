@@ -62,7 +62,7 @@ function NavDropdown({ label, items }) {
       </NavigationMenuTrigger>
 
       <NavigationMenuContent>
-        <ul className="grid w-48 gap-1 p-2">
+        <ul className="grid min-w-48 max-w-60 gap-1 p-2">
           {items.map((item) => {
             const isSubActive = pathname === item.href;
             return (
