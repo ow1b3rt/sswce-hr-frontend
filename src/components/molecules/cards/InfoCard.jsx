@@ -7,7 +7,7 @@ import Link from 'next/link';
 const InfoCard = ({ item = {}, imageAlt, onAction, href, icon: Icon }) => {
   const { name = '', description = '', imageSrc } = item;
   const ShowIcon = Icon && !imageSrc;
-  console.log('imageSrc', imageSrc)
+  console.log('imageSrc', imageSrc);
 
   const ActionWrapper = ({ children }) =>
     href ? (

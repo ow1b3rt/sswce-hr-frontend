@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const WORDS = [
-  "Fathoming",
-  "Sleuthing",
-  "Screening résumés",
-  "Matching talent",
-  "Untangling org charts",
-  "Percolating",
-  "Scheduling interviews",
-  "Noodling",
-  "Rummaging through files",
-  "Divining culture fit",
-  "Cogitating",
-  "Herding candidates",
-  "Spelunking payroll",
-  "Simmering",
+  'Fathoming',
+  'Sleuthing',
+  'Screening résumés',
+  'Matching talent',
+  'Untangling org charts',
+  'Percolating',
+  'Scheduling interviews',
+  'Noodling',
+  'Rummaging through files',
+  'Divining culture fit',
+  'Cogitating',
+  'Herding candidates',
+  'Spelunking payroll',
+  'Simmering',
 ];
 
 const INTERVAL_MS = 2200; // time between words
 const FADE_MS = 400; // fade out / fade in duration
 
-const RED = "var(--color-primary-red)";
-const GREEN = "var(--color-primary-green)";
-const BLUE = "var(--color-primary-blue)";
+const RED = 'var(--color-primary-red)';
+const GREEN = 'var(--color-primary-green)';
+const BLUE = 'var(--color-primary-blue)';
 const PALETTE = [RED, GREEN, BLUE, RED, GREEN];
 
 const CENTER = 60;
@@ -119,7 +119,13 @@ export default function Loading() {
             );
           })}
 
-          <circle cx={CENTER} cy={CENTER} r="7" fill={BLUE} className="hr-hub" />
+          <circle
+            cx={CENTER}
+            cy={CENTER}
+            r="7"
+            fill={BLUE}
+            className="hr-hub"
+          />
 
           {NODES.map((n, i) => (
             <g key={`n-${i}`} transform={`translate(${n.x} ${n.y})`}>
@@ -140,7 +146,7 @@ export default function Loading() {
         <div className="h-8">
           <p
             className={`hr-word text-xl font-semibold tracking-tight ${
-              visible ? "hr-word-in" : "hr-word-out"
+              visible ? 'hr-word-in' : 'hr-word-out'
             }`}
             style={{ transitionDuration: `${FADE_MS}ms` }}
           >
