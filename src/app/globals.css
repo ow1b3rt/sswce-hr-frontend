@@ -240,3 +240,50 @@
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
 }
+
+/* Panel reveals via a circle growing from the button */
+@keyframes panel-bubble-in {
+  0% {
+    clip-path: circle(0px at var(--bubble-x) var(--bubble-y));
+  }
+  100% {
+    clip-path: circle(150% at var(--bubble-x) var(--bubble-y));
+  }
+}
+
+@keyframes panel-bubble-out {
+  0% {
+    clip-path: circle(150% at var(--bubble-x) var(--bubble-y));
+  }
+  100% {
+    clip-path: circle(0px at var(--bubble-x) var(--bubble-y));
+  }
+}
+
+@keyframes bubble-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(8px);
+    duration: 50s;
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-panel-bubble-in {
+  animation: panel-bubble-in 0.55s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.animate-panel-bubble-out {
+  animation: panel-bubble-out 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.animate-bubble-in {
+  animation: bubble-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
