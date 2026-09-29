@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation';
 import { ROUTES } from '@/constants/routes/routes';
 import { resolveUrl } from '@/lib/utils';
 import DetailPage from '@/components/templates/DetailPage';
-import { localDate, localTime } from "@/lib/utils";
-
+import { localDate, localTime } from '@/lib/utils';
 
 async function getEventBySlug(slug) {
   try {
@@ -47,9 +46,7 @@ export default async function EventDetailPage({ params }) {
       alt: event.mediaAlt || event.title,
     },
     content: [event.description || ''],
-
   };
 
   return <DetailPage data={eventData} />;
 }
-

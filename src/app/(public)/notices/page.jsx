@@ -1,8 +1,8 @@
 import InfoCard from '@/components/molecules/cards/InfoCard';
 import { CalendarDays } from 'lucide-react';
 import { ROUTES } from '@/constants/routes/routes';
-import { resolveUrl } from '@/lib/utils'
-import { AnimatedHeading } from '@/components/atoms/headings'
+import { resolveUrl } from '@/lib/utils';
+import { AnimatedHeading } from '@/components/atoms/headings';
 
 import { Pagenav } from '@/components/Reusables';
 

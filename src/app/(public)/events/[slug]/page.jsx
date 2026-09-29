@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import { ROUTES } from '@/constants/routes/routes';
 import DetailPage from '@/components/templates/DetailPage';
-import { localDate, localTime } from "@/lib/utils";
-
+import { localDate, localTime } from '@/lib/utils';
 
 async function getEventBySlug(slug) {
   try {
@@ -49,8 +48,7 @@ export default async function EventDetailPage({ params }) {
     date: localDate(event.time),
     time: localTime(event.time),
     venue: event.location,
-
   };
 
-  return <DetailPage data={eventData} isEvent/>;
+  return <DetailPage data={eventData} isEvent />;
 }

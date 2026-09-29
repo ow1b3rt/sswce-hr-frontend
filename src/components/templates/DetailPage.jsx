@@ -3,8 +3,7 @@ import { AnimatedWords } from '@/components/ui/animated-words';
 import SafeImage from '../ui/safe-image';
 import AnimatedCard from '@/components/ui/animated-card';
 import ArticleBody from '@/packages/admin/components/templates/ArticleBody';
-import { Calendar, Clock, MapPin } from "lucide-react";
-
+import { Calendar, Clock, MapPin } from 'lucide-react';
 
 export default function DetailPage({ data, isBlog = false, isEvent = false }) {
   if (!data) return null;

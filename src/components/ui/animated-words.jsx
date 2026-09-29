@@ -19,27 +19,43 @@ export function AnimatedWords({
   className,
   wordClassName,
 }) {
-  const words = text.split(' ');
-  const count = words.length;
+  const lines = text.split('\n');
+
+  let globalIndex = 0;
+  const totalWords = lines.reduce(
+    (sum, line) => sum + line.trim().split(/\s+/).filter(Boolean).length,
+    0,
+  );
 
   return (
-    <span
-      key={animKey}
-      className={cn('inline-flex flex-wrap gap-x-1', className)}
-    >
-      {words.map((word, i) => {
-        const order = reverse ? count - 1 - i : i;
+    <span key={animKey} className={cn('block', className)}>
+      {lines.map((line, lineIdx) => {
+        const words = line.trim().split(/\s+/).filter(Boolean);
+
         return (
-          <span
-            key={i}
-            className={cn('animate-word-in inline-block', wordClassName)}
-            style={{
-              animationDelay: `${order * staggerMs}ms`,
-              animationDuration: `${durationMs}ms`,
-              '--word-offset': DIRECTION_OFFSET[direction],
-            }}
-          >
-            {word}
+          <span key={lineIdx} className="block">
+            {words.map((word, i) => {
+              const order = reverse
+                ? totalWords - 1 - globalIndex
+                : globalIndex;
+              globalIndex += 1;
+
+              return (
+                <span
+                  key={i}
+                  className={cn('animate-word-in inline-block', wordClassName)}
+                  style={{
+                    animationDelay: `${order * staggerMs}ms`,
+                    animationDuration: `${durationMs}ms`,
+                    '--word-offset': DIRECTION_OFFSET[direction],
+                  }}
+                >
+                  {word}
+                  {/* Preserve a real space between words */}
+                  {i < words.length - 1 && '\u00A0'}
+                </span>
+              );
+            })}
           </span>
         );
       })}

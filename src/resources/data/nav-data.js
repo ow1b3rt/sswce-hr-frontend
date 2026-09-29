@@ -21,11 +21,11 @@ const fallbackServicesLinks = [
 
 // Stays static: these aren't database-driven
 const othersLinks = [
-  { title: "Blog", href: "/blogs" },
-  { title: "FAQs", href: "/faqs" },
-  { title: "Notices", href: "/notices" },
-  { title: "Events", href: "/events" },
-  { title: "Contact", href: "/contact" },
+  { title: 'Blog', href: '/blogs' },
+  { title: 'FAQs', href: '/faqs' },
+  { title: 'Notices', href: '/notices' },
+  { title: 'Events', href: '/events' },
+  { title: 'Contact', href: '/contact' },
 ];
 
 async function fetchLinks(path, hrefPrefix) {
