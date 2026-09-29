@@ -1,16 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { MediaLibraryModal, resolveUrl, setPath } from '@/packages/admin';
+import ArticleEditor from '@/packages/admin/components/organisms/BlockNote.jsx';
 import { slugify } from '@/packages/admin/utils/utils';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import { ConfirmationDialog } from '@/components/molecules/ConfirmationModal';
 import { ImageContainer } from '@/components/molecules/ImageContainer';
 
-function ServiceCardEditable({ item, path, onChange, onImageClick, onRemove }) {
+// Old descriptions were plain text. Wrap them so the editor shows paragraphs.
+function toHtml(text) {
+  if (!text) return '';
+  if (text.trim().startsWith('<')) return text;
+  return text
+    .split(/\n{2,}/)
+    .map((p) => `<p>${p.replace(/\n/g, '<br />')}</p>`)
+    .join('');
+}
+
+function ServiceCardEditable({
+  item,
+  path,
+  onChange,
+  onImageClick,
+  onRemove,
+  editorRef,
+}) {
   return (
-    <div className="relative flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-4 shadow-sm">
+    <div className="relative flex w-full flex-col gap-4 rounded-2xl bg-white border border-gray-200 p-4 shadow-sm">
       <button
         type="button"
         onClick={onRemove}
@@ -43,13 +61,9 @@ function ServiceCardEditable({ item, path, onChange, onImageClick, onRemove }) {
         onChange={onChange(`${path}.title`)}
       />
 
-      <textarea
-        rows={20}
-        className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm"
-        placeholder="Description"
-        value={item.description ?? ''}
-        onChange={onChange(`${path}.description`)}
-      />
+      <div className="max-h-[420px] min-h-[260px] overflow-y-auto rounded-xl border border-gray-200 px-2 py-3">
+        <ArticleEditor ref={editorRef} initialHTML={toHtml(item.description)} />
+      </div>
     </div>
   );
 }
@@ -63,7 +77,17 @@ export const HomeServicesEditable = ({
   const [section, setSection] = useState(initialSection);
   const [mediaPath, setMediaPath] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [removeIndex, setRemoveIndex] = useState(null); // index pending removal, or null
+  const [removeIndex, setRemoveIndex] = useState(null);
+
+  // Stable id per card, kept parallel to section.items.
+  const keyCounter = useRef(0);
+  const newKey = () => `svc-${keyCounter.current++}`;
+  const [keys, setKeys] = useState(() =>
+    (initialSection?.items ?? []).map(() => newKey()),
+  );
+
+  // One editor handle per card, looked up by that id.
+  const editorRefs = useRef({});
 
   if (!section) return null;
 
@@ -77,11 +101,8 @@ export const HomeServicesEditable = ({
 
     if (path.endsWith('.title')) {
       const basePath = path.slice(0, -'.title'.length);
-
       let next = setPath(section, path, value);
-
       next = setPath(next, `${basePath}.slug`, slugify(value));
-
       update(next);
       return;
     }
@@ -96,28 +117,23 @@ export const HomeServicesEditable = ({
         alt: item.alt ?? '',
       }),
     );
-
     setMediaPath(null);
   };
 
   const addItem = () => {
+    setKeys((prev) => [...prev, newKey()]);
     update({
       ...section,
       items: [
         ...(section.items ?? []),
-        {
-          image: {
-            src: '',
-            alt: '',
-          },
-          title: '',
-          description: '',
-        },
+        { image: { src: '', alt: '' }, title: '', description: '' },
       ],
     });
   };
 
   const removeItem = (index) => {
+    delete editorRefs.current[keys[index]];
+    setKeys((prev) => prev.filter((_, i) => i !== index));
     update({
       ...section,
       items: (section.items ?? []).filter((_, i) => i !== index),
@@ -128,7 +144,17 @@ export const HomeServicesEditable = ({
     setSaving(true);
 
     try {
-      await onSave?.(section);
+      // Pull the current HTML out of every editor before saving.
+      const items = await Promise.all(
+        (section.items ?? []).map(async (item, i) => {
+          const html = await editorRefs.current[keys[i]]?.getHtml();
+          return { ...item, description: html ?? item.description ?? '' };
+        }),
+      );
+
+      const next = { ...section, items };
+      update(next);
+      await onSave?.(next);
     } finally {
       setSaving(false);
     }
@@ -146,12 +172,16 @@ export const HomeServicesEditable = ({
       <div className="grid max-h-190 grid-cols-1 gap-6 overflow-y-scroll md:grid-cols-2 lg:grid-cols-2">
         {(section.items ?? []).map((item, i) => (
           <ServiceCardEditable
-            key={i}
+            key={keys[i]}
             item={item}
             path={`items.${i}`}
             onChange={handleChange}
             onImageClick={() => setMediaPath(`items.${i}.image`)}
             onRemove={() => setRemoveIndex(i)}
+            editorRef={(el) => {
+              if (el) editorRefs.current[keys[i]] = el;
+              else delete editorRefs.current[keys[i]];
+            }}
           />
         ))}
       </div>

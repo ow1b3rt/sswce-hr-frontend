@@ -7,6 +7,7 @@ import { Calendar, Clock, MapPin } from 'lucide-react';
 
 export default function DetailPage({ data, isBlog = false, isEvent = false }) {
   if (!data) return null;
+  console.log('DetailPage data:', data);
 
   return (
     <main className="text-foreground container mx-auto px-4 pb-10 md:px-0">

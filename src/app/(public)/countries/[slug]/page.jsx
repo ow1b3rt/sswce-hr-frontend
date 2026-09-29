@@ -41,8 +41,8 @@ export default async function CountryDetailPage({ params }) {
       src: country.image?.src || '/country_fallback.png',
       alt: country.image?.alt || country.title,
     },
-    content: [country.description || ''],
+    content: country.description || '' ,
   };
 
-  return <DetailPage data={countryData} />;
+  return <DetailPage data={countryData} isBlog/>;
 }
