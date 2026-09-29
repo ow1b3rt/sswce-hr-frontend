@@ -48,8 +48,9 @@ const industryData = [
 ];
 
 export function OrbitingCirclesDemo({ services = industryData }) {
+  services = services.slice(0, 7)
   const router = useRouter();
-  const halfIndex = Math.ceil(services.length / 2);
+  const halfIndex = Math.max(Math.ceil(services.length / 2), 3);
   const innerOrbitItems = services.slice(0, halfIndex);
   const outerOrbitItems = services.slice(halfIndex);
   return (
@@ -140,7 +141,7 @@ export function OrbitingCirclesDemo({ services = industryData }) {
         {innerOrbitItems.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col gap-1 overflow-hidden rounded-xl"
+            className="flex flex-col items-center gap-1 overflow-hidden rounded-xl"
           >
             <div className="max-h-24 max-w-24 overflow-hidden rounded-xl">
               <SafeImage
@@ -170,7 +171,7 @@ export function OrbitingCirclesDemo({ services = industryData }) {
         {outerOrbitItems.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col gap-1 overflow-hidden rounded-2xl"
+            className="flex flex-col items-center gap-1 overflow-hidden rounded-2xl"
           >
             <div className="max-h-24 max-w-24 overflow-hidden rounded-2xl">
               <SafeImage
