@@ -22,7 +22,10 @@ export const AboutSection = () => {
         </h1>
         <p className="text-foreground/70 text-center leading-relaxed font-normal lg:text-xl">
           <AnimatedWords
-            text={`Lorem ipsum dolor sit amet consectetur. Arcu rhoncus amet ante turpis gravida quam a. Vulputate tincidunt libero quam lectus odio donec fermentum vel. Ultrices leo facilisis ut leo lobortis eu. Sed in lorem congue pellentesque egestas. Consectetur bibendum lectus non proin tristique purus arcu adipiscing. Imperdiet diam laoreet molestie congue faucibus nascetur dignissim in amet. Lacus volutpat ultricies mauris porttitor lobortis. Mollis quam sodales enim fermentum enim dui. Ullamcorper urna amet viverra enim platea pulvinar venenatis. Vitae aliquam etiam sed tortor vitae. Mi sagittis sed quis faucibus. Cursus id varius maecenas quis non. A rutrum duis ullamcorper ac lorem.\nSed pulvinar luctus sed blandit ut magna viverra at gravida. Orci gravida fringilla aliquet bibendum nulla habitasse mi. Augue nec quam pharetra nisl dui aliquam mauris enim sodales. Nunc quisque eu aenean tellus. Sit odio sed egestas eu in pellentesque sollicitudin egestas. Mauris iaculis sem auctor velit vitae facilisi quis vitae. `}
+          text={`
+            S.S.W.C.E. Human Resources is a professional manpower recruitment and skill development company based in Nepal, committed to creating reliable employment opportunities for Nepali youth and providing qualified, skilled, and work-ready human resources to employers in Japan and other international markets.\n
+            Our core focus is to develop skills & Japanese Language, prepare candidates, and connect the right people with the right opportunities. Through our recruitment and training programs, we aim to bridge the gap between the growing demand for skilled manpower overseas and the talented workforce available in Nepal.
+              `}
             animKey="text"
             staggerMs={10}
             durationMs={800}

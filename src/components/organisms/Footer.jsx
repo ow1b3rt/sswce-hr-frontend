@@ -59,7 +59,7 @@ const CONTACT = {
   },
   email: {
     label: 'ssw@gmail.com',
-    href: 'mailto:ssw@gmail.com',
+    href: 'mailto:sswcehumanresources@gmail.com',
   },
 };
 
