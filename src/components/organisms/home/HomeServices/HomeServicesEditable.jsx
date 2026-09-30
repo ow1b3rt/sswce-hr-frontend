@@ -28,7 +28,7 @@ function ServiceCardEditable({
   editorRef,
 }) {
   return (
-    <div className="relative flex w-full flex-col gap-4 rounded-2xl bg-white border border-gray-200 p-4 shadow-sm">
+    <div className="relative flex w-full flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
       <button
         type="button"
         onClick={onRemove}
