@@ -5,8 +5,7 @@ const chairmanMessage = {
   whyChooseUs: {
     title: 'Kalakar Thapa',
     subTitle: 'Executive Chairman',
-    description:
-      `At S.S.W.C.E. Human Resources, our mission is to build a strong bridge between Nepal and Japan through skilled, responsible, and well-prepared human resources.
+    description: `At S.S.W.C.E. Human Resources, our mission is to build a strong bridge between Nepal and Japan through skilled, responsible, and well-prepared human resources.
 We focus on Specified Skilled Worker (SSW) and the Employment for Skill Development Program (ESDP), providing quality Japanese language education, skill development, and workplace and cultural training.
 With Integrity, Transparency, Quality, and Professionalism, we aim to build lasting partnerships and create a WIN-WIN-WIN relationship for candidates, companies, and our communities.
 Together, let us create opportunities, develop skills, and build a brighter future between Nepal and Japan.
