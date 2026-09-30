@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Trash2 } from 'lucide-react';
+import { Spinner } from '@/components/atoms/spinner';
+import { DateCell } from '../atoms/DateCell.jsx';
 
 import Badge from '@/components/molecules/Badge';
 import { ConfirmationDialog } from '@/components/molecules/ConfirmationModal';
@@ -45,6 +47,7 @@ export default function DataTable({
   data,
   fields,
   editHref,
+  loading = true,
   actions,
   onPageChange, // optional: (nextPage: number) => void
   selectable = true, // set false to hide the checkbox column entirely
@@ -175,52 +178,8 @@ export default function DataTable({
       }
 
       case 'date':
-        if (!value) {
-          return <span className="text-sm text-gray-400">—</span>;
-        }
+          return <DateCell value={value} />;
 
-        const date = new Date(value);
-
-        const dateText = date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: '2-digit',
-        });
-
-        const timeText = date.toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        });
-
-        const period = date
-          .toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            hour12: true,
-          })
-          .slice(-2);
-
-        const weekday = date.toLocaleDateString('en-US', {
-          weekday: 'short',
-        });
-
-        return (
-          <div className="flex items-center gap-2">
-            <div className="bg-faint-blue flex items-center rounded-full px-2 py-1">
-              <span className="text-base font-medium tracking-tight text-slate-700">
-                {dateText}, {timeText}
-              </span>
-
-              <span className="bg-primary-blue ml-4 flex h-9 min-w-12 items-center justify-center rounded-full px-2.5 text-sm font-medium text-white">
-                {period}
-              </span>
-            </div>
-
-            <span className="bg-primary-red flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-medium text-white">
-              {weekday}
-            </span>
-          </div>
-        );
       case 'bold':
         return (
           <span className="text-base font-semibold text-gray-900">{value}</span>
@@ -365,7 +324,7 @@ export default function DataTable({
                   </tr>
                 );
               })}
-              {items.length === 0 && (
+              {items.length === 0 && !loading &&  (
                 <tr>
                   <td
                     colSpan={
@@ -376,6 +335,23 @@ export default function DataTable({
                     className="px-4 py-12 text-center text-base text-gray-400"
                   >
                     No records found.
+                  </td>
+                </tr>
+              )}
+
+              {loading && (
+                <tr>
+                  <td
+                    colSpan={
+                      (selectionEnabled ? 1 : 0) +
+                      fields.length +
+                      (renderActions ? 1 : 0)
+                    }
+                    className="px-4 py-12"
+                  >
+                    <div className="flex justify-center">
+                      <Spinner />
+                    </div>
                   </td>
                 </tr>
               )}

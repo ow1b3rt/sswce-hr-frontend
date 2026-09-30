@@ -87,6 +87,7 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
   };
 
   const activeFilterCount = Object.values(activeFilters).filter(Boolean).length;
+  console.log('loading', entity.loading);
 
   return (
     <EntityContext value={value}>
@@ -189,6 +190,7 @@ export function AdminChildrenLayout({ name, tablefields, actions }) {
 
         <DataTable
           data={entity.data}
+          loading={entity.isLoading}
           fields={tablefields}
           editHref={`/admin/${name}/`}
           actions={actions}
