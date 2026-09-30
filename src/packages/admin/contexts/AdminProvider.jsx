@@ -6,6 +6,7 @@ import { getRuntimeConfig } from '../lib/runtime.config.js';
 import { ApiProvider } from './ApiContext.jsx';
 import { AuthProvider } from './AuthContext.jsx';
 import { ToastProvider } from './ToastContext.jsx';
+import { LoadingProvider } from './LoadingContext.jsx';
 
 export function AdminProvider({ children }) {
   const config = getRuntimeConfig();
@@ -20,11 +21,13 @@ export function AdminProvider({ children }) {
   return (
     <ToastProvider>
       <ApiProvider baseUrl={config.apiBaseUrl}>
-        <AuthProvider>
-          <AdminGate>
-            <AdminShell>{children}</AdminShell>
-          </AdminGate>
-        </AuthProvider>
+        <LoadingProvider trackFetch colorClass='bg-primary-green text-primary-green'>
+          <AuthProvider>
+            <AdminGate>
+              <AdminShell>{children}</AdminShell>
+            </AdminGate>
+          </AuthProvider>
+        </LoadingProvider>
       </ApiProvider>
     </ToastProvider>
   );
