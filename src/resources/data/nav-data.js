@@ -65,7 +65,10 @@ export async function getDropdownGroups() {
 
   return [
     { label: 'Country', items: countries },
-    { label: 'Services', items: [ { title: 'View All', href: '/services' },  ...services ] },
+    {
+      label: 'Services',
+      items: [{ title: 'View All', href: '/services' }, ...services],
+    },
     { label: 'Others', items: othersLinks },
   ];
 }

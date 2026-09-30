@@ -101,8 +101,8 @@ export default function ContactForm() {
             Get in touch
           </h3>
           <p className="text-sm text-gray-600 lg:text-xl">
-            We would love to hear from you and are happy to talk if you
-            have any questions.
+            We would love to hear from you and are happy to talk if you have any
+            questions.
           </p>
           <div className="mt-2 flex flex-col gap-4">
             {contactInfo.phone.label && (

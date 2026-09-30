@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -16,8 +17,25 @@ const TrustedPartners = [
   '/images/partners/logo-5.png',
 ];
 
+const ROTATING_WORDS = [
+  'Global Opportunities',
+  'Top Companies',
+  'Career Growth',
+  'Dream Jobs',
+  'Global Careers',
+];
+
 export const HeroSection = () => {
   const router = useRouter();
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <AnimatedCard
       direction="down"
@@ -34,8 +52,9 @@ export const HeroSection = () => {
           <h1 className="text-card mt-12 max-w-4xl text-center text-4xl font-bold sm:mt-24 md:text-5xl lg:text-7xl">
             Connecting Talent <br />
             <AnimatedWords
-              text="With Global Opportunities"
-              animKey="text"
+              key={wordIndex}
+              text={`With ${ROTATING_WORDS[wordIndex]}`}
+              animKey={`text-${wordIndex}`}
               staggerMs={100}
               durationMs={800}
               direction="up"

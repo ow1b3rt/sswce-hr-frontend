@@ -21,7 +21,10 @@ export function AdminProvider({ children }) {
   return (
     <ToastProvider>
       <ApiProvider baseUrl={config.apiBaseUrl}>
-        <LoadingProvider trackFetch colorClass='bg-primary-green text-primary-green'>
+        <LoadingProvider
+          trackFetch
+          colorClass="bg-primary-green text-primary-green"
+        >
           <AuthProvider>
             <AdminGate>
               <AdminShell>{children}</AdminShell>

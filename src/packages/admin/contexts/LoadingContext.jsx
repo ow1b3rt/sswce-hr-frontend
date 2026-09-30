@@ -69,7 +69,9 @@ export function LoadingProvider({
 
     // Creep toward 90% and slow down as it gets closer.
     trickleTimer.current = setInterval(() => {
-      setProgress((p) => (p >= 90 ? p : p + (90 - p) * (0.04 + Math.random() * 0.1)));
+      setProgress((p) =>
+        p >= 90 ? p : p + (90 - p) * (0.04 + Math.random() * 0.1),
+      );
     }, 300);
   }, []);
 
@@ -145,7 +147,8 @@ export function LoadingProvider({
 
     const originalFetch = window.fetch;
     window.fetch = (input, init) => {
-      const url = typeof input === 'string' ? input : (input?.url ?? String(input));
+      const url =
+        typeof input === 'string' ? input : (input?.url ?? String(input));
       if (!shouldTrackFetch(url)) return originalFetch(input, init);
 
       start();
