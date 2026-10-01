@@ -35,12 +35,12 @@ function FaqItem({ number, question, answer, open, onToggle }) {
   );
 }
 
-export function FaqSection({ section: data = section }) {
+export function FaqSection({ section: data }) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
     <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-      {data.items.map((item, i) => (
+      {data?.items?.map((item, i) => (
         <FaqItem
           key={i}
           number={i + 1}

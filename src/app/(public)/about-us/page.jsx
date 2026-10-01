@@ -7,6 +7,61 @@ import SafeImage from '@/components/ui/safe-image';
 import { getTestimonials } from '@/lib/api/testimonials';
 import AnimatedCard from '@/components/ui/animated-card';
 
+const SITE_URL = 'https://sswcehumanresources.com';
+
+export const metadata = {
+  title: 'About Us',
+  description:
+    'Learn about SSWCE Human Resources, a Nepal-based recruitment and skill development company preparing skilled Nepali youth for jobs in Japan through Japanese language training, SSW and ESD programs.',
+  keywords: [
+    'about SSWCE Human Resources',
+    'Nepal Japan recruitment company',
+    'SSW program Nepal',
+    'Japanese language training Nepal',
+    'skilled workers Japan',
+  ],
+  alternates: {
+    canonical: '/about-us',
+  },
+  openGraph: {
+    type: 'website',
+    url: `${SITE_URL}/about-us`,
+    siteName: 'SSW Training Centre Nepal',
+    title: 'About Us | SSWCE Human Resources',
+    description:
+      'A trusted bridge between Nepal and Japan for skills, employment, and long-term cooperation.',
+    locale: 'en_US',
+    images: [
+      {
+        url: '/images/landing/hero-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'SSWCE Human Resources',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us | SSWCE Human Resources',
+    description:
+      'A trusted bridge between Nepal and Japan for skills, employment, and long-term cooperation.',
+    images: ['/images/landing/hero-image.jpg'],
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About SSWCE Human Resources',
+  url: `${SITE_URL}/about-us`,
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'SSWCE Human Resources',
+    url: SITE_URL,
+    logo: `${SITE_URL}/images/logo.svg`,
+  },
+};
+
 const aboutUsData = {
   whyChooseUs: {
     title: 'Why Choose Us',
@@ -29,40 +84,46 @@ const AboutUs = async () => {
   }
 
   return (
-    <div className="bg-card flex flex-col space-y-8 lg:space-y-20 lg:px-0">
-      <AnimatedCard
-        direction="right"
-        className="grid grid-cols-1 items-center gap-y-4 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12"
-      >
-        <div className="relative h-72 w-full overflow-hidden rounded-xl border sm:h-125 lg:h-full">
-          <SafeImage
-            src="/images/landing/hero-image.jpg"
-            alt="SSWCE Human Resources"
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            objectFit="cover"
-            className="rounded-xl"
-          />
-          <div className="absolute bottom-0 left-0 p-1 sm:p-4">
-            <JobOpportunitiesCard />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="bg-card flex flex-col space-y-8 lg:space-y-20 lg:px-0">
+        <AnimatedCard
+          direction="right"
+          className="grid grid-cols-1 items-center gap-y-4 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12"
+        >
+          <div className="relative h-72 w-full overflow-hidden rounded-xl border sm:h-125 lg:h-full">
+            <SafeImage
+              src="/images/landing/hero-image.jpg"
+              alt="SSWCE Human Resources"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              objectFit="cover"
+              className="rounded-xl"
+            />
+            <div className="absolute bottom-0 left-0 p-1 sm:p-4">
+              <JobOpportunitiesCard />
+            </div>
           </div>
-        </div>
 
-        <div>
-          <TitleDescCard
-            name={aboutUsData.whyChooseUs.title}
-            batch=""
-            description={aboutUsData.whyChooseUs.description}
-            showDivider={false}
-          />
-        </div>
-      </AnimatedCard>
-      <MissionTimeline />
-      <ChairmanMessage />
-      {testimonials?.length > 0 && (
-        <TestimonialsSection testimonails={testimonials} />
-      )}
-    </div>
+          <div>
+            <TitleDescCard
+              name={aboutUsData.whyChooseUs.title}
+              batch=""
+              description={aboutUsData.whyChooseUs.description}
+              showDivider={false}
+            />
+          </div>
+        </AnimatedCard>
+        <MissionTimeline />
+        <ChairmanMessage />
+        {testimonials?.length > 0 && (
+          <TestimonialsSection testimonails={testimonials} />
+        )}
+      </div>
+    </>
   );
 };
 
