@@ -80,7 +80,7 @@ export function JobDetailsCard({ data }) {
               <ul className="grow space-y-4 text-sm md:text-base">
                 {data.details.map((item, index) => (
                   <li key={index} className="flex items-baseline">
-                    <span className="text-foreground w-28 text-base font-semibold md:w-32 md:text-xl">
+                    <span className="text-foreground w-28 text-base font-semibold md:w-37 md:text-xl">
                       {item.label}
                     </span>
                     <span

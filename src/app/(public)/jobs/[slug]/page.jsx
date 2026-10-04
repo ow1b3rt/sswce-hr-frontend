@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import { ROUTES } from '@/constants/routes/routes';
 import { JobDetailsCard } from '@/components/organisms/jobs/JobDetailsCard';
-
-const FALLBACK_IMAGE = '/images/landing/hero-image.jpg';
+import { resolveUrl } from '@/lib/utils';
 
 async function getJobBySlug(slug) {
   try {
@@ -22,16 +21,11 @@ async function getJobBySlug(slug) {
   }
 }
 
-function resolveImageUrl(src) {
-  if (!src) return FALLBACK_IMAGE;
-  return src.startsWith('http') ? src : `${process.env.NEXT_PUBLIC_HOST}${src}`;
-}
-
 function buildSummaryRows(job) {
   return [
     { label: 'Position:', value: job.title },
     { label: 'Location:', value: job.location },
-    { label: 'Job Type:', value: job.workingHours },
+    { label: 'Working Hours:', value: job.workingHours },
     { label: 'Experience:', value: job.experience },
     { label: 'Salary:', value: job.salary, valueClassName: 'text-primary' },
   ].filter((row) => row.value);
@@ -54,12 +48,13 @@ export default async function JobDetailsPage({ params }) {
 
   const jobData = {
     title: job.title,
-    imageUrl: resolveImageUrl(job.imgSrc),
+    slug: job.slug,
+    imageUrl: resolveUrl(job.imgSrc),
     imageAlt: job.title,
     summaryTitle: 'Job Summary',
     postedAt: job.createdAt,
     applyButtonText: 'Apply Now',
-    applyHref: ROUTES.APPLICATION,
+    applyHref: `${ROUTES.APPLICATION}?position=${encodeURIComponent(job.slug)}`,
     details: buildSummaryRows(job),
     overview: job.details?.overview || job.description,
     responsibilities: job.details?.responsibilities,

@@ -42,16 +42,24 @@ export const metadata = {
   },
 };
 
-export default async function ApplicationPage() {
+export default async function ApplicationPage({ searchParams }) {
+  const params = await searchParams;
   const jobs = await getOpenJobs();
-
   const positions = jobs
-    .map((job) => ({ value: job.title, label: job.title }))
+    .map((job) => ({ value: job.title, label: job.title, slug: job.slug }))
     .filter((option) => Boolean(option.value));
+
+  const requestedSlug = params?.position;
+  const defaultPosition = requestedSlug
+    ? (positions.find((option) => option.slug === requestedSlug)?.value ?? '')
+    : '';
 
   return (
     <section className="flex flex-col items-center gap-8 pb-12">
-      <ApplicationForm positions={positions} />
+      <ApplicationForm
+        positions={positions}
+        defaultPosition={defaultPosition}
+      />
     </section>
   );
 }

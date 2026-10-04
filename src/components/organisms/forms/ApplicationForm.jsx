@@ -36,6 +36,14 @@ const EXPERIENCE_YEARS = [
 
 const PHONE_REGEX = /^(\d{10}|\+\d{1,13}|\+\d{1,3} \d{10})$/;
 
+const ALLOWED_CV_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+
+const MAX_CV_SIZE_BYTES = 20 * 1024 * 1024;
+
 /* -------------------------------------------------------------------------- */
 /*  Shared input / select class                                                */
 /* -------------------------------------------------------------------------- */
@@ -79,8 +87,14 @@ const INITIAL = {
   declarationAccepted: false,
 };
 
-export default function ApplicationForm({ positions = [] }) {
-  const [form, setForm] = useState(INITIAL);
+export default function ApplicationForm({
+  positions = [],
+  defaultPosition = '',
+}) {
+  const [form, setForm] = useState(() => ({
+    ...INITIAL,
+    position: defaultPosition,
+  }));
   const [cvFile, setCvFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -96,6 +110,7 @@ export default function ApplicationForm({ positions = [] }) {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
     setCvFile(file);
+    e.target.value = '';
   };
 
   const removeFile = () => {
@@ -114,6 +129,15 @@ export default function ApplicationForm({ positions = [] }) {
       });
       return;
     }
+
+    if (!form.position || !form.preferredCountry) {
+      toast.add({
+        type: 'error',
+        description: 'Please select job information',
+      });
+      return;
+    }
+
     if (!PHONE_REGEX.test(form.phone)) {
       toast.add({
         type: 'error',
@@ -122,6 +146,31 @@ export default function ApplicationForm({ positions = [] }) {
       });
       return;
     }
+
+    if (!cvFile) {
+      toast.add({
+        type: 'error',
+        description: 'Please upload your CV to continue.',
+      });
+      return;
+    }
+
+    if (!ALLOWED_CV_TYPES.includes(cvFile.type)) {
+      toast.add({
+        type: 'error',
+        description: 'CV must be a PDF, DOC or DOCX file.',
+      });
+      return;
+    }
+
+    if (cvFile.size > MAX_CV_SIZE_BYTES) {
+      toast.add({
+        type: 'error',
+        description: 'CV must be smaller than 20 MB.',
+      });
+      return;
+    }
+
     if (!form.declarationAccepted) {
       toast.add({
         type: 'error',
