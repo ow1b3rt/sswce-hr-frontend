@@ -113,7 +113,7 @@ export default async function EventsPage(props) {
           </p>
         ) : (
           <div
-            className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
+            className={`grid w-full grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3`}
           >
             {events.map((event) => (
               <InfoCard

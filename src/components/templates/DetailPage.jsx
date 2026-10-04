@@ -7,7 +7,8 @@ import { Calendar, Clock, MapPin } from 'lucide-react';
 
 export default function DetailPage({ data, isBlog = false, isEvent = false }) {
   if (!data) return null;
-  console.log('DetailPage data:', data);
+
+  console.log('details', data.image);
 
   return (
     <main className="text-foreground container mx-auto px-4 pb-10 md:px-0">
@@ -43,7 +44,7 @@ export default function DetailPage({ data, isBlog = false, isEvent = false }) {
       )}
 
       {isEvent && (
-        <div className="mx-auto mb-6 grid w-3/4 grid-cols-1 gap-4 px-8 sm:grid-cols-3">
+        <div className="mx-auto mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {data.time && (
             <div className="text-primary-blue-dark border-primary-blue flex items-center justify-center gap-2 rounded-lg border bg-white px-4 py-3 text-[15px] font-semibold">
               <Clock className="text-primary-blue-dark h-4 w-4" />

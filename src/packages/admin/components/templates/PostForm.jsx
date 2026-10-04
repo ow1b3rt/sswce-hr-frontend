@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, Eye, Loader2, Plus } from 'lucide-react';
+import { Eye, Loader2 } from 'lucide-react';
 
-import { useApi, useGet } from '../../contexts/ApiContext.jsx';
+import { useApi } from '../../contexts/ApiContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useToast } from '../../contexts/ToastContext.jsx';
 import { articleSchema, newsArticleSchema } from '../../lib/jsonld.js';
 import { getRuntimeConfig } from '../../lib/runtime.config.js';
-import { isUuid, removeEmptyFields, slugify } from '../../utils/utils.js';
+import { isUuid, removeEmptyFields } from '../../utils/utils.js';
 import { Textarea } from '../atoms/Input.jsx';
 import { Form } from '../molecules/Form.jsx';
 import { InputFields } from '../molecules/InputFields.jsx';
@@ -17,17 +17,18 @@ import { DateTime } from '../organisms/DateTime.jsx';
 import { SchemaEditor } from '../organisms/SchemaEditor.jsx';
 import { ImageUploader } from './ImageUploader.jsx';
 
-const publishroles = ['admin', 'editor', 'junior_editor'];
+/* -------------------------------------------------------------------------- */
+/* Constants & helpers                                                        */
+/* -------------------------------------------------------------------------- */
 
-function canPublish(role) {
-  if (!role) return false;
-  return publishroles.includes(role);
-}
+const PUBLISH_ROLES = ['admin', 'editor', 'junior_editor'];
+const TABS = ['Post', 'Meta', 'SEO'];
+
+const canPublish = (role) => PUBLISH_ROLES.includes(role);
 
 function formatTimeAgo(date) {
   if (!date) return null;
-  const diffMs = Date.now() - new Date(date).getTime();
-  const diffMin = Math.floor(diffMs / 60000);
+  const diffMin = Math.floor((Date.now() - new Date(date).getTime()) / 60000);
   if (diffMin < 1) return 'just now';
   if (diffMin < 60) return `${diffMin} min ago`;
   const diffHr = Math.floor(diffMin / 60);
@@ -36,6 +37,107 @@ function formatTimeAgo(date) {
   if (diffDay < 7) return `${diffDay} days ago`;
   return new Date(date).toLocaleDateString();
 }
+
+// The backend returns camelCase (metaTitle, canonicalUrl, ...) but the inputs are named in
+// snake_case, and Form fills inputs by matching `name` against `defaults`. Add the aliases.
+function toFormDefaults(defaults) {
+  if (!defaults) return {};
+  return {
+    ...defaults,
+    meta_title: defaults.meta_title ?? defaults.metaTitle ?? '',
+    meta_description:
+      defaults.meta_description ?? defaults.metaDescription ?? '',
+    canonical_url: defaults.canonical_url ?? defaults.canonicalUrl ?? '',
+    og_title: defaults.og_title ?? defaults.ogTitle ?? '',
+    og_description: defaults.og_description ?? defaults.ogDescription ?? '',
+    redirect_url: defaults.redirect_url ?? defaults.redirectUrl ?? '',
+  };
+}
+
+function parseSchema(value) {
+  if (!value) return null;
+  if (typeof value === 'object') return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+// Saved values merged with whatever the user changed in the uploaders this session
+function resolveUploads(defaults, uploads) {
+  const pick = (key, fallback) => (key in uploads ? uploads[key] : fallback);
+
+  const imageUrls = [
+    pick('og', defaults?.og_image_url),
+    defaults?.cover_image_url,
+    pick('thumbnail', defaults?.thumbnail_url),
+  ].filter((url) => url && !url.startsWith('blob:')); // blob: = local preview, not a real URL
+
+  return {
+    images: [...new Set(imageUrls)],
+    thumbnailId: pick('thumbnailId', defaults?.thumbnail),
+  };
+}
+
+function resolveThumbnail(thumbnailId, formValues) {
+  if (thumbnailId) return thumbnailId;
+  return [formValues.thumbnail_id, formValues.thumbnail].find((value) =>
+    isUuid(value),
+  );
+}
+
+function buildSchema({
+  siteUrl,
+  contentType,
+  slug,
+  title,
+  description,
+  publishedAt,
+  images,
+}) {
+  const shared = {
+    url: slug ? `${siteUrl}/${contentType}/${slug}` : siteUrl,
+    title,
+    excerpt: description,
+    publishedAt: publishedAt ?? new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  return contentType === 'article'
+    ? articleSchema({ ...shared, imageUrl: images[0] ?? null })
+    : newsArticleSchema({ ...shared, images });
+}
+
+// Maps form fields to the backend's camelCase schema and strips empty values
+function buildPayload({
+  formValues,
+  title,
+  content,
+  description,
+  thumbnail,
+  status,
+  schema,
+}) {
+  return removeEmptyFields({
+    title,
+    content,
+    status,
+    publishedAt: formValues.publishedAt || undefined,
+    metaTitle: formValues.meta_title || undefined,
+    metaDescription: formValues.meta_description || undefined,
+    canonicalUrl: formValues.canonical_url || undefined,
+    ogTitle: formValues.og_title || title,
+    ogDescription: description || undefined,
+    redirectUrl: formValues.redirect_url || undefined,
+    thumbnail,
+    schema: schema ? JSON.stringify(schema) : undefined,
+  });
+}
+
+/* -------------------------------------------------------------------------- */
+/* Small UI pieces                                                            */
+/* -------------------------------------------------------------------------- */
 
 function SidebarSection({ title, children, className }) {
   return (
@@ -52,188 +154,299 @@ function SidebarSection({ title, children, className }) {
   );
 }
 
+// Inactive panels are hidden, not unmounted, so their inputs keep their values
+// and are still submitted with the form.
+function TabPanel({ active, children }) {
+  return <div className={active ? 'space-y-4' : 'hidden'}>{children}</div>;
+}
+
+function StatusInfo({ status, updatedAt, createdAt }) {
+  return (
+    <div className="flex items-center gap-4 text-sm text-gray-500">
+      <span>
+        Status:{' '}
+        <strong className="font-medium text-gray-900 capitalize">
+          {status}
+        </strong>
+      </span>
+      {updatedAt && (
+        <span className="hidden lg:inline">
+          Last saved {formatTimeAgo(updatedAt)}
+        </span>
+      )}
+      {createdAt && (
+        <span className="hidden xl:inline">
+          Created: {new Date(createdAt).toLocaleString()}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function ActionButtons({ isEdit, loading, userCanPublish }) {
+  return (
+    <div className="flex items-center gap-3">
+      {isEdit && (
+        <button
+          type="submit"
+          name="action"
+          value="preview"
+          className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
+        >
+          <Eye size={18} /> Preview
+        </button>
+      )}
+
+      <button
+        type="submit"
+        name="action"
+        value="draft"
+        disabled={loading}
+        className="rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50"
+      >
+        Save Draft
+      </button>
+
+      <button
+        type="submit"
+        name="action"
+        value={userCanPublish ? 'published' : 'pending'}
+        disabled={loading}
+        className="inline-flex items-center rounded-lg bg-black px-4 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-black/80 disabled:opacity-50"
+      >
+        {loading ? (
+          <>
+            <Loader2 size={16} className="mr-2 animate-spin" />
+            Saving...
+          </>
+        ) : userCanPublish ? (
+          'Publish'
+        ) : (
+          'Submit'
+        )}
+      </button>
+    </div>
+  );
+}
+
+// Plain uncontrolled textarea: value comes from defaultValue, read back from the form on submit
+function TitleField({ defaultValue }) {
+  const grow = (el) => {
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  };
+
+  return (
+    <textarea
+      ref={grow}
+      name="title"
+      placeholder="Add title"
+      defaultValue={defaultValue}
+      onInput={(e) => grow(e.currentTarget)}
+      rows={1}
+      required
+      className="w-full resize-none overflow-hidden border-none bg-transparent p-0 font-serif text-5xl leading-tight font-bold text-gray-900 placeholder-gray-300 focus:border-none focus:ring-0 focus:outline-none"
+    />
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sidebar                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function SidebarTabs({ active, onChange }) {
+  return (
+    <div className="flex shrink-0 gap-1 border-b border-gray-200 bg-white px-3 pt-3">
+      {TABS.map((tab, index) => (
+        <button
+          key={tab}
+          type="button"
+          onClick={() => onChange(index)}
+          className={`relative flex-1 rounded-t-md px-4 py-2.5 text-sm font-medium transition-colors ${
+            active === index
+              ? 'text-gray-900'
+              : 'text-gray-400 hover:text-gray-700'
+          }`}
+        >
+          {tab}
+          {active === index && (
+            <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gray-900" />
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function PostPanel({ publishedAt, thumbnailUrl, onThumbnailChange }) {
+  return (
+    <>
+      <SidebarSection title="Status & Visibility">
+        <DateTime name="publishedAt" defaultValue={publishedAt} />
+      </SidebarSection>
+
+      <SidebarSection title="Article Settings">
+        <ImageUploader
+          name="thumbnail"
+          id="thumb-image-input"
+          caption="Thumbnail"
+          defaultCover={thumbnailUrl}
+          setCoverImage={onThumbnailChange}
+        />
+      </SidebarSection>
+    </>
+  );
+}
+
+function MetaPanel() {
+  return (
+    <>
+      <SidebarSection title="Search Result">
+        <InputFields fields={['meta_title', 'meta_description:text']} />
+      </SidebarSection>
+
+      <SidebarSection title="Canonical URL">
+        <InputFields fields={['canonical_url']} />
+      </SidebarSection>
+    </>
+  );
+}
+
+function SeoPanel({
+  active,
+  ogDescription,
+  ogImageUrl,
+  onOgImageChange,
+  schema,
+}) {
+  return (
+    <>
+      <SidebarSection title="Social Sharing">
+        <InputFields fields={['og_title']} />
+        <Textarea
+          name="og_description"
+          placeholder="OG description (optional)"
+          defaultValue={ogDescription}
+        />
+        <ImageUploader
+          name="og_image_url"
+          id="og-image-uploader"
+          caption="OG Image"
+          defaultCover={ogImageUrl}
+          setCoverImage={onOgImageChange}
+        />
+      </SidebarSection>
+
+      <SidebarSection title="Structured Data">
+        {schema ? (
+          // Mounted only while visible, so a code editor never measures itself while hidden
+          active && <SchemaEditor schema={schema} />
+        ) : (
+          <p className="text-sm text-gray-500">
+            Generated automatically when you save.
+          </p>
+        )}
+      </SidebarSection>
+    </>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* PostForm                                                                   */
+/* -------------------------------------------------------------------------- */
+
 export function PostForm({ defaults = null, onSubmit }) {
-  const isEdit = defaults ? true : false;
+  const isEdit = Boolean(defaults);
   const rteRef = useRef(null);
+  const uploads = useRef({}); // image changes made in the uploaders; only needed for the JSON-LD
   const { post, patch } = useApi();
   const { user } = useAuth();
   const toast = useToast();
-  const { apiBaseUrl, host } = getRuntimeConfig();
-  const siteUrl = host; // the public site URL used to build canonical post links for JSON-LD
+  const { host: siteUrl } = getRuntimeConfig(); // public site URL, used for JSON-LD links
 
-  const [slug, setSlug] = useState(defaults?.slug ?? '');
-  const [tags, setTags] = useState(
-    defaults?.tags ? defaults.tags.split(',') : [],
-  );
-  const [saveAction, setSaveAction] = useState(defaults?.status ?? 'published');
-  const [saveDrop, setSaveDrop] = useState(false);
-
-  // --- controlled fields needed for live JSON-LD schema generation ---
-  const [title, setTitle] = useState(defaults?.title ?? '');
-  const [excerpt, setExcerpt] = useState(
-    defaults?.metaDescription ?? defaults?.excerpt ?? '',
-  );
-  const [ogDescription, setOgDescription] = useState(
-    defaults?.ogDescription ?? defaults?.og_description ?? '',
-  );
-  const [contentType, setContentType] = useState(
-    defaults?.content_type ?? 'news',
-  );
-  const [authorId, setAuthorId] = useState(
-    defaults?.authorId ?? defaults?.author_id ?? '',
-  );
-  const [authorUrl, setAuthorUrl] = useState(
-    defaults?.authorUrl ?? defaults?.author_url ?? '',
-  );
-
+  // UI-only state. None of the form data lives in React state: Form owns the values.
   const [activeTab, setActiveTab] = useState(0);
-  const [thumbnailPreview, setThumbnailPreview] = useState(
-    defaults?.thumbnail_url ?? null,
-  );
-  const [thumbnailId, setThumbnailId] = useState(defaults?.thumbnail ?? null);
-  const [coverPreview, setCoverPreview] = useState(
-    defaults?.cover_image_url ?? null,
-  );
-  const [ogPreview, setOgPreview] = useState(defaults?.og_image_url ?? null);
-
   const [loading, setLoading] = useState(false);
-  const [formKey, setFormKey] = useState(0);
+  const [formKey, setFormKey] = useState(0); // remounts the form after a successful create
 
   useEffect(() => {
-    if (!defaults) return;
-    setSlug(defaults?.slug ?? '');
-    setTags(defaults?.tags ? defaults.tags.split(',') : []);
-    setTitle(defaults?.title ?? '');
-    setExcerpt(defaults?.metaDescription ?? defaults?.excerpt ?? '');
-    setOgDescription(defaults?.ogDescription ?? defaults?.og_description ?? '');
-    setContentType(defaults?.content_type ?? 'news');
-    setAuthorId(defaults?.authorId ?? defaults?.author_id ?? '');
-    setAuthorUrl(defaults?.authorUrl ?? defaults?.author_url ?? '');
-    setThumbnailPreview(defaults?.thumbnail_url ?? null);
-    setThumbnailId(defaults?.thumbnail ?? null);
-    setCoverPreview(defaults?.cover_image_url ?? null);
-    setOgPreview(defaults?.og_image_url ?? null);
-    setSaveAction(defaults?.status ?? 'published');
-  }, [defaults]);
+    uploads.current = {};
+  }, [defaults?.id]);
 
-  const schemaDescription = ogDescription.trim() || excerpt;
+  const formDefaults = useMemo(() => toFormDefaults(defaults), [defaults]);
+  const savedSchema = useMemo(() => parseSchema(defaults?.schema), [defaults]);
+  const publishedAt = defaults?.publishedAt ?? defaults?.published_at;
 
-  const defaultPublishedAt = defaults?.publishedAt ?? defaults?.published_at;
+  const handleThumbnailChange = (media) => {
+    uploads.current.thumbnailId = media?.id ?? null;
+    uploads.current.thumbnail = media?.id ? media.url : null;
+  };
 
-  const schemaImages = useMemo(() => {
-    const candidates = [ogPreview, coverPreview, thumbnailPreview];
-    const seen = new Set();
-    const images = [];
-    for (const url of candidates) {
-      if (url && !seen.has(url) && !url.startsWith('blob:')) {
-        seen.add(url);
-        images.push(url);
-      }
-    }
-    return images;
-  }, [ogPreview, coverPreview, thumbnailPreview]);
+  const handleOgImageChange = (media) => {
+    uploads.current.og = media?.url ?? null;
+  };
 
-  const schema = useMemo(() => {
-    const postUrl = slug ? `${siteUrl}/${contentType}/${slug}` : siteUrl;
+  const handleSubmit = async (formValues) => {
+    const title = (formValues.title ?? '').trim();
+    const content = ((await rteRef.current?.getHtml()) ?? '').trim();
 
-    const shared = {
-      url: postUrl,
-      title,
-      excerpt: schemaDescription,
-      publishedAt: defaultPublishedAt ?? new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    if (contentType === 'article') {
-      return articleSchema({ ...shared, imageUrl: schemaImages[0] ?? null });
-    }
-
-    return newsArticleSchema({ ...shared, images: schemaImages });
-  }, [
-    contentType,
-    slug,
-    schemaImages,
-    title,
-    schemaDescription,
-    defaultPublishedAt,
-    siteUrl,
-  ]);
-
-  const handleSubmit = async (formDataValues) => {
-    // 1. Extract rich text HTML content from ArticleEditor ref
-    const content = (await rteRef.current?.getHtml()) ?? '';
-
-    if (!title?.trim()) {
+    if (!title) {
       toast.error('Please enter a blog title.');
       return;
     }
-
-    if (!content?.trim()) {
+    if (!content) {
       toast.error('Please enter content for the blog.');
       return;
     }
 
-    // 2. Map form fields to backend camelCase schema
-    const resolvedStatus = formDataValues.action || saveAction || 'published';
-    const selectedThumbnail =
-      thumbnailId ||
-      (isUuid(formDataValues.thumbnail_id)
-        ? formDataValues.thumbnail_id
-        : isUuid(formDataValues.thumbnail)
-          ? formDataValues.thumbnail
-          : undefined);
+    const action = formValues.action || 'published';
+    const description = (
+      formValues.og_description ||
+      formValues.meta_description ||
+      ''
+    ).trim();
+    const { images, thumbnailId } = resolveUploads(defaults, uploads.current);
 
-    const rawPayload = {
-      title: title.trim(),
-      content: content.trim(),
-      status: resolvedStatus === 'published' ? 'published' : 'draft',
-      publishedAt: formDataValues.publishedAt || undefined,
-      metaTitle: formDataValues.meta_title || undefined,
-      metaDescription: formDataValues.meta_description || excerpt || undefined,
-      canonicalUrl: formDataValues.canonical_url || undefined,
-      ogTitle: formDataValues.og_title || title || undefined,
-      ogDescription: ogDescription || excerpt || undefined,
-      redirectUrl: formDataValues.redirect_url || undefined,
-      thumbnail: selectedThumbnail,
-      schema: schema ? JSON.stringify(schema) : undefined,
-    };
-
-    // 3. Strip all empty strings ('') and null/undefined values
-    const cleanPayload = removeEmptyFields(rawPayload);
+    const payload = buildPayload({
+      formValues,
+      title,
+      content,
+      description,
+      thumbnail: resolveThumbnail(thumbnailId, formValues),
+      status: action === 'published' ? 'published' : 'draft',
+      schema: buildSchema({
+        siteUrl,
+        contentType: defaults?.content_type ?? 'news',
+        slug: defaults?.slug ?? '',
+        title,
+        description,
+        publishedAt,
+        images,
+      }),
+    });
 
     setLoading(true);
-
     try {
-      const url = isEdit ? `/blogs/${defaults?.id}` : `/blogs`;
-      const res = isEdit
-        ? await patch(url, cleanPayload, {
-            success: (res) => {
-              toast.success(
-                isEdit
-                  ? 'Blog updated successfully!'
-                  : 'Blog created successfully!',
-              );
-              setFormKey((prev) => prev + 1);
-              onSubmit?.(res);
-            },
-          })
-        : await post(url, cleanPayload, {
-            success: (res) => {
-              toast.success(
-                isEdit
-                  ? 'Blog updated successfully!'
-                  : 'Blog created successfully!',
-              );
-              setFormKey((prev) => prev + 1);
-              onSubmit?.(res);
-            },
-          });
+      const request = isEdit ? patch : post;
+      await request(isEdit ? `/blogs/${defaults.id}` : '/blogs', payload, {
+        success: (res) => {
+          toast.success(
+            isEdit
+              ? 'Blog updated successfully!'
+              : 'Blog created successfully!',
+          );
+          uploads.current = {};
+          setFormKey((prev) => prev + 1);
+          onSubmit?.(res);
+        },
+      });
     } catch (err) {
-      const errorMessage =
+      toast.error(
         err instanceof Error
           ? err.message
-          : 'Unable to save blog. Please try again.';
-      toast.error(errorMessage);
+          : 'Unable to save blog. Please try again.',
+      );
     } finally {
       setLoading(false);
     }
@@ -243,130 +456,29 @@ export function PostForm({ defaults = null, onSubmit }) {
     <div className="mt-6 flex h-[85vh] flex-col overflow-hidden rounded-sm bg-white p-4 font-sans text-gray-900">
       <Form
         key={defaults?.id ?? `new-${formKey}`}
-        defaults={defaults ?? {}}
+        defaults={formDefaults}
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        {/* Top Action Bar */}
+        {/* Top action bar */}
         <div className="relative flex h-14 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4">
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <span>
-              Status:{' '}
-              <strong className="font-medium text-gray-900 capitalize">
-                {defaults?.status || saveAction}
-              </strong>
-            </span>
-            {defaults?.updatedAt && (
-              <span className="hidden lg:inline">
-                Last saved {formatTimeAgo(defaults.updatedAt)}
-              </span>
-            )}
-            {defaultPublishedAt && (
-              <span className="hidden xl:inline">
-                Created: {new Date(defaultPublishedAt).toLocaleString()}
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            {defaults && (
-              <button
-                type="submit"
-                name="action"
-                value="preview"
-                className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
-              >
-                <Eye size={18} /> Preview
-              </button>
-            )}
-
-            <div className="relative inline-flex rounded-lg shadow-sm">
-              <button
-                type="submit"
-                name="action"
-                value={saveAction}
-                disabled={loading}
-                className="relative inline-flex items-center rounded-l-lg bg-black px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-black/80 focus:z-10 focus:outline-none disabled:opacity-50"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 size={16} className="mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : saveAction === 'draft' ? (
-                  'Save Draft'
-                ) : saveAction === 'published' ? (
-                  'Publish'
-                ) : (
-                  'Submit'
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={() => setSaveDrop(!saveDrop)}
-                className="relative -ml-px inline-flex items-center rounded-r-lg border-l border-gray-100 bg-black px-2 py-1.5 text-sm font-medium text-white transition-colors hover:bg-black/80 focus:z-10 focus:outline-none"
-              >
-                <ChevronDown
-                  size={16}
-                  className={
-                    saveDrop
-                      ? 'rotate-180 transition-transform'
-                      : 'transition-transform'
-                  }
-                />
-              </button>
-
-              {saveDrop && (
-                <div className="ring-opacity-5 absolute top-full right-0 z-10 mt-1 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black">
-                  <div className="py-1">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSaveAction(
-                          canPublish(user?.role) ? 'published' : 'pending',
-                        );
-                        setSaveDrop(false);
-                      }}
-                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      {canPublish(user?.role) ? 'Publish' : 'Submit'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSaveAction('draft');
-                        setSaveDrop(false);
-                      }}
-                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Save Draft
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <StatusInfo
+            status={defaults?.status ?? 'new'}
+            updatedAt={defaults?.updatedAt}
+            createdAt={publishedAt}
+          />
+          <ActionButtons
+            isEdit={isEdit}
+            loading={loading}
+            userCanPublish={canPublish(user?.role)}
+          />
         </div>
 
-        {/* Main Content Split */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Main Editor Area (Left) */}
+          {/* Editor (left) */}
           <div className="flex-1 scrollbar-none overflow-y-auto scroll-smooth bg-white">
             <div className="mx-auto w-full max-w-[840px] px-8 py-12 lg:px-12">
-              <textarea
-                name="title"
-                placeholder="Add title"
-                className="w-full resize-none border-none bg-transparent p-0 font-serif text-5xl leading-tight font-bold text-gray-900 placeholder-gray-300 focus:border-none focus:ring-0 focus:outline-none"
-                value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                  e.target.style.height = 'auto';
-                  e.target.style.height = e.target.scrollHeight + 'px';
-                }}
-                rows={1}
-                style={{ overflow: 'hidden' }}
-                required
-              />
+              <TitleField defaultValue={defaults?.title} />
 
               <div className="mt-8 min-h-[400px]">
                 <ArticleEditor ref={rteRef} initialHTML={defaults?.content} />
@@ -374,101 +486,32 @@ export function PostForm({ defaults = null, onSubmit }) {
             </div>
           </div>
 
-          {/* Right Sidebar */}
+          {/* Sidebar (right) */}
           <div className="flex w-[350px] shrink-0 flex-col border-l border-gray-200 bg-gray-50/60">
-            {/* Sidebar Tabs */}
-            <div className="flex shrink-0 gap-1 border-b border-gray-200 bg-white px-3 pt-3">
-              {['Post', 'Meta', 'SEO'].map((tab, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setActiveTab(index)}
-                  className={`relative flex-1 rounded-t-md px-4 py-2.5 text-sm font-medium transition-colors ${
-                    activeTab === index
-                      ? 'text-gray-900'
-                      : 'text-gray-400 hover:text-gray-700'
-                  }`}
-                >
-                  {tab}
-                  {activeTab === index && (
-                    <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gray-900" />
-                  )}
-                </button>
-              ))}
-            </div>
+            <SidebarTabs active={activeTab} onChange={setActiveTab} />
 
-            {/* Sidebar Scrollable Content */}
-            <div className="flex-1 scrollbar-none space-y-4 overflow-y-auto p-4">
-              {activeTab === 0 && (
-                <>
-                  <SidebarSection title="Status & Visibility">
-                    <DateTime
-                      name="publishedAt"
-                      defaultValue={defaultPublishedAt}
-                    />
-                  </SidebarSection>
+            <div className="flex-1 scrollbar-none overflow-y-auto p-4">
+              <TabPanel active={activeTab === 0}>
+                <PostPanel
+                  publishedAt={publishedAt}
+                  thumbnailUrl={defaults?.thumbnail_url ?? null}
+                  onThumbnailChange={handleThumbnailChange}
+                />
+              </TabPanel>
 
-                  <SidebarSection title="Article Settings">
-                    <ImageUploader
-                      name="thumbnail"
-                      defaultCover={thumbnailPreview}
-                      caption="Thumbnail"
-                      id="thumb-image-input"
-                      setCoverImage={(media) => {
-                        if (media?.id) {
-                          setThumbnailId(media.id);
-                          setThumbnailPreview(media.url);
-                        } else {
-                          setThumbnailId(null);
-                          setThumbnailPreview(null);
-                        }
-                      }}
-                    />
-                  </SidebarSection>
-                </>
-              )}
+              <TabPanel active={activeTab === 1}>
+                <MetaPanel />
+              </TabPanel>
 
-              {activeTab === 1 && (
-                <>
-                  <SidebarSection title="Search Result">
-                    <InputFields
-                      fields={['meta_title', 'meta_description:text']}
-                    />
-                  </SidebarSection>
-
-                  <SidebarSection title="Canonical URL">
-                    <InputFields fields={['canonical_url']} />
-                  </SidebarSection>
-                </>
-              )}
-
-              {activeTab === 2 && (
-                <>
-                  <SidebarSection title="Social Sharing">
-                    <InputFields fields={['og_title']} />
-                    <Textarea
-                      name="og_description"
-                      placeholder="OG description (optional)"
-                      value={ogDescription}
-                      onChange={(e) => setOgDescription(e.target.value)}
-                    />
-                    <ImageUploader
-                      name="og_image_url"
-                      id="og-image-uploader"
-                      defaultCover={ogPreview}
-                      caption="OG Image"
-                      setCoverImage={(media) => {
-                        if (media?.url) setOgPreview(media.url);
-                        else setOgPreview(null);
-                      }}
-                    />
-                  </SidebarSection>
-
-                  <SidebarSection title="Structured Data">
-                    <SchemaEditor schema={schema} />
-                  </SidebarSection>
-                </>
-              )}
+              <TabPanel active={activeTab === 2}>
+                <SeoPanel
+                  active={activeTab === 2}
+                  ogDescription={formDefaults.og_description}
+                  ogImageUrl={defaults?.og_image_url ?? null}
+                  onOgImageChange={handleOgImageChange}
+                  schema={savedSchema}
+                />
+              </TabPanel>
             </div>
           </div>
         </div>

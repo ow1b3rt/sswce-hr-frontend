@@ -79,16 +79,6 @@ export default async function BlogsPage(props) {
   const blogs = data?.items || [];
   const totalPages = data?.totalPages || 1;
 
-  const cols = Math.min(blogs.length || 1, 3);
-  const mdCols = Math.min(blogs.length || 1, 2);
-  const mdColClass = mdCols === 1 ? 'md:grid-cols-1' : 'md:grid-cols-2';
-  const lgColClass =
-    cols === 1
-      ? 'lg:grid-cols-1'
-      : cols === 2
-        ? 'lg:grid-cols-2'
-        : 'lg:grid-cols-3';
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -115,7 +105,7 @@ export default async function BlogsPage(props) {
           </p>
         ) : (
           <div
-            className={`grid w-full grid-cols-1 justify-center gap-6 ${mdColClass} ${lgColClass}`}
+            className={`grid w-full grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3`}
           >
             {blogs.map((blog) => (
               <BlogCard key={blog.id} item={blog} />

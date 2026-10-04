@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { ROUTES } from '@/constants/routes/routes';
 import DetailPage from '@/components/templates/DetailPage';
-import { localDate, localTime } from '@/lib/utils';
+import { localDate, localTime, resolveUrl } from '@/lib/utils';
 
 async function getEventBySlug(slug) {
   try {
@@ -36,12 +36,14 @@ export default async function EventDetailPage({ params }) {
   const { slug } = await params;
   const event = await getEventBySlug(slug);
 
+  console.log('events', event);
+
   if (!event) notFound();
 
   const eventData = {
     title: event.title,
     image: {
-      src: event.mediaUrl || '/event_fallback.png',
+      src: resolveUrl(event.mediaUrl) || '/event_fallback.png',
       alt: event.mediaAlt || event.title,
     },
     content: [event.description || ''],
